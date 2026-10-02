@@ -4,7 +4,7 @@ import { PortableText as SanityPortableText, type PortableTextComponents } from 
 import Image from 'next/image'
 import { urlFor } from './image'
 import type { SanityBlock } from './queries'
-import { buildAmazonLink } from '@/lib/affiliates'
+import { resolveAffiliateUrl } from '@/lib/affiliates'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Anchor ID generator for headings (used by Table of Contents)
@@ -150,9 +150,11 @@ const components: PortableTextComponents = {
     amazonProductCard: ({ value }) => {
       if (!value?.name) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
-      const affiliateUrl = value.asin
-        ? buildAmazonLink(value.asin, lang)
-        : value.affiliateUrl
+      // resolveAffiliateUrl handles both ASIN and raw URL, always injects the tag
+      const affiliateUrl = resolveAffiliateUrl(
+        { asin: value.asin, affiliateUrl: value.affiliateUrl },
+        lang
+      )
 
       return (
         <div className="my-8 bg-dark-card rounded-xl border border-dark-border overflow-hidden">
@@ -240,16 +242,19 @@ const components: PortableTextComponents = {
                 <h4 className="font-bold text-text-primary text-sm mb-1">{p.name}</h4>
                 {p.rating && <StarRating rating={p.rating} />}
                 {p.price && <p className="font-bold text-text-primary mt-2">{p.price}</p>}
-                {p.affiliateUrl && (
-                  <a
-                    href={p.affiliateUrl}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="btn-primary text-xs w-full text-center mt-3 min-h-[44px]"
-                  >
-                    {lang === 'ar' ? 'أمازون' : 'Amazon'}
-                  </a>
-                )}
+{(() => {
+                    const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
+                    return url ? (
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer nofollow"
+                        className="btn-primary text-xs w-full text-center mt-3 min-h-[44px]"
+                      >
+                        {lang === 'ar' ? 'أمازون' : 'Amazon'}
+                      </a>
+                    ) : null
+                  })()}
               </div>
             ))}
           </div>
@@ -296,16 +301,19 @@ const components: PortableTextComponents = {
                   <td className="p-4 text-text-muted">{lang === 'ar' ? 'الشراء' : 'Buy'}</td>
                   {value.products.map((p: any, i: number) => (
                     <td key={i} className="p-4 text-center">
-                      {p.affiliateUrl ? (
-                        <a
-                          href={p.affiliateUrl}
-                          target="_blank"
-                          rel="noopener noreferrer nofollow"
-                          className="btn-primary text-xs inline-flex min-h-[44px]"
-                        >
-                          {lang === 'ar' ? 'أمازون' : 'Amazon'}
-                        </a>
-                      ) : '—'}
+                      {(() => {
+                        const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
+                        return url ? (
+                          <a
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer nofollow"
+                            className="btn-primary text-xs inline-flex min-h-[44px]"
+                          >
+                            {lang === 'ar' ? 'أمازون' : 'Amazon'}
+                          </a>
+                        ) : '—'
+                      })()}
                     </td>
                   ))}
                 </tr>
