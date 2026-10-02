@@ -75,7 +75,7 @@ export default async function PostPage({
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     keywords: post.keywords,
-    imageUrl: post.mainImage?.externalUrl || (post.mainImage?.asset ? urlFor(post.mainImage).width(1200).height(630).format('webp').url() : undefined),
+    imageUrl: post.mainImage?.externalUrl || (post.mainImage?.asset ? urlFor(post.mainImage as any).width(1200).height(630).format('webp').url() : undefined),
     wordCount: post.wordCount,
     author: post.author ? {
       firstName: post.author.firstName,
@@ -169,7 +169,7 @@ export default async function PostPage({
             <figure className="mb-12 rounded-2xl overflow-hidden border border-dark-border">
               <div className="relative aspect-video w-full bg-dark-card">
                 <Image
-                  src={post.mainImage.externalUrl || urlFor(post.mainImage).width(1200).height(675).format('webp').url()}
+                  src={post.mainImage.externalUrl || urlFor(post.mainImage as any).width(1200).height(675).format('webp').url()}
                   alt={post.mainImage.alt ?? post.title}
                   fill
                   priority
