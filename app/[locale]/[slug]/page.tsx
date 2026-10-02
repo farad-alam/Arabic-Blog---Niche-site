@@ -11,8 +11,12 @@ import type { Metadata } from 'next'
 export const revalidate = false
 
 export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs()
-  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })))
+  const params: { locale: string; slug: string }[] = []
+  for (const locale of locales) {
+    const slugs = await getAllPostSlugs(locale)
+    slugs.forEach((slug) => params.push({ locale, slug }))
+  }
+  return params
 }
 
 export async function generateMetadata({
