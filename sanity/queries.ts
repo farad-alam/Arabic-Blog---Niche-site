@@ -423,3 +423,68 @@ export const getAuthor = cache(
     )
   }
 )
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Site Settings
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SanitySiteSettings = {
+  // Identity
+  siteNameAr?: string
+  siteNameEn?: string
+  // SEO
+  seoTitleAr?: string
+  seoDescriptionAr?: string
+  seoTitleEn?: string
+  seoDescriptionEn?: string
+  seoImage?: { asset?: { _ref: string }; alt?: string }
+  // Analytics — all optional, script only renders if value is present
+  gaId?: string
+  gscVerification?: string
+  bingVerification?: string
+  clarityId?: string
+  hotjarId?: string
+  // Social
+  twitter?: string
+  facebook?: string
+  instagram?: string
+  youtube?: string
+}
+
+/**
+ * getSiteSettings — fetches the singleton siteSettings document.
+ *
+ * Performance notes:
+ * - Wrapped in React cache(): within a single server render tree,
+ *   this is called at most once regardless of how many components need it.
+ * - ISR tag 'siteSettings': cached between requests. Only re-fetches
+ *   when the Sanity webhook fires revalidateTag('siteSettings').
+ * - Workflow: Save in Sanity → webhook → cache busted → next visitor
+ *   gets fresh data. Zero redeploys needed.
+ */
+export const getSiteSettings = cache(
+  async (): Promise<SanitySiteSettings | null> => {
+    return client.fetch(
+      `*[_type == "siteSettings"][0] {
+        siteNameAr,
+        siteNameEn,
+        seoTitleAr,
+        seoDescriptionAr,
+        seoTitleEn,
+        seoDescriptionEn,
+        seoImage { asset, alt },
+        gaId,
+        gscVerification,
+        bingVerification,
+        clarityId,
+        hotjarId,
+        twitter,
+        facebook,
+        instagram,
+        youtube
+      }`,
+      {},
+      { next: { tags: ['siteSettings'] } }
+    )
+  }
+)

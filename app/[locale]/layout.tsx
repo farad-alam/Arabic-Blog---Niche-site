@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { Cairo, Tajawal, Outfit } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
 import { baseMetadata } from '@/lib/seo'
+import { getSiteSettings } from '@/sanity/queries'
 import NavbarWrapper from '@/components/layout/NavbarWrapper'
 import FooterWrapper from '@/components/layout/FooterWrapper'
+import AnalyticsScripts from '@/components/analytics/AnalyticsScripts'
 import '@/styles/globals.css'
 
 // ── Arabic fonts ──────────────────────────────────────────────────────────────
@@ -51,7 +52,10 @@ export default async function LocaleLayout({
   }
 
   const isRtl = locale === 'ar'
-  const gaId = process.env.NEXT_PUBLIC_GA_ID
+
+  // Fetch siteSettings once — React cache() ensures this is shared with
+  // NavbarWrapper, FooterWrapper, and AnalyticsScripts without extra API calls.
+  const settings = await getSiteSettings()
 
   return (
     <html
@@ -60,8 +64,12 @@ export default async function LocaleLayout({
       className={`${cairo.variable} ${tajawal.variable} ${outfit.variable}`}
     >
       <head>
-        {process.env.NEXT_PUBLIC_BING_VERIFICATION && (
-          <meta name="msvalidate.01" content={process.env.NEXT_PUBLIC_BING_VERIFICATION} />
+        {/* ── Verification meta tags (from Sanity) ─────────────────────── */}
+        {settings?.gscVerification && (
+          <meta name="google-site-verification" content={settings.gscVerification} />
+        )}
+        {settings?.bingVerification && (
+          <meta name="msvalidate.01" content={settings.bingVerification} />
         )}
       </head>
       <body>
@@ -71,23 +79,12 @@ export default async function LocaleLayout({
         </div>
         <FooterWrapper locale={locale as Locale} />
 
-        {/* Google Analytics 4 */}
-        {gaId && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){window.dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${gaId}');
-              `}
-            </Script>
-          </>
-        )}
+        {/*
+          Analytics scripts — sourced from Sanity Site Settings.
+          Only scripts with a value set in Sanity are injected.
+          All use afterInteractive strategy — zero impact on LCP/FCP.
+        */}
+        <AnalyticsScripts />
       </body>
     </html>
   )
