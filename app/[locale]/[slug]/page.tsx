@@ -39,8 +39,8 @@ export async function generateMetadata({
     description,
     alternates: {
       canonical: `/${locale}/${slug}`,
-      languages: post.translationSlug ? {
-        [isAr ? 'en' : 'ar']: `/${isAr ? 'en' : 'ar'}/${post.translationSlug}`
+      languages: post.translation ? {
+        [isAr ? 'en' : 'ar']: `/${isAr ? 'en' : 'ar'}/${post.translation.slug.current}`
       } : undefined
     }
   }
