@@ -1,14 +1,16 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { type Locale, locales } from '@/lib/i18n'
-import { getCategory, getPostsByCategory, getCategorySlugs } from '@/sanity/queries'
+import { getCategoryBySlug, getPostsByCategory, getAllCategorySlugs } from '@/sanity/queries'
 import PostGrid from '@/components/blog/PostGrid'
 
 export const revalidate = false
 
 export async function generateStaticParams() {
-  const slugs = await getCategorySlugs()
-  return locales.flatMap((locale) => slugs.map((slug) => ({ locale, categorySlug: slug })))
+  const slugs = await getAllCategorySlugs()
+  return locales.flatMap((locale) =>
+    slugs.map((s) => ({ locale, categorySlug: locale === 'ar' ? s.slugAr : s.slugEn }))
+  )
 }
 
 export async function generateMetadata({
@@ -18,7 +20,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale, categorySlug } = await params
   if (!locales.includes(locale as Locale)) return {}
-  const category = await getCategory(categorySlug, locale as Locale)
+  const category = await getCategoryBySlug(categorySlug, locale as Locale)
   if (!category) return {}
 
   const title = locale === 'ar' ? category.titleAr : category.titleEn
@@ -39,12 +41,10 @@ export default async function CategoryPage({
   if (!locales.includes(locale as Locale)) notFound()
 
   const l = locale as Locale
-  const [category, posts] = await Promise.all([
-    getCategory(categorySlug, l),
-    getPostsByCategory(categorySlug, l),
-  ])
-
+  const category = await getCategoryBySlug(categorySlug, l)
   if (!category) notFound()
+  
+  const posts = await getPostsByCategory(category._id, l)
 
   const title = l === 'ar' ? category.titleAr : category.titleEn
   const description = l === 'ar' ? category.descriptionAr : category.descriptionEn

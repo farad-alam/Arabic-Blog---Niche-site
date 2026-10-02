@@ -87,16 +87,6 @@ export type SanityPostCard = {
   readTime?: string
 }
 
-export type SanitySiteSettings = {
-  siteNameAr?: string
-  siteNameEn?: string
-  seoTitleAr?: string
-  seoTitleEn?: string
-  seoDescriptionAr?: string
-  seoDescriptionEn?: string
-  seoImage?: { asset: { _ref: string } }
-  twitter?: string
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Reusable GROQ fragments
@@ -149,26 +139,6 @@ const POST_CARD_FRAGMENT = `
   "readTime": round(length(pt::text(body)) / 1500) + " min"
 `
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Site Settings
-// ─────────────────────────────────────────────────────────────────────────────
-
-export async function getSiteSettings(): Promise<SanitySiteSettings | null> {
-  return client.fetch(
-    `*[_type == "siteSettings"][0] {
-      siteNameAr,
-      siteNameEn,
-      seoTitleAr,
-      seoTitleEn,
-      seoDescriptionAr,
-      seoDescriptionEn,
-      seoImage { asset },
-      twitter
-    }`,
-    {},
-    { next: { tags: ['siteSettings'] } }
-  )
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Posts — filtered by language

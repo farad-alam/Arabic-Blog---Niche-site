@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
-import { getTopLevelCategories, getLatestPosts } from '@/sanity/queries'
+import { getTopLevelCategories, getPostsByLocale } from '@/sanity/queries'
 import Hero from '@/components/home/Hero'
 import CategorySlider from '@/components/home/CategorySlider'
 import PostGrid from '@/components/blog/PostGrid'
@@ -25,7 +25,7 @@ export default async function HomePage({
   // Fetch data concurrently
   const [categories, latestPosts] = await Promise.all([
     getTopLevelCategories(),
-    getLatestPosts(l, 6), // Fetch 6 most recent posts
+    getPostsByLocale(l, 6), // Fetch 6 most recent posts
   ])
 
   return (
