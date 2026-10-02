@@ -42,12 +42,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Add hreflang alternates only when a translation link exists
     if (post.translationSlug) {
       const otherLang = post.language === 'ar' ? 'en' : 'ar'
-      ;(entry as any).alternates = {
-        languages: {
-          [post.language]: url,
-          [otherLang]: `${BASE_URL}/${otherLang}/${post.translationSlug}`,
-        },
+      const alternates: Record<string, string> = {
+        [post.language]: url,
+        [otherLang]: `${BASE_URL}/${otherLang}/${post.translationSlug}`,
       }
+      ;(entry as any).alternates = { languages: alternates }
     }
 
     return entry

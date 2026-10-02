@@ -69,16 +69,20 @@ export default async function PostPage({
 
   const jsonLd = articleSchema({
     title: post.title,
-    excerpt: post.excerpt,
+    description: post.excerpt,
     slug: post.slug.current,
     language: l,
     publishedAt: post.publishedAt,
-    updatedAt: post._updatedAt,
-    authorName,
-    authorUrl: `/${l}/authors/${post.author?.slug.current}`,
-    imageUrl: post.mainImage?.externalUrl || (post.mainImage?.asset ? urlFor(post.mainImage).width(1200).height(630).format('webp').url() : undefined),
-    categoryName: categoryTitle,
+    updatedAt: post.updatedAt,
     keywords: post.keywords,
+    imageUrl: post.mainImage?.externalUrl || (post.mainImage?.asset ? urlFor(post.mainImage).width(1200).height(630).format('webp').url() : undefined),
+    wordCount: post.wordCount,
+    author: post.author ? {
+      firstName: post.author.firstName,
+      lastName: post.author.lastName,
+      slug: post.author.slug,
+      jobTitle: post.author.jobTitle,
+    } : undefined,
   })
 
   return (
