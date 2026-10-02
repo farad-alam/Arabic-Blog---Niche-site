@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ── Arabic (RTL) layout ────────────────────────────────────────────────── */
+  [dir="rtl"] body {
+    font-family: var(--font-arabic-body), var(--font-arabic-heading), sans-serif;
+    text-align: right;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: var(--font-arabic-heading), sans-serif;
+  }
+
+  /* Arabic body text needs more line-height for readability */
+  [dir="rtl"] p,
+  [dir="rtl"] li {
+    line-height: 1.8;
+    font-size: 17px;
+  }
+
+  @media (min-width: 768px) {
+    [dir="rtl"] p,
+    [dir="rtl"] li {
+      font-size: 18px;
+    }
+  }
+
+  /* ── English (LTR) layout ───────────────────────────────────────────────── */
+  [dir="ltr"] body {
+    font-family: var(--font-latin), sans-serif;
+    text-align: left;
+  }
+
+  [dir="ltr"] h1,
+  [dir="ltr"] h2,
+  [dir="ltr"] h3,
+  [dir="ltr"] h4,
+  [dir="ltr"] h5,
+  [dir="ltr"] h6 {
+    font-family: var(--font-latin), sans-serif;
+  }
+
+  /* ── Shared base ────────────────────────────────────────────────────────── */
+  body {
+    background-color: #0A0A0A;
+    color: #FAFAFA;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #7D40FF;
+    color: #FAFAFA;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Focus ring for accessibility */
+  :focus-visible {
+    outline: 2px solid #7D40FF;
+    outline-offset: 2px;
+  }
+
+  /* ── Images ─────────────────────────────────────────────────────────────── */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── Links ──────────────────────────────────────────────────────────────── */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+@layer utilities {
+  /* ── Text gradient ──────────────────────────────────────────────────────── */
+  .text-gradient {
+    background: linear-gradient(135deg, #7D40FF, #9766FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ── Cards & borders ───────────────────────────────────────────────────── */
+  .glow-border {
+    border: 1px solid rgba(125, 64, 255, 0.15);
+  }
+
+  .glow-shadow {
+    box-shadow: 0 0 30px rgba(125, 64, 255, 0.12);
+  }
+
+  /* ── Section spacing ────────────────────────────────────────────────────── */
+  .section-padding {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+
+  /* ── Buttons ───────────────────────────────────────────────────────────── */
+  .btn-primary {
+    background-color: #712EFF;
+    color: #FAFAFA;
+    box-shadow: rgba(255, 255, 255, 0.72) 0px 2px 3px 0px inset;
+    border-radius: 8px;
+    font-weight: 700;
+    padding: 12px 24px;
+    min-height: 44px; /* Minimum touch target for mobile */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 150ms ease;
+  }
+
+  .btn-primary:hover {
+    background-color: #7D40FF;
+  }
+
+  .btn-primary:active {
+    background-color: #5F00E0;
+  }
+
+  /* ── Scrollbar hide (for horizontal scroll components) ──────────────────── */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* ── Article prose spacing ──────────────────────────────────────────────── */
+  .article-body h2 {
+    scroll-margin-top: 6rem;
+  }
+
+  .article-body h3 {
+    scroll-margin-top: 6rem;
+  }
+
+  /* ── Line clamp utilities ───────────────────────────────────────────────── */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── AdSense placeholder ────────────────────────────────────────────────── */
+  .ad-slot {
+    min-height: 90px;
+    width: 100%;
+    background: rgba(125, 64, 255, 0.03);
+    border: 1px dashed rgba(125, 64, 255, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.2);
+  }
+}
