@@ -24,7 +24,7 @@ export default function LanguageSwitcher({ currentLocale }: { currentLocale: Loc
   return (
     <button
       onClick={toggleLanguage}
-      className="flex items-center gap-2 text-text-muted hover:text-text-primary transition-colors text-sm font-body px-2 py-1 rounded-md border border-transparent hover:border-surface-border"
+      className="flex items-center gap-2 text-white/80 hover:text-white transition-colors text-sm font-body px-2 py-1 rounded-md border border-transparent hover:border-white/20"
       aria-label="Switch Language"
     >
       <span className="text-lg">{currentLocale === 'ar' ? '🇬🇧' : '🇸🇦'}</span>

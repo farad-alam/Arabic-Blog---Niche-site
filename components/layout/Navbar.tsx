@@ -89,24 +89,24 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
   }
 
   const linkClass =
-    'text-sm font-body font-medium text-text-muted hover:text-[#1C1917] transition-colors whitespace-nowrap'
+    'text-sm font-body font-medium text-white/80 hover:text-white transition-colors whitespace-nowrap'
 
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? 'bg-[#FAF8F5]/95 backdrop-blur-xl border-surface-border shadow-sm-light'
-          : 'bg-[#FAF8F5]/80 backdrop-blur-md border-transparent'
+          ? 'bg-brand-primary/95 backdrop-blur-xl border-white/10 shadow-md'
+          : 'bg-brand-primary backdrop-blur-md border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-6">
           {/* ── Logo ───────────────────────────────────────────────────── */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
-            <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-primary to-brand-gradient flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-primary/30 group-hover:scale-105 transition-transform">
+            <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-lg shadow-lg group-hover:scale-105 transition-transform">
               {siteName.charAt(0)}
             </span>
-            <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-text-primary group-hover:text-brand-light transition-colors">
+            <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-white group-hover:text-white/90 transition-colors">
               {siteName}
             </span>
           </Link>
@@ -134,12 +134,12 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
                   />
                 </button>
                 {moreOpen && (
-                  <div className="absolute top-full mt-3 start-0 min-w-[200px] rounded-xl border border-surface-border bg-surface-card shadow-lg-light p-2">
+                  <div className="absolute top-full mt-3 start-0 min-w-[200px] rounded-xl border border-white/10 bg-brand-primary shadow-lg p-2">
                     {overflow.map((cat) => (
                       <Link
                         key={cat._id}
                         href={catHref(cat)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                       >
                         {cat.icon && <span>{cat.icon}</span>}
                         {catTitle(cat)}
@@ -160,7 +160,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
+              className="w-10 h-10 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
               aria-label={t(locale, 'nav.search')}
             >
               <Search size={20} />
@@ -169,7 +169,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
+              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors"
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
@@ -181,11 +181,11 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
 
       {/* ── Mobile drawer ──────────────────────────────────────────────── */}
       {menuOpen && (
-        <div className="lg:hidden border-t border-surface-border bg-[#FAF8F5]/98 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="lg:hidden border-t border-white/10 bg-brand-primary/95 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
           <nav className="px-4 py-6 space-y-1" aria-label="Mobile">
             <Link
               href={`/${locale}`}
-              className="block px-3 py-3 rounded-lg text-text-primary font-medium hover:bg-surface-hover"
+              className="block px-3 py-3 rounded-lg text-white font-medium hover:bg-white/10"
             >
               {t(locale, 'site.home')}
             </Link>
@@ -193,7 +193,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
               <Link
                 key={cat._id}
                 href={catHref(cat)}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
+                className="flex items-center gap-3 px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
               >
                 {cat.icon && <span className="text-lg">{cat.icon}</span>}
                 {catTitle(cat)}
@@ -201,19 +201,19 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             ))}
             <Link
               href={`/${locale}/articles`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
+              className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
             >
               {t(locale, 'nav.articles')}
             </Link>
             <Link
               href={`/${locale}/about`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
+              className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
             >
               {t(locale, 'nav.about')}
             </Link>
             <Link
               href={`/${locale}/contact`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
+              className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
             >
               {t(locale, 'nav.contact')}
             </Link>

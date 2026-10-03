@@ -33,7 +33,7 @@ function SocialLink({ name, href }: { name: string; href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={name}
-      className="w-10 h-10 rounded-full bg-surface-raised border border-surface-border flex items-center justify-center text-text-muted hover:text-white hover:bg-brand-primary hover:border-brand-primary transition-all duration-200 hover:-translate-y-0.5"
+      className="w-10 h-10 rounded-full bg-white/10 border border-white/10 flex items-center justify-center text-white hover:text-brand-primary hover:bg-white hover:border-white transition-all duration-200 hover:-translate-y-0.5"
     >
       <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
         <path d={SOCIAL_ICONS[name]} />
@@ -65,25 +65,25 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
   const hasContact =
     settings?.contactEmail || settings?.contactPhone || whatsappDigits || copy.address
 
-  const linkClass = 'text-text-muted text-sm hover:text-brand-primary transition-colors'
-  const headingClass = 'font-arabic-heading font-bold text-text-primary mb-5'
+  const linkClass = 'text-white/80 text-sm hover:text-white transition-colors'
+  const headingClass = 'font-arabic-heading font-bold text-white mb-5'
 
   return (
-    <footer className="relative bg-surface-raised border-t border-surface-border mt-24">
+    <footer className="relative bg-brand-primary border-t border-brand-primary mt-24">
       {/* soft accent line */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-primary/60 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 mb-14">
           {/* Brand */}
           <div className="lg:col-span-4">
             <Link href={`/${locale}`} className="inline-flex items-center gap-2.5 mb-5">
-              <span className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-primary to-brand-gradient flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-primary/30">
+              <span className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-xl shadow-lg">
                 {siteName.charAt(0)}
               </span>
-              <span className="font-heading font-bold text-2xl text-text-primary">{siteName}</span>
+              <span className="font-heading font-bold text-2xl text-white">{siteName}</span>
             </Link>
-            <p className="text-text-muted text-sm leading-relaxed max-w-sm mb-6">{copy.about}</p>
+            <p className="text-white/80 text-sm leading-relaxed max-w-sm mb-6">{copy.about}</p>
             {activeSocials.length > 0 && (
               <div className="flex flex-wrap gap-3">
                 {activeSocials.map((s) => (
@@ -130,35 +130,35 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
           <div className="lg:col-span-3">
             <h4 className={headingClass}>{t(locale, 'nav.contact')}</h4>
             {hasContact ? (
-              <ul className="space-y-3 text-sm text-text-muted">
+              <ul className="space-y-3 text-sm text-white/80">
                 {settings?.contactEmail && (
                   <li className="flex items-start gap-3">
-                    <Mail size={16} className="mt-0.5 text-brand-primary shrink-0" />
-                    <a href={`mailto:${settings.contactEmail}`} className="hover:text-brand-primary transition-colors break-all">
+                    <Mail size={16} className="mt-0.5 text-white/90 shrink-0" />
+                    <a href={`mailto:${settings.contactEmail}`} className="hover:text-white transition-colors break-all text-white/80">
                       {settings.contactEmail}
                     </a>
                   </li>
                 )}
                 {settings?.contactPhone && (
                   <li className="flex items-start gap-3">
-                    <Phone size={16} className="mt-0.5 text-brand-primary shrink-0" />
-                    <a href={`tel:${settings.contactPhone.replace(/\s/g, '')}`} dir="ltr" className="hover:text-brand-primary transition-colors">
+                    <Phone size={16} className="mt-0.5 text-white/90 shrink-0" />
+                    <a href={`tel:${settings.contactPhone.replace(/\s/g, '')}`} dir="ltr" className="hover:text-white transition-colors text-white/80">
                       {settings.contactPhone}
                     </a>
                   </li>
                 )}
                 {whatsappDigits && (
                   <li className="flex items-start gap-3">
-                    <MessageCircle size={16} className="mt-0.5 text-brand-primary shrink-0" />
-                    <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer" className="hover:text-brand-primary transition-colors">
+                    <MessageCircle size={16} className="mt-0.5 text-white/90 shrink-0" />
+                    <a href={`https://wa.me/${whatsappDigits}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors text-white/80">
                       WhatsApp
                     </a>
                   </li>
                 )}
                 {copy.address && (
                   <li className="flex items-start gap-3">
-                    <MapPin size={16} className="mt-0.5 text-brand-primary shrink-0" />
-                    <span>{copy.address}</span>
+                    <MapPin size={16} className="mt-0.5 text-white/90 shrink-0" />
+                    <span className="text-white/80">{copy.address}</span>
                   </li>
                 )}
               </ul>
@@ -171,11 +171,11 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-surface-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-text-muted text-xs">
+        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-white/70 text-xs">
             © {year} {siteName}. {copy.copyright}
           </p>
-          <p className="text-text-muted/60 text-[11px] text-center md:text-end max-w-md leading-relaxed">
+          <p className="text-white/50 text-[11px] text-center md:text-end max-w-md leading-relaxed">
             {isAr
               ? 'تنويه: قد يحتوي هذا الموقع على روابط تابعة، مما يعني أننا قد نربح عمولة عند شرائك من خلالها دون أي تكلفة إضافية عليك.'
               : 'Disclosure: This site may contain affiliate links. We may earn a commission if you make a purchase through these links at no extra cost to you.'}
