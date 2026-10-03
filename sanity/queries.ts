@@ -51,7 +51,7 @@ export type SanityPost = {
   slug: { current: string }
   excerpt: string
   mainImage?: {
-    asset?: { _ref: string }
+    asset?: { _ref?: string; secure_url?: string; url?: string }
     externalUrl?: string
     alt: string
   }
@@ -80,7 +80,7 @@ export type SanityPostCard = {
   title: string
   slug: { current: string }
   excerpt: string
-  mainImage?: { asset?: { _ref: string }; externalUrl?: string; alt: string }
+  mainImage?: { asset?: { _ref?: string; secure_url?: string; url?: string }; externalUrl?: string; alt: string }
   category?: { titleAr: string; titleEn: string; slugAr: { current: string }; slugEn: { current: string } }
   author?: Pick<SanityAuthor, 'firstName' | 'lastName' | 'firstNameAr' | 'lastNameAr' | 'slug' | 'avatar'>
   publishedAt: string

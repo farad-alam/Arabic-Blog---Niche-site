@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { urlFor } from '@/sanity/image'
+import { urlFor, getImageUrl } from '@/sanity/image'
 import type { SanityPostCard } from '@/sanity/queries'
 import { type Locale, formatDateShort } from '@/lib/i18n'
 
@@ -15,6 +15,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
   const authorName = isAr && post.author?.firstNameAr
     ? `${post.author.firstNameAr} ${post.author.lastNameAr ?? ''}`.trim()
     : `${post.author?.firstName ?? ''} ${post.author?.lastName ?? ''}`.trim()
+  const imageUrl = getImageUrl(post.mainImage, { width: 600, height: 338 })
 
   return (
     <Link
@@ -23,17 +24,10 @@ export default function PostCard({ post, locale }: PostCardProps) {
     >
       {/* ── Image ──────────────────────────────────────────────────────────── */}
       <div className="relative aspect-video bg-dark-base overflow-hidden border-b border-dark-border">
-        {post.mainImage?.externalUrl ? (
+        {imageUrl ? (
           <Image
-            src={post.mainImage.externalUrl}
-            alt={post.mainImage.alt ?? post.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : post.mainImage?.asset ? (
-          <Image
-            src={urlFor(post.mainImage as any).width(600).height(338).format('webp').url()}
-            alt={post.mainImage.alt ?? post.title}
+            src={imageUrl}
+            alt={post.mainImage?.alt ?? post.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />

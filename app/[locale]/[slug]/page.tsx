@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { type Locale, locales, formatDate } from '@/lib/i18n'
 import { getPost, getAllPostSlugs } from '@/sanity/queries'
-import { urlFor } from '@/sanity/image'
+import { urlFor, getImageUrl } from '@/sanity/image'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema } from '@/lib/schema'
 import type { Metadata } from 'next'
@@ -59,6 +59,7 @@ export default async function PostPage({
   if (!post) notFound()
 
   const isAr = l === 'ar'
+  const mainImageUrl = getImageUrl(post.mainImage, { width: 1200, height: 675 })
   
   const categoryTitle = isAr ? post.category?.titleAr : post.category?.titleEn
   const categorySlug = isAr ? post.category?.slugAr?.current : post.category?.slugEn?.current
@@ -75,7 +76,7 @@ export default async function PostPage({
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     keywords: post.keywords,
-    imageUrl: post.mainImage?.externalUrl || (post.mainImage?.asset ? urlFor(post.mainImage as any).width(1200).height(630).format('webp').url() : undefined),
+    imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630 }),
     wordCount: post.wordCount,
     author: post.author ? {
       firstName: post.author.firstName,
@@ -165,12 +166,12 @@ export default async function PostPage({
           )}
 
           {/* ── Main Image ────────────────────────────────────────────────── */}
-          {(post.mainImage?.externalUrl || post.mainImage?.asset) && (
+          {mainImageUrl && (
             <figure className="mb-12 rounded-2xl overflow-hidden border border-dark-border">
               <div className="relative aspect-video w-full bg-dark-card">
                 <Image
-                  src={post.mainImage.externalUrl || urlFor(post.mainImage as any).width(1200).height(675).format('webp').url()}
-                  alt={post.mainImage.alt ?? post.title}
+                  src={mainImageUrl}
+                  alt={post.mainImage?.alt ?? post.title}
                   fill
                   priority
                   className="object-cover"
