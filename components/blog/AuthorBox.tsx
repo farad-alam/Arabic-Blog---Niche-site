@@ -56,7 +56,6 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
     { label: 'LinkedIn', href: author.linkedin },
     { label: 'X / Twitter', href: author.twitter },
     { label: 'Website', href: author.website },
-    { label: 'Facebook', href: author.facebook },
   ].filter((s) => s.href)
 
   const initials = `${author.firstName?.[0] ?? ''}${author.lastName?.[0] ?? ''}`.toUpperCase()
