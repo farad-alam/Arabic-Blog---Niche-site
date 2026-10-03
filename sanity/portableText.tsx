@@ -198,9 +198,14 @@ const components: PortableTextComponents = {
                     href={affiliateUrl}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
-                    className="btn-primary text-sm w-full sm:w-auto text-center min-h-[44px]"
+                    className="flex items-center justify-center gap-2 bg-[#FFA41C] hover:bg-[#FA8900] text-black text-sm font-bold w-full sm:w-auto min-h-[44px] px-6 rounded-lg transition-colors shadow-sm"
                   >
-                    {lang === 'ar' ? 'اشتري الآن من أمازون →' : 'Buy on Amazon →'}
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="20" cy="21" r="1"></circle>
+                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    {lang === 'ar' ? 'اشتري الآن من أمازون' : 'Buy on Amazon'}
                   </a>
                 </div>
               )}
@@ -251,8 +256,13 @@ const components: PortableTextComponents = {
                         href={url}
                         target="_blank"
                         rel="noopener noreferrer nofollow"
-                        className="btn-primary text-xs w-full text-center mt-3 min-h-[44px]"
+                        className="flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] text-black font-bold text-xs w-full mt-3 min-h-[44px] rounded-lg transition-colors shadow-sm"
                       >
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="9" cy="21" r="1"></circle>
+                          <circle cx="20" cy="21" r="1"></circle>
+                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
                         {lang === 'ar' ? 'أمازون' : 'Amazon'}
                       </a>
                     ) : null
@@ -310,8 +320,13 @@ const components: PortableTextComponents = {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
-                            className="btn-primary text-xs inline-flex min-h-[44px]"
+                            className="inline-flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] text-black font-bold text-xs min-h-[44px] px-4 rounded-lg transition-colors shadow-sm"
                           >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                              <circle cx="9" cy="21" r="1"></circle>
+                              <circle cx="20" cy="21" r="1"></circle>
+                              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
                             {lang === 'ar' ? 'أمازون' : 'Amazon'}
                           </a>
                         ) : '—'
