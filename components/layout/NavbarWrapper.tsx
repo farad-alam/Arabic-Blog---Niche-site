@@ -1,5 +1,6 @@
 import { getTopLevelCategories, getSiteSettings } from '@/sanity/queries'
 import { type Locale } from '@/lib/i18n'
+import { getSiteName } from '@/lib/site'
 import Navbar from './Navbar'
 
 export default async function NavbarWrapper({ locale }: { locale: Locale }) {
@@ -8,9 +9,5 @@ export default async function NavbarWrapper({ locale }: { locale: Locale }) {
     getSiteSettings(),
   ])
 
-  const siteName = locale === 'ar'
-    ? (settings?.siteNameAr || 'موقع المدونة')
-    : (settings?.siteNameEn || 'Blog Site')
-
-  return <Navbar locale={locale} categories={categories} siteName={siteName} />
+  return <Navbar locale={locale} categories={categories} siteName={getSiteName(settings, locale)} />
 }

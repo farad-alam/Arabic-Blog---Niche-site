@@ -42,6 +42,7 @@ export type SanityCategory = {
   parent?: { titleAr: string; titleEn: string; slugAr: { current: string }; slugEn: { current: string } }
   icon?: string
   order?: number
+  postCount?: number
 }
 
 export type SanityPost = {
@@ -343,6 +344,54 @@ export async function getAllCategorySlugs(): Promise<
   return results.map((r) => ({ slugAr: r.slugAr.current, slugEn: r.slugEn.current }))
 }
 
+/** Top-level categories with the number of published posts in a locale */
+export async function getCategoriesWithCounts(locale: Locale): Promise<SanityCategory[]> {
+  return client.fetch(
+    `*[_type == "category" && !defined(parent)] | order(order asc) {
+      _id,
+      titleAr,
+      titleEn,
+      slugAr,
+      slugEn,
+      descriptionAr,
+      descriptionEn,
+      icon,
+      order,
+      "postCount": count(*[_type == "post" && language == $locale && !noIndex && category._ref == ^._id])
+    }`,
+    { locale },
+    { next: { tags: ['categories', 'posts'] } }
+  )
+}
+
+/** Lightweight record used by the client-side search page */
+export type SearchIndexEntry = {
+  title: string
+  slug: string
+  language: 'ar' | 'en'
+  excerpt?: string
+  publishedAt: string
+  categoryTitle?: string
+  mainImage?: SanityPostCard['mainImage']
+}
+
+/** Every indexable post (both locales) — baked into /search-index.json at build time */
+export async function getSearchIndex(): Promise<SearchIndexEntry[]> {
+  return client.fetch(
+    `*[_type == "post" && !noIndex] | order(publishedAt desc) {
+      title,
+      "slug": slug.current,
+      language,
+      excerpt,
+      publishedAt,
+      "categoryTitle": select(language == "ar" => category->titleAr, category->titleEn),
+      mainImage { asset, externalUrl, alt }
+    }`,
+    {},
+    { next: { tags: ['posts'] } }
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Authors
 // ─────────────────────────────────────────────────────────────────────────────
@@ -419,6 +468,28 @@ export type SanitySiteSettings = {
   facebook?: string
   instagram?: string
   youtube?: string
+  tiktok?: string
+  pinterest?: string
+  // Homepage hero
+  heroBadgeAr?: string
+  heroBadgeEn?: string
+  heroHeadingAr?: string
+  heroHeadingEn?: string
+  heroHighlightAr?: string
+  heroHighlightEn?: string
+  heroSubheadingAr?: string
+  heroSubheadingEn?: string
+  // Footer
+  footerAboutAr?: string
+  footerAboutEn?: string
+  copyrightAr?: string
+  copyrightEn?: string
+  // Contact
+  contactEmail?: string
+  contactPhone?: string
+  whatsapp?: string
+  addressAr?: string
+  addressEn?: string
 }
 
 /**
@@ -451,7 +522,26 @@ export const getSiteSettings = cache(
         twitter,
         facebook,
         instagram,
-        youtube
+        youtube,
+        tiktok,
+        pinterest,
+        heroBadgeAr,
+        heroBadgeEn,
+        heroHeadingAr,
+        heroHeadingEn,
+        heroHighlightAr,
+        heroHighlightEn,
+        heroSubheadingAr,
+        heroSubheadingEn,
+        footerAboutAr,
+        footerAboutEn,
+        copyrightAr,
+        copyrightEn,
+        contactEmail,
+        contactPhone,
+        whatsapp,
+        addressAr,
+        addressEn
       }`,
       {},
       { next: { tags: ['siteSettings'] } }

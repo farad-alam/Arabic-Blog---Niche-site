@@ -27,6 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/en/privacy`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE_URL}/ar/terms`, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${BASE_URL}/en/terms`, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE_URL}/ar/articles`, changeFrequency: 'daily', priority: 0.7 },
+    { url: `${BASE_URL}/en/articles`, changeFrequency: 'daily', priority: 0.6 },
+    { url: `${BASE_URL}/ar/contact`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/en/contact`, changeFrequency: 'yearly', priority: 0.3 },
+    { url: `${BASE_URL}/ar/disclosure`, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${BASE_URL}/en/disclosure`, changeFrequency: 'yearly', priority: 0.2 },
   ]
 
   // ── Article pages ──────────────────────────────────────────────────────────

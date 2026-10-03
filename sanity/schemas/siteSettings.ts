@@ -6,6 +6,8 @@ export const siteSettingsSchema = defineType({
   type: 'document',
   groups: [
     { name: 'identity',  title: '🏷️ Site Identity'     },
+    { name: 'homepage',  title: '🏠 Homepage & Footer'  },
+    { name: 'contact',   title: '📬 Contact Details'    },
     { name: 'seo',       title: '🔍 SEO'                },
     { name: 'analytics', title: '📊 Analytics & Tools'  },
     { name: 'social',    title: '🔗 Social Links'       },
@@ -26,6 +28,83 @@ export const siteSettingsSchema = defineType({
       group: 'identity',
       description: 'e.g. Home & Kitchen Guide',
     }),
+
+    // ── Homepage hero ─────────────────────────────────────────────────────────
+    defineField({
+      name: 'heroBadgeAr',
+      title: 'Hero Badge (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Small pill above the headline. Leave blank to use the default.',
+    }),
+    defineField({ name: 'heroBadgeEn', title: 'Hero Badge (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'heroHeadingAr',
+      title: 'Hero Headline (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Main headline. Leave blank to use the default.',
+    }),
+    defineField({ name: 'heroHeadingEn', title: 'Hero Headline (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'heroHighlightAr',
+      title: 'Hero Highlighted Words (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Part of the headline shown in the accent gradient.',
+    }),
+    defineField({ name: 'heroHighlightEn', title: 'Hero Highlighted Words (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'heroSubheadingAr',
+      title: 'Hero Sub-headline (Arabic)',
+      type: 'text',
+      rows: 3,
+      group: 'homepage',
+    }),
+    defineField({ name: 'heroSubheadingEn', title: 'Hero Sub-headline (English)', type: 'text', rows: 3, group: 'homepage' }),
+
+    // ── Footer ────────────────────────────────────────────────────────────────
+    defineField({
+      name: 'footerAboutAr',
+      title: 'Footer About Text (Arabic)',
+      type: 'text',
+      rows: 3,
+      group: 'homepage',
+    }),
+    defineField({ name: 'footerAboutEn', title: 'Footer About Text (English)', type: 'text', rows: 3, group: 'homepage' }),
+    defineField({
+      name: 'copyrightAr',
+      title: 'Copyright Text (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Shown after the year. Default: "جميع الحقوق محفوظة."',
+    }),
+    defineField({
+      name: 'copyrightEn',
+      title: 'Copyright Text (English)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Shown after the year. Default: "All rights reserved."',
+    }),
+
+    // ── Contact details ───────────────────────────────────────────────────────
+    defineField({
+      name: 'contactEmail',
+      title: 'Contact Email',
+      type: 'string',
+      group: 'contact',
+      validation: (Rule) => Rule.email().warning('Enter a valid email address'),
+    }),
+    defineField({ name: 'contactPhone', title: 'Phone', type: 'string', group: 'contact' }),
+    defineField({
+      name: 'whatsapp',
+      title: 'WhatsApp Number',
+      type: 'string',
+      group: 'contact',
+      description: 'International format, digits only. e.g. 9665XXXXXXXX',
+    }),
+    defineField({ name: 'addressAr', title: 'Address (Arabic)', type: 'string', group: 'contact' }),
+    defineField({ name: 'addressEn', title: 'Address (English)', type: 'string', group: 'contact' }),
 
     // ── SEO — Arabic ─────────────────────────────────────────────────────────
     defineField({
@@ -142,6 +221,18 @@ export const siteSettingsSchema = defineType({
     defineField({
       name: 'youtube',
       title: 'YouTube Channel URL',
+      type: 'url',
+      group: 'social',
+    }),
+    defineField({
+      name: 'tiktok',
+      title: 'TikTok URL',
+      type: 'url',
+      group: 'social',
+    }),
+    defineField({
+      name: 'pinterest',
+      title: 'Pinterest URL',
       type: 'url',
       group: 'social',
     }),

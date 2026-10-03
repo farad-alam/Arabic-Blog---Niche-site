@@ -7,9 +7,9 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
-  return infoMetadata('privacy', (await params).locale)
+  return infoMetadata('disclosure', (await params).locale)
 }
 
-export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
-  return <InfoPage pageKey="privacy" localeParam={(await params).locale} />
+export default async function DisclosurePage({ params }: { params: Promise<{ locale: string }> }) {
+  return <InfoPage pageKey="disclosure" localeParam={(await params).locale} />
 }

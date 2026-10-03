@@ -3,15 +3,22 @@
 import { usePathname, useRouter } from 'next/navigation'
 import { type Locale } from '@/lib/i18n'
 
+/** Pages that exist under the same path in both languages */
+const SHARED_PATHS = new Set(['', 'about', 'privacy', 'terms', 'contact', 'disclosure', 'articles', 'search'])
+
 export default function LanguageSwitcher({ currentLocale }: { currentLocale: Locale }) {
   const pathname = usePathname()
   const router = useRouter()
 
   const toggleLanguage = () => {
     const nextLocale = currentLocale === 'ar' ? 'en' : 'ar'
-    // Replace the leading locale segment in the path
-    const newPath = pathname.replace(`/${currentLocale}`, `/${nextLocale}`)
-    router.push(newPath || `/${nextLocale}`)
+    // Article / category slugs differ per language, so only keep the path for
+    // pages that are identical in both languages; otherwise go to the other home.
+    const rest = pathname.replace(new RegExp(`^/${currentLocale}`), '').replace(/^\//, '')
+    const target = SHARED_PATHS.has(rest.split('/')[0] ?? '') && rest.split('/').length === 1
+      ? `/${nextLocale}${rest ? `/${rest}` : ''}`
+      : `/${nextLocale}`
+    router.push(target)
   }
 
   return (
