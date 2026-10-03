@@ -1,8 +1,8 @@
 import { getSearchIndex } from '@/sanity/queries'
 import { getImageUrl } from '@/sanity/image'
 
-// Prerendered at build time → served as a plain static file (no server runtime needed).
-export const dynamic = 'force-static'
+// ISR: revalidated whenever the webhook fires revalidateTag('posts')
+export const revalidate = 0
 
 /** Compact search index consumed by the client-side search page. */
 export async function GET() {

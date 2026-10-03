@@ -66,6 +66,8 @@ export async function POST(req: NextRequest) {
     revalidatePath('/[locale]', 'page')
     revalidatePath('/[locale]/[slug]', 'page')
     revalidatePath('/[locale]/category/[categorySlug]', 'page')
+    revalidatePath('/[locale]/articles', 'page')
+    revalidatePath('/search-index.json')
     if (language) revalidatePath(`/${language}`)
   }
 

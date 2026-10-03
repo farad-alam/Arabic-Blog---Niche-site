@@ -5,7 +5,8 @@ import { getAllAuthorSlugs, getAuthor } from '@/sanity/queries'
 import { personSchema } from '@/lib/schema'
 import { urlFor } from '@/sanity/image'
 
-export const revalidate = false
+// ISR: webhook fires revalidateTag('authors') to bust this
+export const revalidate = 0
 
 export async function generateStaticParams() {
   const slugs = await getAllAuthorSlugs()

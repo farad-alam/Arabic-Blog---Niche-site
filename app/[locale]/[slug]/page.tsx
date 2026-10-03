@@ -8,7 +8,8 @@ import { PortableText } from '@/sanity/portableText'
 import { articleSchema } from '@/lib/schema'
 import type { Metadata } from 'next'
 
-export const revalidate = false
+// ISR: serve stale while re-fetching in background; webhook can bust cache instantly via revalidateTag
+export const revalidate = 0
 
 export async function generateStaticParams() {
   const params: { locale: string; slug: string }[] = []
