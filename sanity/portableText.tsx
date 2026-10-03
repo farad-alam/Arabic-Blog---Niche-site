@@ -127,13 +127,13 @@ const components: PortableTextComponents = {
     image: ({ value }) => {
       if (!value?.asset) return null
       return (
-        <figure className="my-10">
-          <div className="relative w-full rounded-xl overflow-hidden border border-surface-border bg-surface-raised flex justify-center p-4">
+        <figure className="my-8 max-w-full overflow-hidden">
+          <div className="relative w-full rounded-xl border border-surface-border bg-surface-card p-2 sm:p-4">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={urlFor(value).width(900).format('webp').url()}
               alt={value.alt ?? ''}
-              className="max-w-full h-auto max-h-[600px] object-contain rounded-lg"
+              className="w-full h-auto max-h-[400px] md:max-h-[500px] object-contain rounded-lg"
               loading="lazy"
             />
           </div>
@@ -157,28 +157,28 @@ const components: PortableTextComponents = {
       )
 
       return (
-        <div className="my-8 bg-surface-card rounded-xl border border-surface-border overflow-hidden">
-          <div className="flex flex-col sm:flex-row">
+        <div className="my-8 bg-surface-card rounded-xl border border-surface-border overflow-hidden max-w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr]">
             {/* Image */}
             {value.imageUrl && (
-              <div className="sm:w-48 shrink-0 relative bg-white flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-e border-surface-border">
+              <div className="relative bg-white flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-e border-surface-border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={value.imageUrl}
                   alt={value.name}
-                  className="w-full max-h-48 sm:max-h-64 object-contain"
+                  className="w-full h-auto max-h-56 object-contain"
                   loading="lazy"
                 />
               </div>
             )}
             {/* Details */}
-            <div className="p-5 flex flex-col gap-3 flex-1">
+            <div className="p-5 flex flex-col gap-3 min-w-0">
               {value.badge && (
                 <span className="inline-block bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs px-2.5 py-1 rounded-full w-fit">
                   {value.badge}
                 </span>
               )}
-              <h4 className="font-arabic-heading font-bold text-text-primary text-lg leading-snug">
+              <h4 className="font-arabic-heading font-bold text-text-primary text-lg leading-snug break-words">
                 {value.name}
               </h4>
               {value.rating && (
@@ -193,14 +193,16 @@ const components: PortableTextComponents = {
                 <p className="text-text-primary font-bold text-xl">{value.price}</p>
               )}
               {affiliateUrl && (
-                <a
-                  href={affiliateUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="btn-primary text-sm w-full sm:w-auto text-center mt-auto min-h-[44px]"
-                >
-                  {lang === 'ar' ? 'اشتري الآن من أمازون →' : 'Buy on Amazon →'}
-                </a>
+                <div className="mt-auto pt-2">
+                  <a
+                    href={affiliateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    className="btn-primary text-sm w-full sm:w-auto text-center min-h-[44px]"
+                  >
+                    {lang === 'ar' ? 'اشتري الآن من أمازون →' : 'Buy on Amazon →'}
+                  </a>
+                </div>
               )}
             </div>
           </div>
