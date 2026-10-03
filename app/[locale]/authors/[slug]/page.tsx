@@ -74,22 +74,42 @@ export default async function AuthorPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
       {/* Phase 2 will build the full author profile page UI */}
-      <main style={{ maxWidth: '720px', margin: '0 auto', padding: '2rem' }}>
-        <h1>{name}</h1>
-        <p style={{ color: '#888' }}>
-          {l === 'ar' ? author.jobTitleAr ?? author.jobTitle : author.jobTitle}
-        </p>
-        <p>{l === 'ar' ? author.shortBioAr : author.shortBio}</p>
-        <h2 style={{ marginTop: '2rem' }}>
-          {l === 'ar' ? 'مقالات' : 'Articles'} ({author.posts.length})
-        </h2>
-        <ul>
-          {author.posts.map((post) => (
-            <li key={post._id}>
-              <a href={`/${l}/${post.slug.current}`}>{post.title}</a>
-            </li>
-          ))}
-        </ul>
+      <main className="min-h-screen bg-surface-base pt-12 pb-24">
+        <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <header className="flex flex-col md:flex-row items-center gap-6 mb-12 text-center md:text-start">
+            {avatarUrl && (
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden flex-shrink-0 border-4 border-surface-card shadow-sm">
+                <img src={avatarUrl} alt={name} className="w-full h-full object-cover" />
+              </div>
+            )}
+            <div>
+              <h1 className="font-arabic-heading font-bold text-3xl md:text-5xl text-text-primary mb-2">
+                {name}
+              </h1>
+              <p className="text-primary font-medium text-lg mb-4">
+                {l === 'ar' ? author.jobTitleAr ?? author.jobTitle : author.jobTitle}
+              </p>
+              <p className="text-text-muted leading-relaxed max-w-2xl">
+                {l === 'ar' ? author.shortBioAr : author.shortBio}
+              </p>
+            </div>
+          </header>
+          
+          <section aria-label={l === 'ar' ? 'مقالات الكاتب' : 'Author Articles'} className="border-t border-surface-border pt-12">
+            <h2 className="font-arabic-heading font-bold text-2xl md:text-3xl text-text-primary mb-8">
+              {l === 'ar' ? 'أحدث المقالات من' : 'Latest Articles by'} {name}
+            </h2>
+            <ul className="space-y-6">
+              {author.posts.map((post) => (
+                <li key={post._id} className="bg-surface-card p-6 rounded-2xl shadow-sm border border-surface-border">
+                  <a href={`/${l}/${post.slug.current}`} className="text-xl font-arabic-heading font-bold text-text-primary hover:text-primary transition-colors">
+                    {post.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </article>
       </main>
     </>
   )

@@ -33,15 +33,17 @@ export default async function ArticlesPage({ params }: { params: Promise<{ local
 
   return (
     <main className="min-h-screen bg-surface-base pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
         <h1 className="font-arabic-heading font-bold text-3xl md:text-5xl text-text-primary">
           {l === 'ar' ? 'جميع المقالات' : 'All Articles'}
         </h1>
         <p className="text-text-muted mt-3 max-w-2xl">
           {posts.length} {t(l, 'home.articlesCount')}
         </p>
-      </div>
-      <PostGrid locale={l} posts={posts} title={t(l, 'home.latest')} />
+      </header>
+      <section aria-label={l === 'ar' ? 'شبكة المقالات' : 'Article Grid'}>
+        <PostGrid locale={l} posts={posts} title={t(l, 'home.latest')} />
+      </section>
     </main>
   )
 }

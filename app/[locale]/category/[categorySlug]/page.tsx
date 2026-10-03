@@ -52,7 +52,7 @@ export default async function CategoryPage({
 
   return (
     <main className="min-h-screen bg-surface-base pt-12 pb-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+      <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="flex items-center gap-4 mb-4">
           <div className="w-16 h-16 rounded-xl bg-surface-card border border-surface-border flex items-center justify-center text-3xl">
             {category.icon}
@@ -68,9 +68,11 @@ export default async function CategoryPage({
             )}
           </div>
         </div>
-      </div>
+      </header>
       
-      <PostGrid locale={l} posts={posts} title={l === 'ar' ? 'مقالات القسم' : 'Category Articles'} />
+      <section aria-label={l === 'ar' ? 'مقالات القسم' : 'Category Articles'}>
+        <PostGrid locale={l} posts={posts} title={l === 'ar' ? 'مقالات القسم' : 'Category Articles'} />
+      </section>
     </main>
   )
 }
