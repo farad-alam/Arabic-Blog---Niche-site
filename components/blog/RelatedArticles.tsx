@@ -58,7 +58,7 @@ export default function RelatedArticles({
                     )}
                   </div>
                   <div className="p-3.5">
-                    <h3 className="font-arabic-heading text-[15px] font-bold text-text-primary leading-snug line-clamp-3 min-h-[3.9em] group-hover:text-purple-primary transition-colors">
+                    <h3 className="font-arabic-heading text-[15px] font-bold text-text-primary leading-snug line-clamp-3 min-h-[3.9em] group-hover:text-brand-primary transition-colors">
                       {p.title}
                     </h3>
                     <time dateTime={p.publishedAt} className="text-xs text-text-muted mt-2 block">
@@ -103,7 +103,7 @@ export default function RelatedArticles({
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="font-body text-sm font-semibold text-text-primary leading-snug line-clamp-3 group-hover:text-purple-primary transition-colors">
+                  <h3 className="font-body text-sm font-semibold text-text-primary leading-snug line-clamp-3 group-hover:text-brand-primary transition-colors">
                     {p.title}
                   </h3>
                   <time dateTime={p.publishedAt} className="text-xs text-text-muted mt-1 block">

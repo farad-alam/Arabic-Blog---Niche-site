@@ -8,14 +8,14 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        purple: {
-          primary:  '#7D40FF',
-          dark:     '#712EFF',
-          gradient: '#9766FF',
-          deep:     '#5F00E0',
-          mid:      '#592DB5',
-          light:    '#7D40FF',   // on light bg, lighter purple looks washed — keep primary
-          glow:     'rgba(125,64,255,0.15)',
+        brand: {
+          primary:  '#006C35',
+          dark:     '#005027',
+          gradient: '#00994C',
+          deep:     '#003B1C',
+          mid:      '#007F3F',
+          light:    '#006C35',   // on light bg, lighter purple looks washed — keep primary
+          glow:     'rgba(0,108,53,0.15)',
         },
         // ── Light-theme surface layers ─────────────────────────────────────
         // "dark.*" token names kept so existing class names still compile;

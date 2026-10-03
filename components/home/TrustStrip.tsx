@@ -32,7 +32,7 @@ export default function TrustStrip({ locale }: { locale: Locale }) {
       <div className="rounded-3xl border border-surface-border bg-gradient-to-br from-surface-raised to-surface-card p-6 md:p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 shadow-card">
         {items.map(({ icon: Icon, title, text }) => (
           <div key={title} className="flex flex-col items-start gap-3">
-            <span className="w-11 h-11 rounded-xl bg-purple-primary/15 border border-purple-primary/25 text-purple-primary flex items-center justify-center">
+            <span className="w-11 h-11 rounded-xl bg-brand-primary/15 border border-brand-primary/25 text-brand-primary flex items-center justify-center">
               <Icon size={22} />
             </span>
             <h3 className="font-arabic-heading font-bold text-text-primary">{title}</h3>

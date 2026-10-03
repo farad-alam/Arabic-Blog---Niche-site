@@ -19,8 +19,8 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
     <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 overflow-hidden">
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-purple-primary/10 blur-[140px] rounded-full opacity-50" />
-        <div className="absolute -bottom-24 -start-24 w-[360px] h-[360px] bg-purple-gradient/8 blur-[110px] rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-brand-primary/10 blur-[140px] rounded-full opacity-50" />
+        <div className="absolute -bottom-24 -start-24 w-[360px] h-[360px] bg-brand-gradient/8 blur-[110px] rounded-full" />
         <div
           className="absolute inset-0 opacity-[0.025]"
           style={{
@@ -34,10 +34,10 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="inline-flex items-center gap-2 bg-purple-primary/10 border border-purple-primary/25 text-purple-light text-xs sm:text-sm font-body px-4 py-1.5 rounded-full mb-7">
+        <span className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/25 text-brand-light text-xs sm:text-sm font-body px-4 py-1.5 rounded-full mb-7">
           <span className="relative flex w-2 h-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-purple-primary opacity-60 animate-ping" />
-            <span className="relative inline-flex w-2 h-2 rounded-full bg-purple-primary" />
+            <span className="absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-60 animate-ping" />
+            <span className="relative inline-flex w-2 h-2 rounded-full bg-brand-primary" />
           </span>
           {copy.badge}
         </span>
@@ -60,7 +60,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
               <Link
                 key={cat._id}
                 href={`/${locale}/category/${isAr ? cat.slugAr.current : cat.slugEn.current}`}
-                className="text-xs sm:text-sm text-text-muted hover:text-purple-primary border border-surface-border hover:border-purple-primary hover:bg-purple-primary/10 px-3.5 py-1.5 rounded-full transition-all"
+                className="text-xs sm:text-sm text-text-muted hover:text-brand-primary border border-surface-border hover:border-brand-primary hover:bg-brand-primary/10 px-3.5 py-1.5 rounded-full transition-all"
               >
                 {cat.icon && <span className="me-1.5">{cat.icon}</span>}
                 {isAr ? cat.titleAr : cat.titleEn}

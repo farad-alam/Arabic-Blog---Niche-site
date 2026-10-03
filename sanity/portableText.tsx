@@ -51,7 +51,7 @@ const components: PortableTextComponents = {
     h2: ({ children, value }) => (
       <h2
         id={slugify((value?.children as { text?: string }[] | undefined)?.map((c) => c?.text))}
-        className="font-arabic-heading font-bold text-text-primary mt-10 md:mt-12 mb-3 md:mb-4 leading-snug scroll-mt-24 text-[22px] sm:text-2xl md:text-3xl text-start text-balance ps-3 border-s-4 border-purple-primary/70"
+        className="font-arabic-heading font-bold text-text-primary mt-10 md:mt-12 mb-3 md:mb-4 leading-snug scroll-mt-24 text-[22px] sm:text-2xl md:text-3xl text-start text-balance ps-3 border-s-4 border-brand-primary/70"
       >
         {children}
       </h2>
@@ -75,7 +75,7 @@ const components: PortableTextComponents = {
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="border-s-4 border-purple-primary/60 bg-surface-card rounded-e-lg ps-4 pe-3 py-3 my-6 md:my-8 italic text-text-primary/80 text-base md:text-lg leading-[1.8] rtl:leading-[1.95]">
+      <blockquote className="border-s-4 border-brand-primary/60 bg-surface-card rounded-e-lg ps-4 pe-3 py-3 my-6 md:my-8 italic text-text-primary/80 text-base md:text-lg leading-[1.8] rtl:leading-[1.95]">
         {children}
       </blockquote>
     ),
@@ -84,12 +84,12 @@ const components: PortableTextComponents = {
   // ── Lists ──────────────────────────────────────────────────────────────────
   list: {
     bullet: ({ children }) => (
-      <ul className="text-text-primary/90 list-disc list-outside marker:text-purple-primary space-y-2.5 mb-6 ps-6 text-start">
+      <ul className="text-text-primary/90 list-disc list-outside marker:text-brand-primary space-y-2.5 mb-6 ps-6 text-start">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="text-text-primary/90 list-decimal list-outside marker:text-purple-primary marker:font-semibold space-y-2.5 mb-6 ps-6 text-start">
+      <ol className="text-text-primary/90 list-decimal list-outside marker:text-brand-primary marker:font-semibold space-y-2.5 mb-6 ps-6 text-start">
         {children}
       </ol>
     ),
@@ -114,7 +114,7 @@ const components: PortableTextComponents = {
           value?.blank ? 'noopener noreferrer' : '',
           value?.nofollow ? 'nofollow' : '',
         ].filter(Boolean).join(' ') || undefined}
-        className="text-purple-primary underline decoration-purple-primary/30 hover:decoration-purple-primary underline-offset-4 transition-colors break-words"
+        className="text-brand-primary underline decoration-brand-primary/30 hover:decoration-brand-primary underline-offset-4 transition-colors break-words"
       >
         {children}
       </a>
@@ -205,7 +205,7 @@ const components: PortableTextComponents = {
                   href={affiliateUrl}
                   target="_blank"
                   rel="noopener noreferrer nofollow sponsored"
-                  className="flex items-center justify-center gap-2 bg-[#FFA41C] hover:bg-[#FA8900] active:bg-[#E67E00] text-black text-[15px] font-bold w-full sm:w-auto sm:inline-flex min-h-[48px] px-6 rounded-lg transition-colors shadow-sm"
+                  className="flex items-center justify-center gap-2 bg-brand-primary hover:bg-brand-dark active:bg-brand-deep text-white text-[15px] font-bold w-full sm:w-auto sm:inline-flex min-h-[48px] px-6 rounded-lg transition-colors shadow-sm"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <circle cx="9" cy="21" r="1"></circle>
@@ -252,7 +252,7 @@ const components: PortableTextComponents = {
                 className="snap-start w-[78%] min-w-[78%] max-w-[300px] bg-surface-card rounded-xl border border-surface-border p-3.5 shrink-0 flex flex-col shadow-card"
               >
                 {p.verdict && (
-                  <span className="inline-block bg-purple-primary/10 text-purple-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit">
+                  <span className="inline-block bg-brand-primary/10 text-brand-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit">
                     {verdictLabels[p.verdict] ?? p.verdict}
                   </span>
                 )}
@@ -270,7 +270,7 @@ const components: PortableTextComponents = {
                       href={url}
                       target="_blank"
                       rel="noopener noreferrer nofollow sponsored"
-                      className="mt-auto flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] active:bg-[#E67E00] text-black font-bold text-sm w-full min-h-[48px] rounded-lg transition-colors shadow-sm"
+                      className="mt-auto flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-dark active:bg-brand-deep text-white font-bold text-sm w-full min-h-[48px] rounded-lg transition-colors shadow-sm"
                       style={{ marginTop: 'auto' }}
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -302,7 +302,7 @@ const components: PortableTextComponents = {
                   {value.products.map((p: any, i: number) => (
                     <th key={i} className="p-4 text-center">
                       {p.verdict && (
-                        <span className="block bg-purple-primary/10 text-purple-primary text-xs px-2 py-0.5 rounded-full mb-2 mx-auto w-fit">
+                        <span className="block bg-brand-primary/10 text-brand-primary text-xs px-2 py-0.5 rounded-full mb-2 mx-auto w-fit">
                           {verdictLabels[p.verdict] ?? p.verdict}
                         </span>
                       )}
@@ -341,7 +341,7 @@ const components: PortableTextComponents = {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer nofollow"
-                            className="inline-flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] text-black font-bold text-xs min-h-[44px] px-4 rounded-lg transition-colors shadow-sm"
+                            className="inline-flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-dark active:bg-brand-deep text-white font-bold text-xs min-h-[44px] px-4 rounded-lg transition-colors shadow-sm"
                           >
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                               <circle cx="9" cy="21" r="1"></circle>
@@ -415,13 +415,13 @@ const components: PortableTextComponents = {
           </h3>
           <div className="space-y-3">
             {value.items.map((item: { question: string; answer: string }, i: number) => (
-              <details key={i} className="bg-surface-card border border-surface-border rounded-xl group open:shadow-card open:border-purple-primary/30">
+              <details key={i} className="bg-surface-card border border-surface-border rounded-xl group open:shadow-card open:border-brand-primary/30">
                 <summary className="px-4 sm:px-5 py-3.5 min-h-[52px] cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-3 select-none">
                   <span className="font-arabic-heading font-semibold text-text-primary text-[15px] sm:text-base leading-snug text-start">
                     {item.question}
                   </span>
                   <svg
-                    className="text-purple-primary shrink-0 transition-transform duration-200 group-open:rotate-180"
+                    className="text-brand-primary shrink-0 transition-transform duration-200 group-open:rotate-180"
                     width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
                   >

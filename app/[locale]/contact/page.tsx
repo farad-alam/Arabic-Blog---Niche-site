@@ -60,11 +60,11 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
     <main className="min-h-screen bg-surface-base pb-24">
       <div className="relative overflow-hidden border-b border-surface-border">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-purple-primary/15 blur-[110px] rounded-full" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-brand-primary/15 blur-[110px] rounded-full" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-14 md:py-20">
           <nav aria-label="Breadcrumb" className="text-xs text-text-muted mb-5 flex items-center gap-2">
-            <Link href={`/${l}`} className="hover:text-purple-primary transition-colors">
+            <Link href={`/${l}`} className="hover:text-brand-primary transition-colors">
               {t(l, 'breadcrumb.home')}
             </Link>
             <span>/</span>
@@ -87,7 +87,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             {cards.map(({ icon: Icon, label, value, href }) => {
               const body = (
                 <>
-                  <span className="w-12 h-12 rounded-xl bg-purple-primary/15 border border-purple-primary/25 text-purple-primary flex items-center justify-center shrink-0">
+                  <span className="w-12 h-12 rounded-xl bg-brand-primary/15 border border-brand-primary/25 text-brand-primary flex items-center justify-center shrink-0">
                     <Icon size={22} />
                   </span>
                   <span className="min-w-0">
@@ -106,7 +106,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                   href={href}
                   target={href.startsWith('http') ? '_blank' : undefined}
                   rel="noopener noreferrer"
-                  className={`${cls} hover:border-purple-primary/50 hover:-translate-y-0.5`}
+                  className={`${cls} hover:border-brand-primary/50 hover:-translate-y-0.5`}
                 >
                   {body}
                 </a>

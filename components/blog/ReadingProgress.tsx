@@ -51,7 +51,7 @@ export default function ReadingProgress({ targetId }: ReadingProgressProps) {
     >
       <div
         ref={barRef}
-        className="h-full w-full bg-gradient-to-r from-purple-primary to-purple-gradient origin-left rtl:origin-right rtl:bg-gradient-to-l will-change-transform"
+        className="h-full w-full bg-gradient-to-r from-brand-primary to-brand-gradient origin-left rtl:origin-right rtl:bg-gradient-to-l will-change-transform"
         style={{ transform: 'scaleX(0)' }}
       />
     </div>

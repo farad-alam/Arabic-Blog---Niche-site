@@ -32,11 +32,11 @@ export default function HeroSearch({ locale }: { locale: Locale }) {
         type="search"
         placeholder={t(locale, 'search.placeholder')}
         aria-label={t(locale, 'nav.search')}
-        className="w-full h-14 ps-14 pe-32 rounded-full bg-surface-card/80 backdrop-blur border border-surface-border text-text-primary placeholder:text-text-muted outline-none focus:border-purple-primary focus:ring-4 focus:ring-purple-primary/15 transition-all"
+        className="w-full h-14 ps-14 pe-32 rounded-full bg-surface-card/80 backdrop-blur border border-surface-border text-text-primary placeholder:text-text-muted outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/15 transition-all"
       />
       <button
         type="submit"
-        className="absolute top-1.5 bottom-1.5 end-1.5 px-6 rounded-full bg-purple-primary hover:bg-purple-gradient text-white text-sm font-bold transition-colors"
+        className="absolute top-1.5 bottom-1.5 end-1.5 px-6 rounded-full bg-brand-primary hover:bg-brand-gradient text-white text-sm font-bold transition-colors"
       >
         {t(locale, 'nav.search')}
       </button>

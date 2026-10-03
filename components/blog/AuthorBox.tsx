@@ -12,7 +12,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
   if (!author) {
     return (
       <div className="flex items-start gap-4 bg-surface-card border border-surface-border rounded-xl p-5 mb-10">
-        <div className="shrink-0 w-12 h-12 rounded-full bg-purple-primary/10 border border-purple-primary/20 flex items-center justify-center text-xl font-heading font-bold text-purple-primary select-none">
+        <div className="shrink-0 w-12 h-12 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-xl font-heading font-bold text-brand-primary select-none">
           MB
         </div>
         <div className="flex-1 min-w-0">
@@ -28,7 +28,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               href="https://www.linkedin.com/company/motionbiteit/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-body text-xs text-purple-primary hover:underline transition-colors"
+              className="font-body text-xs text-brand-primary hover:underline transition-colors"
             >
               LinkedIn
             </Link>
@@ -37,7 +37,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               href="https://x.com/motionbiteit"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-body text-xs text-purple-primary hover:underline transition-colors"
+              className="font-body text-xs text-brand-primary hover:underline transition-colors"
             >
               X / Twitter
             </Link>
@@ -76,7 +76,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border border-surface-border shrink-0"
             />
           ) : (
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-purple-primary/10 border border-purple-primary/20 flex items-center justify-center text-lg font-heading font-bold text-purple-primary select-none shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-lg font-heading font-bold text-brand-primary select-none shrink-0">
               {initials || 'MB'}
             </div>
           )}
@@ -87,7 +87,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               {fullName}
             </p>
             {author.jobTitle && (
-              <p className="font-body text-purple-primary text-xs">{author.jobTitle}</p>
+              <p className="font-body text-brand-primary text-xs">{author.jobTitle}</p>
             )}
           </div>
         </div>
@@ -107,7 +107,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               )}
             </div>
             {author.jobTitle && (
-              <p className="font-body text-purple-primary text-xs mt-0.5">{author.jobTitle}</p>
+              <p className="font-body text-brand-primary text-xs mt-0.5">{author.jobTitle}</p>
             )}
           </div>
 
@@ -130,7 +130,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               {author.expertiseAreas.map((area) => (
                 <span
                   key={area}
-                  className="font-body text-[10px] px-2 py-0.5 rounded-full bg-purple-primary/10 border border-purple-primary/20 text-purple-primary"
+                  className="font-body text-[10px] px-2 py-0.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary"
                 >
                   {area}
                 </span>
@@ -146,14 +146,14 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
                 href={s.href!}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center min-h-[44px] px-3 -ms-3 sm:ms-0 font-body text-sm text-purple-primary hover:underline transition-colors"
+                className="inline-flex items-center min-h-[44px] px-3 -ms-3 sm:ms-0 font-body text-sm text-brand-primary hover:underline transition-colors"
               >
                 {s.label}
               </Link>
             ))}
             <Link
               href={`/authors/${author.slug.current}`}
-              className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] mt-1 sm:mt-0 sm:ms-auto px-4 rounded-lg border border-purple-primary/30 bg-purple-primary/5 font-body text-sm font-medium text-purple-primary hover:bg-purple-primary/10 transition-colors"
+              className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] mt-1 sm:mt-0 sm:ms-auto px-4 rounded-lg border border-brand-primary/30 bg-brand-primary/5 font-body text-sm font-medium text-brand-primary hover:bg-brand-primary/10 transition-colors"
             >
               View all posts →
             </Link>

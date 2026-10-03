@@ -31,11 +31,11 @@ export default async function InfoPage({ pageKey, localeParam }: { pageKey: Info
       {/* Header */}
       <div className="relative overflow-hidden border-b border-surface-border">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-purple-primary/15 blur-[110px] rounded-full" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-brand-primary/15 blur-[110px] rounded-full" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 py-14 md:py-20">
           <nav aria-label="Breadcrumb" className="text-xs text-text-muted mb-5 flex items-center gap-2">
-            <Link href={`/${locale}`} className="hover:text-purple-primary transition-colors">
+            <Link href={`/${locale}`} className="hover:text-brand-primary transition-colors">
               {t(locale, 'breadcrumb.home')}
             </Link>
             <span>/</span>
@@ -51,7 +51,7 @@ export default async function InfoPage({ pageKey, localeParam }: { pageKey: Info
         {page.sections.map((section) => (
           <section key={section.heading}>
             <h2 className="font-arabic-heading font-bold text-xl md:text-2xl text-text-primary mb-4 flex items-center gap-3">
-              <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-purple-primary to-purple-gradient" />
+              <span className="w-1.5 h-6 rounded-full bg-gradient-to-b from-brand-primary to-brand-gradient" />
               {section.heading}
             </h2>
             <div className="space-y-4">

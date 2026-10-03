@@ -92,11 +92,11 @@ export default function SearchClient({ locale }: { locale: Locale }) {
           autoFocus={!initial}
           placeholder={t(locale, 'search.placeholder')}
           aria-label={t(locale, 'nav.search')}
-          className="w-full h-14 ps-14 pe-28 rounded-full bg-surface-card border border-surface-border text-text-primary placeholder:text-text-muted outline-none focus:border-purple-primary focus:ring-4 focus:ring-purple-primary/15 transition-all"
+          className="w-full h-14 ps-14 pe-28 rounded-full bg-surface-card border border-surface-border text-text-primary placeholder:text-text-muted outline-none focus:border-brand-primary focus:ring-4 focus:ring-brand-primary/15 transition-all"
         />
         <button
           type="submit"
-          className="absolute top-1.5 bottom-1.5 end-1.5 px-6 rounded-full bg-purple-primary hover:bg-purple-gradient text-white text-sm font-bold transition-colors"
+          className="absolute top-1.5 bottom-1.5 end-1.5 px-6 rounded-full bg-brand-primary hover:bg-brand-gradient text-white text-sm font-bold transition-colors"
         >
           {t(locale, 'nav.search')}
         </button>
@@ -126,7 +126,7 @@ export default function SearchClient({ locale }: { locale: Locale }) {
                 <li key={r.slug}>
                   <Link
                     href={`/${locale}/${r.slug}`}
-                    className="group flex gap-4 sm:gap-5 p-3 sm:p-4 rounded-2xl border border-surface-border bg-surface-card hover:border-purple-primary/40 transition-colors"
+                    className="group flex gap-4 sm:gap-5 p-3 sm:p-4 rounded-2xl border border-surface-border bg-surface-card hover:border-brand-primary/40 transition-colors"
                   >
                     <div className="relative w-28 sm:w-44 aspect-video shrink-0 rounded-xl overflow-hidden bg-surface-base">
                       {r.image ? (
@@ -137,9 +137,9 @@ export default function SearchClient({ locale }: { locale: Locale }) {
                     </div>
                     <div className="min-w-0 flex flex-col justify-center">
                       {r.categoryTitle && (
-                        <span className="text-[11px] font-semibold text-purple-primary mb-1.5">{r.categoryTitle}</span>
+                        <span className="text-[11px] font-semibold text-brand-primary mb-1.5">{r.categoryTitle}</span>
                       )}
-                      <h2 className="font-arabic-heading font-bold text-text-primary text-base sm:text-lg leading-snug group-hover:text-purple-light transition-colors">
+                      <h2 className="font-arabic-heading font-bold text-text-primary text-base sm:text-lg leading-snug group-hover:text-brand-light transition-colors">
                         {r.title}
                       </h2>
                       {r.excerpt && <p className="text-text-muted text-sm mt-1.5 line-clamp-2 !text-sm !leading-relaxed">{r.excerpt}</p>}

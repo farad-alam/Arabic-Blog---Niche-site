@@ -103,10 +103,10 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
         <div className="flex items-center justify-between h-16 gap-6">
           {/* ── Logo ───────────────────────────────────────────────────── */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
-            <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-primary to-purple-gradient flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-purple-primary/30 group-hover:scale-105 transition-transform">
+            <span className="w-9 h-9 rounded-xl bg-gradient-to-br from-brand-primary to-brand-gradient flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-brand-primary/30 group-hover:scale-105 transition-transform">
               {siteName.charAt(0)}
             </span>
-            <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-text-primary group-hover:text-purple-light transition-colors">
+            <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-text-primary group-hover:text-brand-light transition-colors">
               {siteName}
             </span>
           </Link>
@@ -235,15 +235,15 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-2xl"
           >
-            <div className="flex items-center gap-3 bg-surface-card border border-purple-primary/40 rounded-2xl px-5 py-4 shadow-lg-light">
-              <Search size={22} className="text-purple-primary shrink-0" />
+            <div className="flex items-center gap-3 bg-surface-card border border-brand-primary/40 rounded-2xl px-5 py-4 shadow-lg-light">
+              <Search size={22} className="text-brand-primary shrink-0" />
               <input
                 ref={searchInputRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 type="search"
                 placeholder={t(locale, 'search.placeholder')}
-                className="flex-1 bg-transparent outline-none text-lg text-text-primary placeholder:text-text-muted caret-purple-primary"
+                className="flex-1 bg-transparent outline-none text-lg text-text-primary placeholder:text-text-muted caret-brand-primary"
                 aria-label={t(locale, 'nav.search')}
               />
               <button

@@ -81,8 +81,8 @@ export default function TableOfContents({ body, variant = 'desktop', locale = 'e
                   item.level === 'h3' ? 'ps-6' : 'ps-3'
                 } ${
                   activeId === item.id
-                    ? 'border-purple-primary text-purple-primary font-medium'
-                    : 'border-surface-border text-text-muted hover:text-text-primary hover:border-purple-primary/40'
+                    ? 'border-brand-primary text-brand-primary font-medium'
+                    : 'border-surface-border text-text-muted hover:text-text-primary hover:border-brand-primary/40'
                 }`}
               >
                 {item.text}
@@ -215,7 +215,7 @@ function MobileToc({ items, activeId, setActiveId, locale, label }: MobileTocPro
         aria-expanded={isOpen}
         className="w-full mb-8 flex items-center gap-3 min-h-[52px] px-4 bg-surface-card border border-surface-border rounded-xl text-start shadow-sm-light active:bg-surface-hover transition-colors"
       >
-        <span className="text-purple-primary shrink-0">
+        <span className="text-brand-primary shrink-0">
           <ListIcon />
         </span>
         <span className="flex-1 font-heading text-sm font-semibold text-text-primary">
@@ -234,7 +234,7 @@ function MobileToc({ items, activeId, setActiveId, locale, label }: MobileTocPro
           onClick={open}
           aria-label={label}
           aria-haspopup="dialog"
-          className="animate-fade-in fixed bottom-safe end-4 z-40 w-12 h-12 rounded-full bg-purple-primary text-white shadow-lg-light flex items-center justify-center active:scale-95 transition-transform"
+          className="animate-fade-in fixed bottom-safe end-4 z-40 w-12 h-12 rounded-full bg-brand-primary text-white shadow-lg-light flex items-center justify-center active:scale-95 transition-transform"
         >
           <ListIcon />
         </button>
@@ -294,7 +294,7 @@ function MobileToc({ items, activeId, setActiveId, locale, label }: MobileTocPro
                           item.level === 'h3' ? 'ps-8 text-text-muted' : 'ps-4 font-medium text-text-primary'
                         } ${
                           active
-                            ? 'border-purple-primary bg-purple-primary/10 !text-purple-primary font-semibold'
+                            ? 'border-brand-primary bg-brand-primary/10 !text-brand-primary font-semibold'
                             : 'border-transparent active:bg-surface-hover'
                         }`}
                       >

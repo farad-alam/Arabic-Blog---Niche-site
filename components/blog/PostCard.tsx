@@ -20,7 +20,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
   return (
     <Link
       href={`/${locale}/${post.slug.current}`}
-      className="group flex flex-col bg-surface-card rounded-xl overflow-hidden border border-surface-border hover:border-purple-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
+      className="group flex flex-col bg-surface-card rounded-xl overflow-hidden border border-surface-border hover:border-brand-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
     >
       {/* ── Image ──────────────────────────────────────────────────────────── */}
       <div className="relative aspect-video bg-surface-raised overflow-hidden border-b border-surface-border">
@@ -40,7 +40,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
         {/* Category Badge on Image */}
         {categoryTitle && (
           <div className="absolute top-3 right-3 rtl:right-3 ltr:left-3 rtl:left-auto">
-            <span className="bg-white/90 backdrop-blur text-purple-primary text-xs font-body font-medium px-2.5 py-1 rounded-md border border-surface-border shadow-sm">
+            <span className="bg-white/90 backdrop-blur text-brand-primary text-xs font-body font-medium px-2.5 py-1 rounded-md border border-surface-border shadow-sm">
               {categoryTitle}
             </span>
           </div>
@@ -49,7 +49,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
 
       {/* ── Content ────────────────────────────────────────────────────────── */}
       <div className="p-5 flex flex-col flex-1">
-        <h3 className="font-arabic-heading font-bold text-text-primary text-lg leading-snug mb-2 group-hover:text-purple-primary transition-colors line-clamp-2">
+        <h3 className="font-arabic-heading font-bold text-text-primary text-lg leading-snug mb-2 group-hover:text-brand-primary transition-colors line-clamp-2">
           {post.title}
         </h3>
         <p className="font-body text-text-muted text-sm leading-[1.6] line-clamp-3 mb-4 flex-1">
@@ -68,7 +68,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
                 className="rounded-full object-cover border border-surface-border"
               />
             ) : (
-              <div className="w-6 h-6 rounded-full bg-purple-primary/10 flex items-center justify-center text-[10px] text-purple-primary font-bold">
+              <div className="w-6 h-6 rounded-full bg-brand-primary/10 flex items-center justify-center text-[10px] text-brand-primary font-bold">
                 {authorName.charAt(0)}
               </div>
             )}

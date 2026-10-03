@@ -9,7 +9,7 @@ interface ShareButtonsProps {
 }
 
 const btn =
-  'inline-flex items-center justify-center gap-2 min-h-[48px] px-3 rounded-xl border border-surface-border bg-surface-card text-text-primary text-sm font-medium transition-all duration-150 active:scale-[0.97] hover:border-purple-primary/40 hover:text-purple-primary'
+  'inline-flex items-center justify-center gap-2 min-h-[48px] px-3 rounded-xl border border-surface-border bg-surface-card text-text-primary text-sm font-medium transition-all duration-150 active:scale-[0.97] hover:border-brand-primary/40 hover:text-brand-primary'
 
 export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButtonsProps) {
   const isAr = locale === 'ar'
@@ -61,7 +61,7 @@ export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButton
         <button
           type="button"
           onClick={handleNativeShare}
-          className="md:hidden w-full mb-3 inline-flex items-center justify-center gap-2 min-h-[52px] rounded-xl bg-purple-primary text-white font-bold text-[15px] shadow-sm active:bg-purple-deep transition-colors"
+          className="md:hidden w-full mb-3 inline-flex items-center justify-center gap-2 min-h-[52px] rounded-xl bg-brand-primary text-white font-bold text-[15px] shadow-sm active:bg-brand-deep transition-colors"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <circle cx="18" cy="5" r="3" />

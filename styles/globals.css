@@ -15,7 +15,7 @@
   button,
   summary {
     touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(125, 64, 255, 0.12);
+    -webkit-tap-highlight-color: rgba(0, 108, 53, 0.12);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -84,7 +84,7 @@
   }
 
   ::selection {
-    background-color: #7D40FF;
+    background-color: #006C35;
     color: #FFFFFF;
   }
 
@@ -94,7 +94,7 @@
 
   /* Focus ring for accessibility */
   :focus-visible {
-    outline: 2px solid #7D40FF;
+    outline: 2px solid #006C35;
     outline-offset: 2px;
   }
 
@@ -114,7 +114,7 @@
 @layer utilities {
   /* ── Text gradient ──────────────────────────────────────────────────────── */
   .text-gradient {
-    background: linear-gradient(135deg, #7D40FF, #9766FF);
+    background: linear-gradient(135deg, #006C35, #00994C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -122,11 +122,11 @@
 
   /* ── Cards & borders ───────────────────────────────────────────────────── */
   .glow-border {
-    border: 1px solid rgba(125, 64, 255, 0.20);
+    border: 1px solid rgba(0, 108, 53, 0.20);
   }
 
   .glow-shadow {
-    box-shadow: 0 0 30px rgba(125, 64, 255, 0.08);
+    box-shadow: 0 0 30px rgba(0, 108, 53, 0.08);
   }
 
   /* ── Section spacing ────────────────────────────────────────────────────── */
@@ -144,7 +144,7 @@
 
   /* ── Buttons ───────────────────────────────────────────────────────────── */
   .btn-primary {
-    background-color: #712EFF;
+    background-color: #005027;
     color: #FFFFFF;
     box-shadow: rgba(255, 255, 255, 0.72) 0px 2px 3px 0px inset;
     border-radius: 8px;
@@ -158,11 +158,11 @@
   }
 
   .btn-primary:hover {
-    background-color: #7D40FF;
+    background-color: #006C35;
   }
 
   .btn-primary:active {
-    background-color: #5F00E0;
+    background-color: #003B1C;
   }
 
   /* ── Scrollbar hide ──────────────────────────────────────────────────────── */
@@ -237,8 +237,8 @@
   .ad-slot {
     min-height: 90px;
     width: 100%;
-    background: rgba(125, 64, 255, 0.03);
-    border: 1.5px dashed rgba(125, 64, 255, 0.15);
+    background: rgba(0, 108, 53, 0.03);
+    border: 1.5px dashed rgba(0, 108, 53, 0.15);
     border-radius: 8px;
     display: flex;
     align-items: center;

@@ -42,17 +42,17 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-deep/40 via-surface-raised to-surface-base" />
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-deep/40 via-surface-raised to-surface-base" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
           <div className="relative mt-auto p-6 md:p-9 w-full">
             {leadCategory && (
-              <span className="inline-block mb-4 text-xs font-semibold bg-purple-primary text-white px-3 py-1 rounded-full">
+              <span className="inline-block mb-4 text-xs font-semibold bg-brand-primary text-white px-3 py-1 rounded-full">
                 {leadCategory}
               </span>
             )}
-            <h3 className="font-arabic-heading font-bold text-2xl md:text-4xl text-white leading-snug mb-3 group-hover:text-purple-light transition-colors">
+            <h3 className="font-arabic-heading font-bold text-2xl md:text-4xl text-white leading-snug mb-3 group-hover:text-brand-light transition-colors">
               {lead.title}
             </h3>
             {lead.excerpt && (
@@ -80,7 +80,7 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
                 <Link
                   key={post._id}
                   href={`/${locale}/${post.slug.current}`}
-                  className="group flex gap-4 p-3 rounded-2xl border border-surface-border bg-surface-card hover:border-purple-primary/40 hover:shadow-card transition-colors flex-1"
+                  className="group flex gap-4 p-3 rounded-2xl border border-surface-border bg-surface-card hover:border-brand-primary/40 hover:shadow-card transition-colors flex-1"
                 >
                   <div className="relative w-28 sm:w-36 shrink-0 rounded-xl overflow-hidden bg-surface-raised min-h-[96px]">
                     {img ? (
@@ -96,8 +96,8 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
                     )}
                   </div>
                   <div className="flex flex-col justify-center min-w-0">
-                    {cat && <span className="text-[11px] font-semibold text-purple-primary mb-1.5">{cat}</span>}
-                    <h4 className="font-arabic-heading font-bold text-text-primary text-base leading-snug line-clamp-2 group-hover:text-purple-light transition-colors">
+                    {cat && <span className="text-[11px] font-semibold text-brand-primary mb-1.5">{cat}</span>}
+                    <h4 className="font-arabic-heading font-bold text-text-primary text-base leading-snug line-clamp-2 group-hover:text-brand-light transition-colors">
                       {post.title}
                     </h4>
                     <span className="mt-2 text-xs text-text-muted">{formatDateShort(post.publishedAt, locale)}</span>
