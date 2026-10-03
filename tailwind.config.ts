@@ -14,29 +14,41 @@ const config: Config = {
           gradient: '#9766FF',
           deep:     '#5F00E0',
           mid:      '#592DB5',
-          light:    '#C6CFFF',
-          glow:     'rgba(125,64,255,0.25)',
+          light:    '#7D40FF',   // on light bg, lighter purple looks washed — keep primary
+          glow:     'rgba(125,64,255,0.15)',
         },
+        // ── Light-theme surface layers ─────────────────────────────────────
+        // "dark.*" token names kept so existing class names still compile;
+        //  values are now the light equivalents.
         dark: {
-          base:   '#0A0A0A',
-          card:   '#111111',
-          border: 'rgba(125,64,255,0.15)',
+          base:   '#FAF8F5',    // warm cream page background
+          card:   '#FFFFFF',    // card surface (pops slightly above cream)
+          border: '#E8E2D9',    // warm border (not cold grey)
         },
-        light: {
-          bg:     '#FAFAFA',
+        surface: {
+          base:   '#FAF8F5',
+          raised:  '#F4F0EA',   // slightly darker for strip / sidebar backgrounds
           card:   '#FFFFFF',
-          border: '#D4D4D4',
+          border: '#E8E2D9',
+          hover:  '#F0EBE3',    // subtle hover state
         },
+        // ── Text ──────────────────────────────────────────────────────────
         text: {
-          primary: '#FAFAFA',
-          muted:   '#737373',
-          inverse: '#000000',
+          primary: '#1C1917',   // near-black (warm stone-900)
+          muted:   '#6B6560',   // warm medium grey
+          inverse: '#FFFFFF',
           charcoal: '#333333',
         },
+        // ── Legacy light tokens (still used in a few places) ──────────────
+        light: {
+          bg:     '#FAF8F5',
+          card:   '#FFFFFF',
+          border: '#E8E2D9',
+        },
         state: {
-          error:   '#E05252',
-          success: '#12693D',
-          warning: '#F0A500',
+          error:   '#DC2626',
+          success: '#16A34A',
+          warning: '#D97706',
         },
       },
       borderRadius: {
@@ -55,17 +67,18 @@ const config: Config = {
         body:    ['var(--font-latin)', 'Outfit', 'sans-serif'],
       },
       boxShadow: {
-        'sm-dark':   'rgba(15, 23, 42, 0.06) 0px 1px 4px 0px',
-        'md-dark':   'rgba(15, 23, 42, 0.08) 0px 4px 16px -2px',
-        'btn-inset': 'rgba(255, 255, 255, 0.72) 0px 2px 3px 0px inset',
+        'sm-light':  '0 1px 4px rgba(28,25,23,0.06)',
+        'md-light':  '0 4px 16px -2px rgba(28,25,23,0.08)',
+        'lg-light':  '0 8px 30px -4px rgba(28,25,23,0.10)',
+        'card':      '0 2px 8px rgba(28,25,23,0.06)',
+        'card-hover':'0 6px 24px rgba(28,25,23,0.10)',
+        'btn-inset': 'rgba(255,255,255,0.72) 0px 2px 3px 0px inset',
+        // kept for Navbar scroll state
+        'sm-dark':   '0 1px 4px rgba(15,23,42,0.06)',
+        'md-dark':   '0 4px 16px -2px rgba(15,23,42,0.08)',
       },
-      // Minimum touch target size for mobile (44×44px Apple HIG guideline)
-      minHeight: {
-        touch: '44px',
-      },
-      minWidth: {
-        touch: '44px',
-      },
+      minHeight: { touch: '44px' },
+      minWidth:  { touch: '44px' },
     },
   },
   plugins: [],

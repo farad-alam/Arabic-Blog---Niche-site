@@ -92,7 +92,7 @@ export default function SearchClient({ locale }: { locale: Locale }) {
           autoFocus={!initial}
           placeholder={t(locale, 'search.placeholder')}
           aria-label={t(locale, 'nav.search')}
-          className="w-full h-14 ps-14 pe-28 rounded-full bg-dark-card border border-dark-border text-text-primary placeholder:text-text-muted outline-none focus:border-purple-primary focus:ring-4 focus:ring-purple-primary/15 transition-all"
+          className="w-full h-14 ps-14 pe-28 rounded-full bg-surface-card border border-surface-border text-text-primary placeholder:text-text-muted outline-none focus:border-purple-primary focus:ring-4 focus:ring-purple-primary/15 transition-all"
         />
         <button
           type="submit"
@@ -112,7 +112,7 @@ export default function SearchClient({ locale }: { locale: Locale }) {
         ) : entries === null ? (
           <p className="text-text-muted">{t(locale, 'search.loading')}</p>
         ) : results.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-dark-border bg-dark-card p-10 text-center">
+          <div className="rounded-2xl border border-dashed border-surface-border bg-surface-card p-10 text-center">
             <div className="text-4xl mb-3 opacity-60">🔍</div>
             <p className="text-text-muted">{t(locale, 'search.noResults')}</p>
           </div>
@@ -126,9 +126,9 @@ export default function SearchClient({ locale }: { locale: Locale }) {
                 <li key={r.slug}>
                   <Link
                     href={`/${locale}/${r.slug}`}
-                    className="group flex gap-4 sm:gap-5 p-3 sm:p-4 rounded-2xl border border-dark-border bg-dark-card hover:border-purple-primary/40 transition-colors"
+                    className="group flex gap-4 sm:gap-5 p-3 sm:p-4 rounded-2xl border border-surface-border bg-surface-card hover:border-purple-primary/40 transition-colors"
                   >
-                    <div className="relative w-28 sm:w-44 aspect-video shrink-0 rounded-xl overflow-hidden bg-dark-base">
+                    <div className="relative w-28 sm:w-44 aspect-video shrink-0 rounded-xl overflow-hidden bg-surface-base">
                       {r.image ? (
                         <Image src={r.image} alt={r.imageAlt} fill sizes="176px" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                       ) : (

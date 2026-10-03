@@ -11,7 +11,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
   // Fallback when no author is assigned yet
   if (!author) {
     return (
-      <div className="flex items-start gap-4 bg-dark-card border border-dark-border rounded-xl p-5 mb-10">
+      <div className="flex items-start gap-4 bg-surface-card border border-surface-border rounded-xl p-5 mb-10">
         <div className="shrink-0 w-12 h-12 rounded-full bg-purple-primary/10 border border-purple-primary/20 flex items-center justify-center text-xl font-heading font-bold text-purple-primary select-none">
           MB
         </div>
@@ -32,7 +32,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
             >
               LinkedIn
             </Link>
-            <span className="text-dark-border" aria-hidden="true">·</span>
+            <span className="text-surface-border" aria-hidden="true">·</span>
             <Link
               href="https://x.com/motionbiteit"
               target="_blank"
@@ -61,7 +61,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
   const initials = `${author.firstName?.[0] ?? ''}${author.lastName?.[0] ?? ''}`.toUpperCase()
 
   return (
-    <div className="bg-dark-card border border-dark-border rounded-xl p-5 sm:p-6 mb-10">
+    <div className="bg-surface-card border border-surface-border rounded-xl p-5 sm:p-6 mb-10">
       {/* Stack on mobile (flex-col), side-by-side on sm+ (flex-row) */}
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
 
@@ -73,7 +73,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
               alt={author.avatar?.alt ?? fullName}
               width={56}
               height={56}
-              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border border-dark-border shrink-0"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border border-surface-border shrink-0"
             />
           ) : (
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-purple-primary/10 border border-purple-primary/20 flex items-center justify-center text-lg font-heading font-bold text-purple-primary select-none shrink-0">
@@ -142,7 +142,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
             {socials.map((s, i) => (
               <span key={s.label} className="flex items-center gap-3">
-                {i > 0 && <span className="text-dark-border" aria-hidden="true">·</span>}
+                {i > 0 && <span className="text-surface-border" aria-hidden="true">·</span>}
                 <Link
                   href={s.href!}
                   target="_blank"
@@ -153,7 +153,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
                 </Link>
               </span>
             ))}
-            {socials.length > 0 && <span className="text-dark-border" aria-hidden="true">·</span>}
+            {socials.length > 0 && <span className="text-surface-border" aria-hidden="true">·</span>}
             <Link
               href={`/authors/${author.slug.current}`}
               className="font-body text-xs text-purple-primary hover:underline transition-colors"

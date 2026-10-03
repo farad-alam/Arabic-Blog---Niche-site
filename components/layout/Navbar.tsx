@@ -89,14 +89,14 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
   }
 
   const linkClass =
-    'text-sm font-body font-medium text-text-muted hover:text-text-primary transition-colors whitespace-nowrap'
+    'text-sm font-body font-medium text-text-muted hover:text-[#1C1917] transition-colors whitespace-nowrap'
 
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? 'bg-dark-base/90 backdrop-blur-xl border-dark-border shadow-[0_8px_30px_rgba(0,0,0,0.35)]'
-          : 'bg-dark-base/70 backdrop-blur-md border-transparent'
+          ? 'bg-[#FAF8F5]/95 backdrop-blur-xl border-surface-border shadow-sm-light'
+          : 'bg-[#FAF8F5]/80 backdrop-blur-md border-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,12 +134,12 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
                   />
                 </button>
                 {moreOpen && (
-                  <div className="absolute top-full mt-3 start-0 min-w-[200px] rounded-xl border border-dark-border bg-dark-card shadow-2xl p-2">
+                  <div className="absolute top-full mt-3 start-0 min-w-[200px] rounded-xl border border-surface-border bg-surface-card shadow-lg-light p-2">
                     {overflow.map((cat) => (
                       <Link
                         key={cat._id}
                         href={catHref(cat)}
-                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text-primary hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
                       >
                         {cat.icon && <span>{cat.icon}</span>}
                         {catTitle(cat)}
@@ -160,7 +160,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              className="w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-white/5 transition-colors"
+              className="w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
               aria-label={t(locale, 'nav.search')}
             >
               <Search size={20} />
@@ -169,7 +169,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-white/5 transition-colors"
+              className="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-full text-text-muted hover:text-text-primary hover:bg-surface-hover transition-colors"
               aria-label="Toggle menu"
               aria-expanded={menuOpen}
             >
@@ -181,11 +181,11 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
 
       {/* ── Mobile drawer ──────────────────────────────────────────────── */}
       {menuOpen && (
-        <div className="lg:hidden border-t border-dark-border bg-dark-base/95 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <div className="lg:hidden border-t border-surface-border bg-[#FAF8F5]/98 backdrop-blur-xl max-h-[calc(100vh-4rem)] overflow-y-auto">
           <nav className="px-4 py-6 space-y-1" aria-label="Mobile">
             <Link
               href={`/${locale}`}
-              className="block px-3 py-3 rounded-lg text-text-primary font-medium hover:bg-white/5"
+              className="block px-3 py-3 rounded-lg text-text-primary font-medium hover:bg-surface-hover"
             >
               {t(locale, 'site.home')}
             </Link>
@@ -193,7 +193,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
               <Link
                 key={cat._id}
                 href={catHref(cat)}
-                className="flex items-center gap-3 px-3 py-3 rounded-lg text-text-primary hover:bg-white/5"
+                className="flex items-center gap-3 px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
               >
                 {cat.icon && <span className="text-lg">{cat.icon}</span>}
                 {catTitle(cat)}
@@ -201,19 +201,19 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             ))}
             <Link
               href={`/${locale}/articles`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-white/5"
+              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
             >
               {t(locale, 'nav.articles')}
             </Link>
             <Link
               href={`/${locale}/about`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-white/5"
+              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
             >
               {t(locale, 'nav.about')}
             </Link>
             <Link
               href={`/${locale}/contact`}
-              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-white/5"
+              className="block px-3 py-3 rounded-lg text-text-primary hover:bg-surface-hover"
             >
               {t(locale, 'nav.contact')}
             </Link>
@@ -224,7 +224,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
       {/* ── Search overlay ─────────────────────────────────────────────── */}
       {searchOpen && (
         <div
-          className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
+          className="fixed inset-0 z-[60] bg-[#1C1917]/40 backdrop-blur-sm flex items-start justify-center pt-24 px-4"
           onClick={() => setSearchOpen(false)}
           role="dialog"
           aria-modal="true"
@@ -235,7 +235,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-2xl"
           >
-            <div className="flex items-center gap-3 bg-dark-card border border-purple-primary/40 rounded-2xl px-5 py-4 shadow-2xl shadow-purple-primary/10">
+            <div className="flex items-center gap-3 bg-surface-card border border-purple-primary/40 rounded-2xl px-5 py-4 shadow-lg-light">
               <Search size={22} className="text-purple-primary shrink-0" />
               <input
                 ref={searchInputRef}
@@ -243,7 +243,7 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
                 onChange={(e) => setQuery(e.target.value)}
                 type="search"
                 placeholder={t(locale, 'search.placeholder')}
-                className="flex-1 bg-transparent outline-none text-lg text-text-primary placeholder:text-text-muted"
+                className="flex-1 bg-transparent outline-none text-lg text-text-primary placeholder:text-text-muted caret-purple-primary"
                 aria-label={t(locale, 'nav.search')}
               />
               <button

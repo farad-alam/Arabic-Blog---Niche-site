@@ -18,8 +18,8 @@ export default function PostGrid({ posts, locale, title, viewAllHref, hideWhenEm
     if (hideWhenEmpty) return null
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center py-20 bg-dark-card rounded-2xl border border-dark-border">
-          <div className="text-4xl mb-4 opacity-50">📭</div>
+        <div className="text-center py-20 bg-surface-card rounded-2xl border border-surface-border">
+          <div className="text-4xl mb-4 opacity-40">📭</div>
           <h3 className="font-arabic-heading text-xl text-text-primary mb-2">
             {t(locale, 'noContent.title')}
           </h3>

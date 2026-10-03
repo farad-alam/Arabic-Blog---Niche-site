@@ -27,9 +27,9 @@ export default async function InfoPage({ pageKey, localeParam }: { pageKey: Info
   const page = getInfoPage(pageKey, locale, getSiteName(settings, locale))
 
   return (
-    <main className="min-h-screen bg-dark-base pb-24">
+    <main className="min-h-screen bg-surface-base pb-24">
       {/* Header */}
-      <div className="relative overflow-hidden border-b border-dark-border">
+      <div className="relative overflow-hidden border-b border-surface-border">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-purple-primary/15 blur-[110px] rounded-full" />
         </div>

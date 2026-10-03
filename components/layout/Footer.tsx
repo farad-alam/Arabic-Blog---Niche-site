@@ -33,7 +33,7 @@ function SocialLink({ name, href }: { name: string; href: string }) {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={name}
-      className="w-10 h-10 rounded-full bg-dark-base border border-dark-border flex items-center justify-center text-text-muted hover:text-white hover:bg-purple-primary hover:border-purple-primary transition-all duration-200 hover:-translate-y-0.5"
+      className="w-10 h-10 rounded-full bg-surface-raised border border-surface-border flex items-center justify-center text-text-muted hover:text-white hover:bg-purple-primary hover:border-purple-primary transition-all duration-200 hover:-translate-y-0.5"
     >
       <svg viewBox="0 0 24 24" aria-hidden="true" className="w-4 h-4 fill-current">
         <path d={SOCIAL_ICONS[name]} />
@@ -69,7 +69,7 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
   const headingClass = 'font-arabic-heading font-bold text-text-primary mb-5'
 
   return (
-    <footer className="relative bg-dark-card border-t border-dark-border mt-24">
+    <footer className="relative bg-surface-raised border-t border-surface-border mt-24">
       {/* soft accent line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-purple-primary/60 to-transparent" />
 
@@ -171,7 +171,7 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-8 border-t border-dark-border flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="pt-8 border-t border-surface-border flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-text-muted text-xs">
             © {year} {siteName}. {copy.copyright}
           </p>

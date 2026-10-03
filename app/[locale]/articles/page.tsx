@@ -32,7 +32,7 @@ export default async function ArticlesPage({ params }: { params: Promise<{ local
   const posts = await getPostsByLocale(l, 100)
 
   return (
-    <main className="min-h-screen bg-dark-base pt-12 pb-24">
+    <main className="min-h-screen bg-surface-base pt-12 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
         <h1 className="font-arabic-heading font-bold text-3xl md:text-5xl text-text-primary">
           {l === 'ar' ? 'جميع المقالات' : 'All Articles'}

@@ -51,10 +51,10 @@ export default async function CategoryPage({
   const description = l === 'ar' ? category.descriptionAr : category.descriptionEn
 
   return (
-    <main className="min-h-screen bg-dark-base pt-12 pb-24">
+    <main className="min-h-screen bg-surface-base pt-12 pb-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="flex items-center gap-4 mb-4">
-          <div className="w-16 h-16 rounded-xl bg-dark-card border border-dark-border flex items-center justify-center text-3xl">
+          <div className="w-16 h-16 rounded-xl bg-surface-card border border-surface-border flex items-center justify-center text-3xl">
             {category.icon}
           </div>
           <div>

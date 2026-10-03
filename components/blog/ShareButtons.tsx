@@ -5,11 +5,13 @@ import { useState } from 'react'
 interface ShareButtonsProps {
   title: string
   slug: string
+  locale?: 'ar' | 'en'
 }
 
-export default function ShareButtons({ title, slug }: ShareButtonsProps) {
+export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
-  const url = `https://motionbite.com/blog/${slug}`
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
+  const url = `${base}/${locale}/${slug}`
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
 
@@ -24,7 +26,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 my-10 py-6 border-t border-b border-dark-border">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 my-10 py-6 border-t border-b border-surface-border">
       <span className="font-body text-xs text-text-muted mr-1">Share:</span>
 
       {/* Twitter / X */}
@@ -33,7 +35,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on X / Twitter"
-        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-dark-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
+        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-surface-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
       >
         {/* X icon */}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -48,7 +50,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on LinkedIn"
-        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-dark-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
+        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-surface-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
       >
         {/* LinkedIn icon */}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -61,7 +63,7 @@ export default function ShareButtons({ title, slug }: ShareButtonsProps) {
       <button
         onClick={handleCopy}
         aria-label="Copy link to clipboard"
-        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-dark-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
+        className="inline-flex items-center gap-1.5 font-body text-xs px-3 py-1.5 rounded-full border border-surface-border text-text-muted hover:border-purple-primary/40 hover:text-purple-primary transition-all duration-150"
       >
         {copied ? (
           <>

@@ -19,13 +19,13 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
     <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 overflow-hidden">
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-purple-primary/20 blur-[130px] rounded-full opacity-60" />
-        <div className="absolute -bottom-24 -start-24 w-[360px] h-[360px] bg-purple-gradient/10 blur-[110px] rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-purple-primary/10 blur-[140px] rounded-full opacity-50" />
+        <div className="absolute -bottom-24 -start-24 w-[360px] h-[360px] bg-purple-gradient/8 blur-[110px] rounded-full" />
         <div
-          className="absolute inset-0 opacity-[0.04]"
+          className="absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage:
-              'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)',
+              'linear-gradient(#7D40FF 1px, transparent 1px), linear-gradient(90deg, #7D40FF 1px, transparent 1px)',
             backgroundSize: '48px 48px',
             maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
             WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
@@ -60,7 +60,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
               <Link
                 key={cat._id}
                 href={`/${locale}/category/${isAr ? cat.slugAr.current : cat.slugEn.current}`}
-                className="text-xs sm:text-sm text-text-muted hover:text-white border border-dark-border hover:border-purple-primary hover:bg-purple-primary/15 px-3.5 py-1.5 rounded-full transition-all"
+                className="text-xs sm:text-sm text-text-muted hover:text-purple-primary border border-surface-border hover:border-purple-primary hover:bg-purple-primary/10 px-3.5 py-1.5 rounded-full transition-all"
               >
                 {cat.icon && <span className="me-1.5">{cat.icon}</span>}
                 {isAr ? cat.titleAr : cat.titleEn}

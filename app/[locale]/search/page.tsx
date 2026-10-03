@@ -23,7 +23,7 @@ export default async function SearchPage({ params }: { params: Promise<{ locale:
   const l = locale as Locale
 
   return (
-    <main className="min-h-screen bg-dark-base pt-12 pb-24">
+    <main className="min-h-screen bg-surface-base pt-12 pb-24">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="font-arabic-heading font-bold text-3xl md:text-4xl text-text-primary mb-8">
           {t(l, 'search.title')}

@@ -20,10 +20,10 @@ export default function PostCard({ post, locale }: PostCardProps) {
   return (
     <Link
       href={`/${locale}/${post.slug.current}`}
-      className="group flex flex-col bg-dark-card rounded-xl overflow-hidden border border-dark-border hover:border-purple-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-md-dark"
+      className="group flex flex-col bg-surface-card rounded-xl overflow-hidden border border-surface-border hover:border-purple-primary/40 transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover"
     >
       {/* ── Image ──────────────────────────────────────────────────────────── */}
-      <div className="relative aspect-video bg-dark-base overflow-hidden border-b border-dark-border">
+      <div className="relative aspect-video bg-surface-raised overflow-hidden border-b border-surface-border">
         {imageUrl ? (
           <Image
             src={imageUrl}
@@ -32,7 +32,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
-          <div className="flex items-center justify-center w-full h-full text-4xl opacity-50">
+          <div className="flex items-center justify-center w-full h-full text-4xl opacity-30">
             📝
           </div>
         )}
@@ -40,7 +40,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
         {/* Category Badge on Image */}
         {categoryTitle && (
           <div className="absolute top-3 right-3 rtl:right-3 ltr:left-3 rtl:left-auto">
-            <span className="bg-dark-card/90 backdrop-blur text-purple-primary text-xs font-body font-medium px-2.5 py-1 rounded-md border border-dark-border shadow-sm">
+            <span className="bg-white/90 backdrop-blur text-purple-primary text-xs font-body font-medium px-2.5 py-1 rounded-md border border-surface-border shadow-sm">
               {categoryTitle}
             </span>
           </div>
@@ -57,7 +57,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
         </p>
 
         {/* ── Footer ───────────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between pt-4 border-t border-dark-border/50">
+        <div className="flex items-center justify-between pt-4 border-t border-surface-border">
           <div className="flex items-center gap-2">
             {post.author?.avatar?.asset ? (
               <Image
@@ -65,7 +65,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
                 alt={authorName}
                 width={24}
                 height={24}
-                className="rounded-full object-cover border border-dark-border"
+                className="rounded-full object-cover border border-surface-border"
               />
             ) : (
               <div className="w-6 h-6 rounded-full bg-purple-primary/10 flex items-center justify-center text-[10px] text-purple-primary font-bold">

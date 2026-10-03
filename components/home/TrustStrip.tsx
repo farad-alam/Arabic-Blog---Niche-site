@@ -29,7 +29,7 @@ export default function TrustStrip({ locale }: { locale: Locale }) {
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14">
-      <div className="rounded-3xl border border-dark-border bg-gradient-to-br from-dark-card to-dark-base p-6 md:p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="rounded-3xl border border-surface-border bg-gradient-to-br from-surface-raised to-surface-card p-6 md:p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 shadow-card">
         {items.map(({ icon: Icon, title, text }) => (
           <div key={title} className="flex flex-col items-start gap-3">
             <span className="w-11 h-11 rounded-xl bg-purple-primary/15 border border-purple-primary/25 text-purple-primary flex items-center justify-center">

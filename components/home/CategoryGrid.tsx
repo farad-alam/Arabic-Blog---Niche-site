@@ -25,11 +25,11 @@ export default function CategoryGrid({ locale, categories }: CategoryGridProps) 
             <Link
               key={cat._id}
               href={`/${locale}/category/${isAr ? cat.slugAr.current : cat.slugEn.current}`}
-              className="group relative overflow-hidden rounded-2xl border border-dark-border bg-dark-card p-6 hover:border-purple-primary/50 hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden rounded-2xl border border-surface-border bg-surface-card p-6 hover:border-purple-primary/50 hover:-translate-y-1 hover:shadow-card-hover transition-all duration-300"
             >
               <div className="absolute -top-10 -end-10 w-32 h-32 rounded-full bg-purple-primary/10 blur-2xl group-hover:bg-purple-primary/25 transition-colors" />
               <div className="relative flex items-start gap-4">
-                <div className="w-14 h-14 shrink-0 rounded-xl bg-dark-base border border-dark-border flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 shrink-0 rounded-xl bg-surface-raised border border-surface-border flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
                   {cat.icon ?? '📁'}
                 </div>
                 <div className="min-w-0">

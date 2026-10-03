@@ -57,8 +57,8 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   ].filter(Boolean) as { icon: typeof Mail; label: string; value: string; href?: string }[]
 
   return (
-    <main className="min-h-screen bg-dark-base pb-24">
-      <div className="relative overflow-hidden border-b border-dark-border">
+    <main className="min-h-screen bg-surface-base pb-24">
+      <div className="relative overflow-hidden border-b border-surface-border">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[300px] bg-purple-primary/15 blur-[110px] rounded-full" />
         </div>
@@ -99,7 +99,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
                 </>
               )
               const cls =
-                'flex items-center gap-4 rounded-2xl border border-dark-border bg-dark-card p-5 transition-all'
+                'flex items-center gap-4 rounded-2xl border border-surface-border bg-surface-card p-5 transition-all'
               return href ? (
                 <a
                   key={label}
@@ -118,7 +118,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-dark-border bg-dark-card p-10 text-center">
+          <div className="rounded-2xl border border-dashed border-surface-border bg-surface-card p-10 text-center">
             <p className="text-text-muted">
               {isAr
                 ? 'لم تتم إضافة بيانات التواصل بعد. أضفها من Sanity ← إعدادات الموقع ← بيانات التواصل.'

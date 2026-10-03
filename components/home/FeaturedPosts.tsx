@@ -28,7 +28,7 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
         {/* Lead story */}
         <Link
           href={`/${locale}/${lead.slug.current}`}
-          className={`group relative overflow-hidden rounded-2xl border border-dark-border bg-dark-card min-h-[320px] md:min-h-[440px] flex ${
+          className={`group relative overflow-hidden rounded-2xl border border-surface-border bg-surface-card min-h-[320px] md:min-h-[440px] flex ${
             side.length > 0 ? 'lg:col-span-3' : 'lg:col-span-5'
           }`}
         >
@@ -42,7 +42,7 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-deep/40 via-dark-card to-dark-base" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-deep/40 via-surface-raised to-surface-base" />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
@@ -80,9 +80,9 @@ export default function FeaturedPosts({ locale, posts }: FeaturedPostsProps) {
                 <Link
                   key={post._id}
                   href={`/${locale}/${post.slug.current}`}
-                  className="group flex gap-4 p-3 rounded-2xl border border-dark-border bg-dark-card hover:border-purple-primary/40 transition-colors flex-1"
+                  className="group flex gap-4 p-3 rounded-2xl border border-surface-border bg-surface-card hover:border-purple-primary/40 hover:shadow-card transition-colors flex-1"
                 >
-                  <div className="relative w-28 sm:w-36 shrink-0 rounded-xl overflow-hidden bg-dark-base min-h-[96px]">
+                  <div className="relative w-28 sm:w-36 shrink-0 rounded-xl overflow-hidden bg-surface-raised min-h-[96px]">
                     {img ? (
                       <Image
                         src={img}
