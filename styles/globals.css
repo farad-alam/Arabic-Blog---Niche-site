@@ -5,6 +5,30 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* fixed navbar (64px) + reading-progress bar */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* Mobile touch behaviour: no 300ms delay, soft brand tap highlight */
+  a,
+  button,
+  summary {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(125, 64, 255, 0.12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 
   /* ── Arabic (RTL) layout ────────────────────────────────────────────────── */
@@ -155,6 +179,43 @@
   .article-body h2,
   .article-body h3 {
     scroll-margin-top: 6rem;
+  }
+
+  /* Never let long words / URLs cause horizontal scroll on phones */
+  .article-body {
+    overflow-wrap: anywhere;
+    word-break: normal;
+    min-width: 0;
+  }
+
+  .article-body p {
+    text-wrap: pretty;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* ── Bottom sheet animations (mobile TOC) ───────────────────────────────── */
+  @keyframes sheet-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .animate-sheet-up { animation: sheet-up 280ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+  .animate-fade-in  { animation: fade-in 200ms ease-out both; }
+
+  /* Safe-area helpers for iOS home indicator */
+  .pb-safe { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+  .bottom-safe { bottom: max(1.25rem, env(safe-area-inset-bottom)); }
+
+  /* Defer rendering of below-the-fold article tail */
+  .defer-render {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
   }
 
   /* ── Line clamp utilities ───────────────────────────────────────────────── */

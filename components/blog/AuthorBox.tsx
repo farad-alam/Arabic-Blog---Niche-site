@@ -61,7 +61,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
   const initials = `${author.firstName?.[0] ?? ''}${author.lastName?.[0] ?? ''}`.toUpperCase()
 
   return (
-    <div className="bg-surface-card border border-surface-border rounded-xl p-5 sm:p-6 mb-10">
+    <div className="bg-surface-card border border-surface-border rounded-xl p-4 sm:p-6 mb-8 md:mb-10">
       {/* Stack on mobile (flex-col), side-by-side on sm+ (flex-row) */}
       <div className="flex flex-col sm:flex-row sm:items-start gap-4">
 
@@ -119,7 +119,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           )}
 
           {author.shortBio && (
-            <p className="font-body text-text-muted text-xs leading-relaxed mb-3 mt-0.5 sm:mt-0">
+            <p className="font-body text-text-muted text-sm leading-relaxed mb-3 mt-0.5 sm:mt-0">
               {author.shortBio}
             </p>
           )}
@@ -139,24 +139,21 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
           )}
 
           {/* Social links + author page — flex-wrap to prevent overflow */}
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-            {socials.map((s, i) => (
-              <span key={s.label} className="flex items-center gap-3">
-                {i > 0 && <span className="text-surface-border" aria-hidden="true">·</span>}
-                <Link
-                  href={s.href!}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-body text-xs text-purple-primary hover:underline transition-colors"
-                >
-                  {s.label}
-                </Link>
-              </span>
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-1">
+            {socials.map((s) => (
+              <Link
+                key={s.label}
+                href={s.href!}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center min-h-[44px] px-3 -ms-3 sm:ms-0 font-body text-sm text-purple-primary hover:underline transition-colors"
+              >
+                {s.label}
+              </Link>
             ))}
-            {socials.length > 0 && <span className="text-surface-border" aria-hidden="true">·</span>}
             <Link
               href={`/authors/${author.slug.current}`}
-              className="font-body text-xs text-purple-primary hover:underline transition-colors"
+              className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] mt-1 sm:mt-0 sm:ms-auto px-4 rounded-lg border border-purple-primary/30 bg-purple-primary/5 font-body text-sm font-medium text-purple-primary hover:bg-purple-primary/10 transition-colors"
             >
               View all posts →
             </Link>

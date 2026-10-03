@@ -35,7 +35,7 @@ function StarRating({ rating }: { rating: number }) {
     <span className="inline-flex items-center gap-0.5 text-amber-400" aria-label={`Rating: ${rating} out of 5`}>
       {'★'.repeat(full)}
       {half && '½'}
-      <span className="text-gray-600">{'★'.repeat(empty)}</span>
+      <span className="text-stone-300">{'★'.repeat(empty)}</span>
       <span className="ms-1 text-text-muted text-xs font-body">{rating.toFixed(1)}</span>
     </span>
   )
@@ -51,7 +51,7 @@ const components: PortableTextComponents = {
     h2: ({ children, value }) => (
       <h2
         id={slugify((value?.children as { text?: string }[] | undefined)?.map((c) => c?.text))}
-        className="font-arabic-heading font-bold text-text-primary mt-12 mb-4 leading-snug scroll-mt-24 text-2xl md:text-3xl rtl:text-right ltr:text-left"
+        className="font-arabic-heading font-bold text-text-primary mt-10 md:mt-12 mb-3 md:mb-4 leading-snug scroll-mt-24 text-[22px] sm:text-2xl md:text-3xl text-start text-balance ps-3 border-s-4 border-purple-primary/70"
       >
         {children}
       </h2>
@@ -59,23 +59,23 @@ const components: PortableTextComponents = {
     h3: ({ children, value }) => (
       <h3
         id={slugify((value?.children as { text?: string }[] | undefined)?.map((c) => c?.text))}
-        className="font-arabic-heading font-bold text-text-primary mt-10 mb-3 leading-snug scroll-mt-24 text-xl md:text-2xl rtl:text-right ltr:text-left"
+        className="font-arabic-heading font-bold text-text-primary mt-8 md:mt-10 mb-2 md:mb-3 leading-snug scroll-mt-24 text-[19px] sm:text-xl md:text-2xl text-start text-balance"
       >
         {children}
       </h3>
     ),
     h4: ({ children }) => (
-      <h4 className="font-arabic-heading font-bold text-text-primary mt-8 mb-2 text-lg rtl:text-right ltr:text-left">
+      <h4 className="font-arabic-heading font-bold text-text-primary mt-6 md:mt-8 mb-2 text-[17px] md:text-lg text-start">
         {children}
       </h4>
     ),
     normal: ({ children }) => (
-      <p className="text-text-muted leading-[1.8] text-[17px] md:text-[18px] mb-6 rtl:text-right ltr:text-left">
+      <p className="text-text-primary/90 leading-[1.75] rtl:leading-[1.95] text-[17px] md:text-[18px] mb-5 md:mb-6 text-start">
         {children}
       </p>
     ),
     blockquote: ({ children }) => (
-      <blockquote className="rtl:border-r-2 ltr:border-l-2 border-purple-primary/50 rtl:pr-5 ltr:pl-5 my-8 italic text-text-muted text-lg leading-[1.8]">
+      <blockquote className="border-s-4 border-purple-primary/60 bg-surface-card rounded-e-lg ps-4 pe-3 py-3 my-6 md:my-8 italic text-text-primary/80 text-base md:text-lg leading-[1.8] rtl:leading-[1.95]">
         {children}
       </blockquote>
     ),
@@ -84,19 +84,19 @@ const components: PortableTextComponents = {
   // ── Lists ──────────────────────────────────────────────────────────────────
   list: {
     bullet: ({ children }) => (
-      <ul className="text-text-muted list-disc rtl:list-inside ltr:list-inside space-y-2 mb-6 rtl:pr-4 ltr:pl-4">
+      <ul className="text-text-primary/90 list-disc list-outside marker:text-purple-primary space-y-2.5 mb-6 ps-6 text-start">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="text-text-muted list-decimal rtl:list-inside ltr:list-inside space-y-2 mb-6 rtl:pr-4 ltr:pl-4">
+      <ol className="text-text-primary/90 list-decimal list-outside marker:text-purple-primary marker:font-semibold space-y-2.5 mb-6 ps-6 text-start">
         {children}
       </ol>
     ),
   },
   listItem: {
-    bullet: ({ children }) => <li className="leading-[1.8]">{children}</li>,
-    number: ({ children }) => <li className="leading-[1.8]">{children}</li>,
+    bullet: ({ children }) => <li className="leading-[1.75] rtl:leading-[1.95] ps-1">{children}</li>,
+    number: ({ children }) => <li className="leading-[1.75] rtl:leading-[1.95] ps-1">{children}</li>,
   },
 
   // ── Marks (inline) ─────────────────────────────────────────────────────────
@@ -114,7 +114,7 @@ const components: PortableTextComponents = {
           value?.blank ? 'noopener noreferrer' : '',
           value?.nofollow ? 'nofollow' : '',
         ].filter(Boolean).join(' ') || undefined}
-        className="text-purple-primary hover:underline underline-offset-2 transition-colors"
+        className="text-purple-primary underline decoration-purple-primary/30 hover:decoration-purple-primary underline-offset-4 transition-colors break-words"
       >
         {children}
       </a>
@@ -127,18 +127,20 @@ const components: PortableTextComponents = {
     image: ({ value }) => {
       if (!value?.asset) return null
       return (
-        <figure className="my-8 max-w-full overflow-hidden">
-          <div className="relative w-full rounded-xl border border-surface-border bg-surface-card p-2 sm:p-4">
+        <figure className="my-7 md:my-8 -mx-4 sm:mx-0 max-w-[100vw] sm:max-w-full">
+          <div className="relative w-full sm:rounded-xl sm:border sm:border-surface-border bg-surface-card sm:p-4 overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={urlFor(value).width(900).format('webp').url()}
               alt={value.alt ?? ''}
-              className="w-full h-auto max-h-[400px] md:max-h-[500px] object-contain rounded-lg"
+              className="w-full h-auto max-h-[70vh] sm:max-h-[500px] object-contain sm:rounded-lg"
               loading="lazy"
+              decoding="async"
+              sizes="(max-width: 768px) 100vw, 720px"
             />
           </div>
           {value.caption && (
-            <figcaption className="text-text-muted text-xs text-center mt-3">
+            <figcaption className="text-text-muted text-xs md:text-sm text-center mt-2.5 px-4 sm:px-0">
               {value.caption}
             </figcaption>
           )}
@@ -156,33 +158,36 @@ const components: PortableTextComponents = {
         lang
       )
 
+      const hasImg = Boolean(value.imageUrl)
+
       return (
-        <div className="my-8 bg-surface-card rounded-xl border border-surface-border overflow-hidden max-w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr]">
+        <div className="my-7 md:my-8 bg-surface-card rounded-xl border border-surface-border overflow-hidden max-w-full shadow-card">
+          <div className={`grid ${hasImg ? 'grid-cols-[104px_minmax(0,1fr)] sm:grid-cols-[200px_minmax(0,1fr)]' : 'grid-cols-1'}`}>
             {/* Image */}
-            {value.imageUrl && (
-              <div className="relative bg-white flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-e border-surface-border">
+            {hasImg && (
+              <div className="relative bg-white flex items-center justify-center p-2.5 sm:p-4 border-e border-surface-border sm:row-span-2">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={value.imageUrl}
                   alt={value.name}
-                  className="w-full h-auto max-h-56 object-contain"
+                  className="w-full h-auto max-h-28 sm:max-h-56 object-contain"
                   loading="lazy"
+                  decoding="async"
                 />
               </div>
             )}
             {/* Details */}
-            <div className="p-5 flex flex-col gap-3 min-w-0">
+            <div className="p-3 sm:p-5 flex flex-col gap-1.5 sm:gap-3 min-w-0">
               {value.badge && (
-                <span className="inline-block bg-amber-400/10 border border-amber-400/30 text-amber-400 text-xs px-2.5 py-1 rounded-full w-fit">
+                <span className="inline-block bg-amber-100 border border-amber-300 text-amber-800 text-[11px] sm:text-xs font-semibold px-2.5 py-0.5 sm:py-1 rounded-full w-fit max-w-full truncate">
                   {value.badge}
                 </span>
               )}
-              <h4 className="font-arabic-heading font-bold text-text-primary text-lg leading-snug break-words">
+              <h4 className="font-arabic-heading font-bold text-text-primary text-[15px] sm:text-lg leading-snug break-words line-clamp-3 sm:line-clamp-none">
                 {value.name}
               </h4>
               {value.rating && (
-                <div className="flex items-center gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 flex-wrap text-sm">
                   <StarRating rating={value.rating} />
                   {value.reviewCount && (
                     <span className="text-text-muted text-xs">({value.reviewCount.toLocaleString()})</span>
@@ -190,29 +195,31 @@ const components: PortableTextComponents = {
                 </div>
               )}
               {value.price && (
-                <p className="text-text-primary font-bold text-xl">{value.price}</p>
-              )}
-              {affiliateUrl && (
-                <div className="mt-auto pt-2">
-                  <a
-                    href={affiliateUrl}
-                    target="_blank"
-                    rel="noopener noreferrer nofollow"
-                    className="flex items-center justify-center gap-2 bg-[#FFA41C] hover:bg-[#FA8900] text-black text-sm font-bold w-full sm:w-auto min-h-[44px] px-6 rounded-lg transition-colors shadow-sm"
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="9" cy="21" r="1"></circle>
-                      <circle cx="20" cy="21" r="1"></circle>
-                      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                    </svg>
-                    {lang === 'ar' ? 'اشتري الآن من أمازون' : 'Buy on Amazon'}
-                  </a>
-                </div>
+                <p className="text-text-primary font-bold text-lg sm:text-xl">{value.price}</p>
               )}
             </div>
+            {/* CTA — full width under the image + details on phones, inline on sm+ */}
+            {affiliateUrl && (
+              <div className={`${hasImg ? 'col-span-2 sm:col-span-1 sm:col-start-2' : ''} px-3 pb-3 sm:px-5 sm:pb-5 sm:pt-0`}>
+                <a
+                  href={affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow sponsored"
+                  className="flex items-center justify-center gap-2 bg-[#FFA41C] hover:bg-[#FA8900] active:bg-[#E67E00] text-black text-[15px] font-bold w-full sm:w-auto sm:inline-flex min-h-[48px] px-6 rounded-lg transition-colors shadow-sm"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <circle cx="9" cy="21" r="1"></circle>
+                    <circle cx="20" cy="21" r="1"></circle>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                  </svg>
+                  {lang === 'ar' ? 'اشتري الآن من أمازون' : 'Buy on Amazon'}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       )
+
     },
 
     // ── Product Comparison Table ──────────────────────────────────────────────
@@ -227,49 +234,63 @@ const components: PortableTextComponents = {
       }
 
       return (
-        <div className="my-10">
+        <div className="my-8 md:my-10">
           {value.heading && (
-            <h3 className="font-arabic-heading font-bold text-text-primary text-xl mb-6 rtl:text-right ltr:text-left">
+            <h3 className="font-arabic-heading font-bold text-text-primary text-[19px] sm:text-xl mb-4 md:mb-6 text-start">
               {value.heading}
             </h3>
           )}
-          {/* Mobile: scrollable cards */}
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide sm:hidden">
+          {/* Mobile: swipeable snap cards (next card peeks in to hint at scrolling) */}
+          <div
+            className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scroll-px-4 scrollbar-hide sm:hidden overscroll-x-contain"
+            role="list"
+          >
             {value.products.map((p: any, i: number) => (
-              <div key={i} className="min-w-[260px] bg-surface-card rounded-xl border border-surface-border p-4 shrink-0">
+              <div
+                key={i}
+                role="listitem"
+                className="snap-start w-[78%] min-w-[78%] max-w-[300px] bg-surface-card rounded-xl border border-surface-border p-3.5 shrink-0 flex flex-col shadow-card"
+              >
                 {p.verdict && (
-                  <span className="inline-block bg-purple-primary/10 text-purple-primary text-xs px-2 py-0.5 rounded-full mb-3">
+                  <span className="inline-block bg-purple-primary/10 text-purple-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit">
                     {verdictLabels[p.verdict] ?? p.verdict}
                   </span>
                 )}
                 {p.imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.imageUrl} alt={p.name} className="w-full h-32 object-contain bg-white rounded-lg mb-3 p-2" loading="lazy" />
+                  <img src={p.imageUrl} alt={p.name} className="w-full h-32 object-contain bg-white rounded-lg mb-3 p-2" loading="lazy" decoding="async" />
                 )}
-                <h4 className="font-bold text-text-primary text-sm mb-1">{p.name}</h4>
+                <h4 className="font-bold text-text-primary text-[15px] leading-snug mb-1.5 line-clamp-3">{p.name}</h4>
                 {p.rating && <StarRating rating={p.rating} />}
-                {p.price && <p className="font-bold text-text-primary mt-2">{p.price}</p>}
-{(() => {
-                    const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
-                    return url ? (
-                      <a
-                        href={url}
-                        target="_blank"
-                        rel="noopener noreferrer nofollow"
-                        className="flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] text-black font-bold text-xs w-full mt-3 min-h-[44px] rounded-lg transition-colors shadow-sm"
-                      >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="9" cy="21" r="1"></circle>
-                          <circle cx="20" cy="21" r="1"></circle>
-                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                        </svg>
-                        {lang === 'ar' ? 'أمازون' : 'Amazon'}
-                      </a>
-                    ) : null
-                  })()}
+                {p.price && <p className="font-bold text-text-primary text-lg mt-1.5">{p.price}</p>}
+                {(() => {
+                  const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
+                  return url ? (
+                    <a
+                      href={url}
+                      target="_blank"
+                      rel="noopener noreferrer nofollow sponsored"
+                      className="mt-auto flex items-center justify-center gap-1.5 bg-[#FFA41C] hover:bg-[#FA8900] active:bg-[#E67E00] text-black font-bold text-sm w-full min-h-[48px] rounded-lg transition-colors shadow-sm"
+                      style={{ marginTop: 'auto' }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                      </svg>
+                      {lang === 'ar' ? 'أمازون' : 'Amazon'}
+                    </a>
+                  ) : null
+                })()}
               </div>
             ))}
           </div>
+          {value.products.length > 1 && (
+            <p className="sm:hidden text-center text-xs text-text-muted mt-1" aria-hidden="true">
+              {lang === 'ar' ? '← اسحب لمشاهدة المزيد →' : '← Swipe to compare →'}
+            </p>
+          )}
+
           {/* Desktop: table */}
           <div className="hidden sm:block overflow-x-auto rounded-xl border border-surface-border">
             <table className="w-full text-sm">
@@ -346,16 +367,16 @@ const components: PortableTextComponents = {
       if (!value?.pros?.length && !value?.cons?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       return (
-        <div className="my-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="my-7 md:my-8 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {value.pros?.length > 0 && (
-            <div className="bg-state-success/5 border border-state-success/20 rounded-xl p-5">
+            <div className="bg-state-success/5 border border-state-success/20 rounded-xl p-4 sm:p-5">
               <h4 className="font-arabic-heading font-bold text-state-success mb-3 flex items-center gap-2 text-lg">
                 <span>✅</span>
                 {lang === 'ar' ? 'المميزات' : 'Pros'}
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {value.pros.map((pro: string, i: number) => (
-                  <li key={i} className="text-text-muted text-sm flex items-start gap-2">
+                  <li key={i} className="text-text-primary/90 text-[15px] leading-relaxed flex items-start gap-2">
                     <span className="text-state-success mt-0.5 shrink-0">✓</span>
                     {pro}
                   </li>
@@ -364,14 +385,14 @@ const components: PortableTextComponents = {
             </div>
           )}
           {value.cons?.length > 0 && (
-            <div className="bg-state-error/5 border border-state-error/20 rounded-xl p-5">
+            <div className="bg-state-error/5 border border-state-error/20 rounded-xl p-4 sm:p-5">
               <h4 className="font-arabic-heading font-bold text-state-error mb-3 flex items-center gap-2 text-lg">
                 <span>❌</span>
                 {lang === 'ar' ? 'العيوب' : 'Cons'}
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {value.cons.map((con: string, i: number) => (
-                  <li key={i} className="text-text-muted text-sm flex items-start gap-2">
+                  <li key={i} className="text-text-primary/90 text-[15px] leading-relaxed flex items-start gap-2">
                     <span className="text-state-error mt-0.5 shrink-0">✗</span>
                     {con}
                   </li>
@@ -388,22 +409,26 @@ const components: PortableTextComponents = {
       if (!value?.items?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       return (
-        <div className="my-10">
-          <h3 className="font-arabic-heading font-bold text-text-primary text-xl mb-6 rtl:text-right ltr:text-left">
+        <div className="my-8 md:my-10">
+          <h3 className="font-arabic-heading font-bold text-text-primary text-[19px] sm:text-xl mb-4 md:mb-6 text-start">
             {lang === 'ar' ? 'الأسئلة الشائعة' : 'Frequently Asked Questions'}
           </h3>
-          <div className="space-y-4">
+          <div className="space-y-3">
             {value.items.map((item: { question: string; answer: string }, i: number) => (
-              <details key={i} className="bg-surface-card border border-surface-border rounded-xl group">
-                <summary className="px-5 py-4 cursor-pointer list-none flex items-center justify-between gap-4 select-none">
-                  <span className="font-arabic-heading font-semibold text-text-primary rtl:text-right ltr:text-left">
+              <details key={i} className="bg-surface-card border border-surface-border rounded-xl group open:shadow-card open:border-purple-primary/30">
+                <summary className="px-4 sm:px-5 py-3.5 min-h-[52px] cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-between gap-3 select-none">
+                  <span className="font-arabic-heading font-semibold text-text-primary text-[15px] sm:text-base leading-snug text-start">
                     {item.question}
                   </span>
-                  <span className="text-purple-primary shrink-0 transition-transform group-open:rotate-180">
-                    ▼
-                  </span>
+                  <svg
+                    className="text-purple-primary shrink-0 transition-transform duration-200 group-open:rotate-180"
+                    width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
                 </summary>
-                <div className="px-5 pb-5 text-text-muted text-sm leading-[1.8] rtl:text-right ltr:text-left border-t border-surface-border/50 mt-0 pt-4">
+                <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-text-primary/85 text-[15px] leading-[1.8] rtl:leading-[1.95] text-start border-t border-surface-border/60 pt-3.5">
                   {item.answer}
                 </div>
               </details>
@@ -424,8 +449,8 @@ const components: PortableTextComponents = {
       }
       const s = styles[value.type ?? 'info'] ?? styles.info
       return (
-        <div className={`my-8 p-4 rounded-xl border ${s.border} ${s.bg}`}>
-          <p className="text-text-muted text-sm leading-[1.8] rtl:text-right ltr:text-left">
+        <div className={`my-7 md:my-8 p-3.5 sm:p-4 rounded-xl border ${s.border} ${s.bg}`}>
+          <p className="text-text-primary/90 text-[15px] leading-[1.75] rtl:leading-[1.95] text-start">
             <span className="me-2">{s.icon}</span>
             {value.text}
           </p>
