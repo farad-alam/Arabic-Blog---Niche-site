@@ -32,7 +32,7 @@ export default function PostCard({ post, locale }: PostCardProps) {
           />
         ) : post.mainImage?.asset ? (
           <Image
-            src={urlFor(post.mainImage).width(600).height(338).format('webp').url()}
+            src={urlFor(post.mainImage as any).width(600).height(338).format('webp').url()}
             alt={post.mainImage.alt ?? post.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
