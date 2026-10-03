@@ -5,7 +5,7 @@ import { getPostsByLocale } from '@/sanity/queries'
 import PostGrid from '@/components/blog/PostGrid'
 
 // ISR: webhook fires revalidateTag('posts') to bust this when new posts are published
-export const revalidate = 0
+export const revalidate = false
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))

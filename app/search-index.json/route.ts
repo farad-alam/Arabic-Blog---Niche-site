@@ -2,7 +2,7 @@ import { getSearchIndex } from '@/sanity/queries'
 import { getImageUrl } from '@/sanity/image'
 
 // ISR: revalidated whenever the webhook fires revalidateTag('posts')
-export const revalidate = 0
+export const revalidate = false
 
 /** Compact search index consumed by the client-side search page. */
 export async function GET() {

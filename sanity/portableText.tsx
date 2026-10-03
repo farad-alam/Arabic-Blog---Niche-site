@@ -308,7 +308,7 @@ const components: PortableTextComponents = {
                       )}
                       {p.imageUrl && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.imageUrl} alt={p.name} className="w-16 h-16 object-contain mx-auto bg-white rounded p-1 mb-2" loading="lazy" />
+                        <img src={p.imageUrl} alt={p.name} width={64} height={64} className="w-16 h-16 object-contain mx-auto bg-white rounded p-1 mb-2" loading="lazy" decoding="async" />
                       )}
                       <span className="font-semibold text-text-primary">{p.name}</span>
                     </th>

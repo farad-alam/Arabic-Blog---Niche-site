@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type Locale, locales, formatDate } from '@/lib/i18n'
-import { getPost, getAllPostSlugs, type SanityBlock } from '@/sanity/queries'
+import { getPost, getRecentPostSlugs, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema } from '@/lib/schema'
@@ -14,13 +14,15 @@ import ReadingProgress from '@/components/blog/ReadingProgress'
 import AdSlot from '@/components/ads/AdSlot'
 import type { Metadata } from 'next'
 
-// ISR: serve stale while re-fetching in background; webhook can bust cache instantly via revalidateTag
-export const revalidate = 0
+// Static HTML, cached until the Sanity webhook fires revalidateTag/revalidatePath.
+export const revalidate = false
 
+// Only the newest articles are prerendered at build time. Older ones are rendered
+// on first visit, then cached (dynamicParams defaults to true).
 export async function generateStaticParams() {
   const params: { locale: string; slug: string }[] = []
   for (const locale of locales) {
-    const slugs = await getAllPostSlugs(locale)
+    const slugs = await getRecentPostSlugs(locale)
     slugs.forEach((slug) => params.push({ locale, slug }))
   }
   return params

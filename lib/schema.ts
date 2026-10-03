@@ -17,36 +17,9 @@ function getSiteName(language: Language) {
 // WebSite — injected on homepage (includes Sitelinks Searchbox)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function websiteSchema(language: Language) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    url: BASE_URL,
-    name: getSiteName(language),
-    inLanguage: language === 'ar' ? 'ar-SA' : 'en-US',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${BASE_URL}/${language}/search?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
-  }
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Organization — injected on homepage
 // ─────────────────────────────────────────────────────────────────────────────
-
-export function organizationSchema(language: Language) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: getSiteName(language),
-    url: BASE_URL,
-  }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BlogPosting — injected on every article page
@@ -105,29 +78,6 @@ export function articleSchema(params: {
 // ─────────────────────────────────────────────────────────────────────────────
 // Review + Product — for affiliate/review articles
 // ─────────────────────────────────────────────────────────────────────────────
-
-export function reviewSchema(params: {
-  productName: string
-  rating: number
-  price?: string
-  currency?: string
-  authorName: string
-}) {
-  const { productName, rating, price, currency, authorName } = params
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Review',
-    itemReviewed: {
-      '@type': 'Product',
-      name: productName,
-      ...(price
-        ? { offers: { '@type': 'Offer', price, priceCurrency: currency ?? 'SAR' } }
-        : {}),
-    },
-    reviewRating: { '@type': 'Rating', ratingValue: rating, bestRating: 5 },
-    author: { '@type': 'Person', name: authorName },
-  }
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // FAQPage — auto-injected when faqBlock is in the article body

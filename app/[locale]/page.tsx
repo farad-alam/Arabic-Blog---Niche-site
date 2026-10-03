@@ -11,8 +11,8 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-// ISR: serve stale while re-fetching; webhook fires revalidateTag to bust cache instantly
-export const revalidate = 0
+// Static HTML, cached until the Sanity webhook fires revalidateTag/revalidatePath.
+export const revalidate = false
 
 /** Number of stories shown in the featured block (1 lead + 3 side) */
 const FEATURED_COUNT = 4

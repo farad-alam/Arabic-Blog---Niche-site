@@ -38,3 +38,7 @@ next-env.d.ts
 # sitemap (generated at build)
 public/sitemap*.xml
 public/robots.txt
+
+# generated
+/public/sitemap*.xml
+tsconfig.tsbuildinfo

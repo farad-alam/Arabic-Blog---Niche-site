@@ -4,8 +4,8 @@ import { type Locale, locales } from '@/lib/i18n'
 import { getCategoryBySlug, getPostsByCategory, getAllCategorySlugs } from '@/sanity/queries'
 import PostGrid from '@/components/blog/PostGrid'
 
-// ISR: webhook fires revalidateTag('categories') / revalidateTag(`category-${id}`) to bust this
-export const revalidate = 0
+// Static HTML, cached until the Sanity webhook fires revalidateTag('categories') / `category-${id}`.
+export const revalidate = false
 
 export async function generateStaticParams() {
   const slugs = await getAllCategorySlugs()

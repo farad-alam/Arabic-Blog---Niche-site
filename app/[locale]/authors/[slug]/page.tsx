@@ -6,7 +6,7 @@ import { personSchema } from '@/lib/schema'
 import { urlFor } from '@/sanity/image'
 
 // ISR: webhook fires revalidateTag('authors') to bust this
-export const revalidate = 0
+export const revalidate = false
 
 export async function generateStaticParams() {
   const slugs = await getAllAuthorSlugs()

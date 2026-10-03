@@ -156,36 +156,16 @@ export async function getPostsByLocale(locale: Locale, limit = 50): Promise<Sani
   )
 }
 
-/** Get paginated posts for a locale */
-export async function getPaginatedPosts(
-  locale: Locale,
-  page: number,
-  perPage = 12
-): Promise<{ posts: SanityPostCard[]; total: number }> {
-  const start = (page - 1) * perPage
-  const end = start + perPage
-  const [posts, total] = await Promise.all([
-    client.fetch<SanityPostCard[]>(
-      `*[_type == "post" && language == $locale && noIndex != true] | order(publishedAt desc) [$start...$end] {
-        ${POST_CARD_FRAGMENT}
-      }`,
-      { locale, start, end },
-      { next: { tags: ['posts'] } }
-    ),
-    client.fetch<number>(
-      `count(*[_type == "post" && language == $locale && noIndex != true])`,
-      { locale },
-      { next: { tags: ['posts'] } }
-    ),
-  ])
-  return { posts, total }
-}
-
-/** Get all post slugs for a locale — used in generateStaticParams */
-export async function getAllPostSlugs(locale: Locale): Promise<string[]> {
+/**
+ * Slugs of the newest posts for a locale — used in generateStaticParams.
+ * Only these are prerendered at build time; every other article is rendered
+ * on its first visit and then cached until the Sanity webhook clears it.
+ * This keeps builds fast even with tens of thousands of articles.
+ */
+export async function getRecentPostSlugs(locale: Locale, limit = 100): Promise<string[]> {
   const results = await client.fetch<{ slug: { current: string } }[]>(
-    `*[_type == "post" && language == $locale && noIndex != true]{ slug }`,
-    { locale },
+    `*[_type == "post" && language == $locale && noIndex != true] | order(publishedAt desc) [0...$limit]{ slug }`,
+    { locale, limit },
     { next: { tags: ['posts'] } }
   )
   return results.map((r) => r.slug.current)
@@ -245,7 +225,8 @@ export const getPost = cache(async (slug: string, locale: Locale): Promise<Sanit
       }
     }`,
     { slug, locale },
-    { next: { tags: ['posts'] } }
+    // Per-post tag: editing one article clears only that article, not all of them.
+    { next: { tags: [`post-${slug}`] } }
   )
 })
 
@@ -266,26 +247,6 @@ export async function getTopLevelCategories(): Promise<SanityCategory[]> {
       descriptionEn,
       icon,
       order
-    }`,
-    {},
-    { next: { tags: ['categories'] } }
-  )
-}
-
-/** Get all categories including subcategories */
-export async function getAllCategories(): Promise<SanityCategory[]> {
-  return client.fetch(
-    `*[_type == "category"] | order(order asc) {
-      _id,
-      titleAr,
-      titleEn,
-      slugAr,
-      slugEn,
-      descriptionAr,
-      descriptionEn,
-      icon,
-      order,
-      "parent": parent->{ titleAr, titleEn, slugAr, slugEn }
     }`,
     {},
     { next: { tags: ['categories'] } }

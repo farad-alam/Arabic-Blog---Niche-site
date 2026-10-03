@@ -7,7 +7,11 @@ type WebhookBody = {
   _id?: string
   language?: 'ar' | 'en'
   categoryRef?: string
+  slug?: string
 }
+
+/** Expire a cache tag immediately (Next 16 requires the profile argument). */
+const expire = (tag: string) => revalidateTag(tag, { expire: 0 })
 
 /**
  * Sanity Webhook → On-Demand Revalidation
@@ -18,7 +22,7 @@ type WebhookBody = {
  *   Trigger on:  Create, Update, Delete
  *   Drafts:      OFF (only published changes)
  *   Secret:      SAME string as SANITY_WEBHOOK_SECRET env var
- *   Projection:  { _type, _id, language, "categoryRef": category._ref }
+ *   Projection:  { _type, _id, language, "categoryRef": category._ref, "slug": slug.current }
  *
  * Sanity signs the request body with the secret and sends it in the
  * `sanity-webhook-signature` header. We verify that signature here.
@@ -53,40 +57,42 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing _type in webhook body' }, { status: 400 })
   }
 
-  const { _type, categoryRef, language } = body
+  const { _type, categoryRef, language, slug } = body
 
   // Revalidate only what changed
   if (_type === 'post') {
-    // @ts-ignore - Next.js typing quirk: revalidateTag signature differs between versions
-    revalidateTag('posts')
-    if (categoryRef) {
-      // @ts-ignore
-      revalidateTag(`category-${categoryRef}`)
+    // Listings that show many posts: home, /articles, search index, sitemap
+    expire('posts')
+    if (categoryRef) expire(`category-${categoryRef}`)
+
+    if (slug && language) {
+      // Targeted: only the edited article is cleared, not every article
+      expire(`post-${slug}`)
+      revalidatePath(`/${language}/${slug}`)
+    } else {
+      // Fallback (e.g. delete events carry no slug): clear all article pages
+      revalidatePath('/[locale]/[slug]', 'page')
     }
+
     revalidatePath('/[locale]', 'page')
-    revalidatePath('/[locale]/[slug]', 'page')
     revalidatePath('/[locale]/category/[categorySlug]', 'page')
     revalidatePath('/[locale]/articles', 'page')
     revalidatePath('/search-index.json')
-    if (language) revalidatePath(`/${language}`)
   }
 
   if (_type === 'category') {
-    // @ts-ignore
-    revalidateTag('categories')
+    expire('categories')
     // Categories appear in navbar/footer on every page
     revalidatePath('/', 'layout')
   }
 
   if (_type === 'siteSettings') {
-    // @ts-ignore
-    revalidateTag('siteSettings')
+    expire('siteSettings')
     revalidatePath('/', 'layout')
   }
 
   if (_type === 'author') {
-    // @ts-ignore
-    revalidateTag('authors')
+    expire('authors')
     revalidatePath('/[locale]/authors/[slug]', 'page')
   }
 
