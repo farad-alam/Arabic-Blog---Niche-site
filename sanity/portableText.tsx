@@ -128,12 +128,12 @@ const components: PortableTextComponents = {
       if (!value?.asset) return null
       return (
         <figure className="my-10">
-          <div className="relative w-full aspect-video rounded-xl overflow-hidden border border-dark-border">
-            <Image
+          <div className="relative w-full rounded-xl overflow-hidden border border-surface-border bg-surface-raised flex justify-center p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src={urlFor(value).width(900).format('webp').url()}
               alt={value.alt ?? ''}
-              fill
-              className="object-cover"
+              className="max-w-full h-auto max-h-[600px] object-contain rounded-lg"
               loading="lazy"
             />
           </div>
@@ -157,16 +157,16 @@ const components: PortableTextComponents = {
       )
 
       return (
-        <div className="my-8 bg-dark-card rounded-xl border border-dark-border overflow-hidden">
+        <div className="my-8 bg-surface-card rounded-xl border border-surface-border overflow-hidden">
           <div className="flex flex-col sm:flex-row">
             {/* Image */}
             {value.imageUrl && (
-              <div className="sm:w-48 shrink-0">
+              <div className="sm:w-48 shrink-0 relative bg-white flex items-center justify-center p-4 border-b sm:border-b-0 sm:border-e border-surface-border">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={value.imageUrl}
                   alt={value.name}
-                  className="w-full h-48 sm:h-full object-contain p-4 bg-white"
+                  className="w-full max-h-48 sm:max-h-64 object-contain"
                   loading="lazy"
                 />
               </div>
@@ -229,7 +229,7 @@ const components: PortableTextComponents = {
           {/* Mobile: scrollable cards */}
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide sm:hidden">
             {value.products.map((p: any, i: number) => (
-              <div key={i} className="min-w-[260px] bg-dark-card rounded-xl border border-dark-border p-4 shrink-0">
+              <div key={i} className="min-w-[260px] bg-surface-card rounded-xl border border-surface-border p-4 shrink-0">
                 {p.verdict && (
                   <span className="inline-block bg-purple-primary/10 text-purple-primary text-xs px-2 py-0.5 rounded-full mb-3">
                     {verdictLabels[p.verdict] ?? p.verdict}
@@ -259,10 +259,10 @@ const components: PortableTextComponents = {
             ))}
           </div>
           {/* Desktop: table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-dark-border">
+          <div className="hidden sm:block overflow-x-auto rounded-xl border border-surface-border">
             <table className="w-full text-sm">
               <thead>
-                <tr className="bg-dark-card border-b border-dark-border">
+                <tr className="bg-surface-card border-b border-surface-border">
                   <th className="p-4 text-text-muted font-medium rtl:text-right ltr:text-left">
                     {lang === 'ar' ? 'المنتج' : 'Product'}
                   </th>
@@ -283,7 +283,7 @@ const components: PortableTextComponents = {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-dark-border/50">
+                <tr className="border-b border-surface-border/50">
                   <td className="p-4 text-text-muted">{lang === 'ar' ? 'التقييم' : 'Rating'}</td>
                   {value.products.map((p: any, i: number) => (
                     <td key={i} className="p-4 text-center">
@@ -291,7 +291,7 @@ const components: PortableTextComponents = {
                     </td>
                   ))}
                 </tr>
-                <tr className="border-b border-dark-border/50">
+                <tr className="border-b border-surface-border/50">
                   <td className="p-4 text-text-muted">{lang === 'ar' ? 'السعر' : 'Price'}</td>
                   {value.products.map((p: any, i: number) => (
                     <td key={i} className="p-4 text-center font-bold text-text-primary">{p.price ?? '—'}</td>
@@ -377,7 +377,7 @@ const components: PortableTextComponents = {
           </h3>
           <div className="space-y-4">
             {value.items.map((item: { question: string; answer: string }, i: number) => (
-              <details key={i} className="bg-dark-card border border-dark-border rounded-xl group">
+              <details key={i} className="bg-surface-card border border-surface-border rounded-xl group">
                 <summary className="px-5 py-4 cursor-pointer list-none flex items-center justify-between gap-4 select-none">
                   <span className="font-arabic-heading font-semibold text-text-primary rtl:text-right ltr:text-left">
                     {item.question}
@@ -386,7 +386,7 @@ const components: PortableTextComponents = {
                     ▼
                   </span>
                 </summary>
-                <div className="px-5 pb-5 text-text-muted text-sm leading-[1.8] rtl:text-right ltr:text-left border-t border-dark-border/50 mt-0 pt-4">
+                <div className="px-5 pb-5 text-text-muted text-sm leading-[1.8] rtl:text-right ltr:text-left border-t border-surface-border/50 mt-0 pt-4">
                   {item.answer}
                 </div>
               </details>
