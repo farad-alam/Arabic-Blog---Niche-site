@@ -148,7 +148,7 @@ const POST_CARD_FRAGMENT = `
 /** Get all posts for a given locale (listing page) */
 export async function getPostsByLocale(locale: Locale, limit = 50): Promise<SanityPostCard[]> {
   return client.fetch(
-    `*[_type == "post" && language == $locale && !noIndex] | order(publishedAt desc) [0...$limit] {
+    `*[_type == "post" && language == $locale && noIndex != true] | order(publishedAt desc) [0...$limit] {
       ${POST_CARD_FRAGMENT}
     }`,
     { locale, limit },
@@ -166,14 +166,14 @@ export async function getPaginatedPosts(
   const end = start + perPage
   const [posts, total] = await Promise.all([
     client.fetch<SanityPostCard[]>(
-      `*[_type == "post" && language == $locale && !noIndex] | order(publishedAt desc) [$start...$end] {
+      `*[_type == "post" && language == $locale && noIndex != true] | order(publishedAt desc) [$start...$end] {
         ${POST_CARD_FRAGMENT}
       }`,
       { locale, start, end },
       { next: { tags: ['posts'] } }
     ),
     client.fetch<number>(
-      `count(*[_type == "post" && language == $locale && !noIndex])`,
+      `count(*[_type == "post" && language == $locale && noIndex != true])`,
       { locale },
       { next: { tags: ['posts'] } }
     ),
@@ -184,7 +184,7 @@ export async function getPaginatedPosts(
 /** Get all post slugs for a locale — used in generateStaticParams */
 export async function getAllPostSlugs(locale: Locale): Promise<string[]> {
   const results = await client.fetch<{ slug: { current: string } }[]>(
-    `*[_type == "post" && language == $locale && !noIndex]{ slug }`,
+    `*[_type == "post" && language == $locale && noIndex != true]{ slug }`,
     { locale },
     { next: { tags: ['posts'] } }
   )
@@ -202,7 +202,7 @@ export async function getAllPostsForSitemap(): Promise<
   }[]
 > {
   return client.fetch(
-    `*[_type == "post" && !noIndex] {
+    `*[_type == "post" && noIndex != true] {
       "slug": slug.current,
       language,
       publishedAt,
@@ -240,7 +240,7 @@ export const getPost = cache(async (slug: string, locale: Locale): Promise<Sanit
       "translation": translation->{ slug, language },
       "readTime": round(length(pt::text(body)) / 1500) + " min",
       "wordCount": length(string::split(pt::text(body), " ")),
-      "related": *[_type == "post" && language == $locale && category._ref == ^.category._ref && slug.current != $slug && !noIndex][0...3] {
+      "related": *[_type == "post" && language == $locale && category._ref == ^.category._ref && slug.current != $slug && noIndex != true][0...3] {
         ${POST_CARD_FRAGMENT}
       }
     }`,
@@ -321,7 +321,7 @@ export async function getPostsByCategory(
   limit = 20
 ): Promise<SanityPostCard[]> {
   return client.fetch(
-    `*[_type == "post" && language == $locale && category._ref == $categoryId && !noIndex]
+    `*[_type == "post" && language == $locale && category._ref == $categoryId && noIndex != true]
       | order(publishedAt desc) [0...$limit] {
       ${POST_CARD_FRAGMENT}
     }`,
@@ -357,7 +357,7 @@ export async function getCategoriesWithCounts(locale: Locale): Promise<SanityCat
       descriptionEn,
       icon,
       order,
-      "postCount": count(*[_type == "post" && language == $locale && !noIndex && category._ref == ^._id])
+      "postCount": count(*[_type == "post" && language == $locale && noIndex != true && category._ref == ^._id])
     }`,
     { locale },
     { next: { tags: ['categories', 'posts'] } }
@@ -378,7 +378,7 @@ export type SearchIndexEntry = {
 /** Every indexable post (both locales) — baked into /search-index.json at build time */
 export async function getSearchIndex(): Promise<SearchIndexEntry[]> {
   return client.fetch(
-    `*[_type == "post" && !noIndex] | order(publishedAt desc) {
+    `*[_type == "post" && noIndex != true] | order(publishedAt desc) {
       title,
       "slug": slug.current,
       language,
@@ -432,7 +432,7 @@ export const getAuthor = cache(
         linkedin,
         twitter,
         website,
-        "posts": *[_type == "post" && language == $locale && references(^._id) && !noIndex]
+        "posts": *[_type == "post" && language == $locale && references(^._id) && noIndex != true]
           | order(publishedAt desc) {
           ${POST_CARD_FRAGMENT}
         }
