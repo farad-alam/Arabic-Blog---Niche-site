@@ -1,3 +1,4 @@
+import { getSiteSettings } from '@/sanity/queries'
 import type { Locale } from '@/lib/i18n'
 
 interface AdSlotProps {
@@ -6,7 +7,12 @@ interface AdSlotProps {
   size?: 'rectangle' | 'tall'
   /** extra classes, e.g. visibility per breakpoint: "xl:hidden" */
   className?: string
-  label?: string
+  /**
+   * AdSense slot ID for this specific ad unit.
+   * Find it in AdSense → Ads → By ad unit → Get code.
+   * Leave undefined to use auto ads or while AdSense is not yet set up.
+   */
+  slotId?: string
 }
 
 const HEIGHTS: Record<NonNullable<AdSlotProps['size']>, string> = {
@@ -14,18 +20,27 @@ const HEIGHTS: Record<NonNullable<AdSlotProps['size']>, string> = {
   tall: 'min-h-[250px] xl:min-h-[600px]',
 }
 
-const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT
-
 /**
- * AdSense slot. Returns null until NEXT_PUBLIC_ADSENSE_CLIENT is set in env.
- * Height is reserved up-front so the page never jumps when the real ad loads (CLS).
- * Replace the inner <div> with the <ins> tag once AdSense is approved.
+ * AdSlot — Server Component
+ *
+ * Behaviour:
+ * - AdSense NOT configured in Sanity → renders nothing (no grey box, no text).
+ * - AdSense configured, no slotId → renders a height-reserved empty div
+ *   (useful for auto ads while you haven't created named units yet).
+ * - AdSense configured, slotId provided → renders the real <ins> tag.
+ *
+ * No env vars needed. Set adsenseClient in Sanity → Site Settings → Analytics.
+ * The webhook busts the cache; next visitor gets live ads. Zero redeploy.
  */
-export default function AdSlot({ locale, size = 'rectangle', className = '' }: AdSlotProps) {
-  // Hide completely until AdSense is configured — prevents showing placeholder text to visitors
-  if (!ADSENSE_CLIENT) return null
+export default async function AdSlot({ locale, size = 'rectangle', className = '', slotId }: AdSlotProps) {
+  const settings = await getSiteSettings()
+  const adsenseClient = settings?.adsenseClient
+
+  // Nothing configured — render nothing (no placeholder visible to users)
+  if (!adsenseClient) return null
 
   const isAr = locale === 'ar'
+
   return (
     <aside
       aria-label={isAr ? 'إعلان' : 'Advertisement'}
@@ -34,9 +49,20 @@ export default function AdSlot({ locale, size = 'rectangle', className = '' }: A
       <p className="text-center text-[11px] text-text-muted/70 mb-1.5 tracking-wide">
         {isAr ? 'إعلان' : 'Advertisement'}
       </p>
-      <div className={`ad-slot ${HEIGHTS[size]}`}>
-        {/* Replace this div with your <ins class="adsbygoogle"> tag */}
-      </div>
+      {slotId ? (
+        // Named ad unit — renders the real AdSense <ins> tag
+        <ins
+          className={`adsbygoogle block ${HEIGHTS[size]}`}
+          style={{ display: 'block' }}
+          data-ad-client={adsenseClient}
+          data-ad-slot={slotId}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
+      ) : (
+        // No slot ID yet — reserve the height so layout doesn't jump later
+        <div className={`ad-slot ${HEIGHTS[size]}`} />
+      )}
     </aside>
   )
 }

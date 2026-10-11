@@ -1,17 +1,6 @@
-/**
- * Schema.org JSON-LD structured data builders.
- * All schemas are blog/affiliate-focused. No agency schemas.
- */
-
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
-const SITE_NAME_AR = process.env.NEXT_PUBLIC_SITE_NAME_AR ?? ''
-const SITE_NAME_EN = process.env.NEXT_PUBLIC_SITE_NAME_EN ?? ''
 
 type Language = 'ar' | 'en'
-
-function getSiteName(language: Language) {
-  return language === 'ar' ? SITE_NAME_AR : SITE_NAME_EN
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // WebSite — injected on homepage (includes Sitelinks Searchbox)
@@ -35,6 +24,8 @@ export function articleSchema(params: {
   keywords?: string[]
   imageUrl?: string
   wordCount?: number
+  /** Site name for the publisher field — pass from getSiteSettings() */
+  siteName?: string
   author?: {
     firstName: string
     lastName: string
@@ -42,9 +33,8 @@ export function articleSchema(params: {
     jobTitle?: string
   }
 }) {
-  const { title, description, slug, language, publishedAt, updatedAt, keywords, imageUrl, wordCount, author } = params
+  const { title, description, slug, language, publishedAt, updatedAt, keywords, imageUrl, wordCount, siteName, author } = params
   const url = `${BASE_URL}/${language}/${slug}`
-  const siteName = getSiteName(language)
 
   return {
     '@context': 'https://schema.org',
@@ -66,10 +56,10 @@ export function articleSchema(params: {
           url: `${BASE_URL}/${language}/authors/${author.slug.current}`,
           ...(author.jobTitle ? { jobTitle: author.jobTitle } : {}),
         }
-      : { '@type': 'Organization', name: siteName, url: BASE_URL },
+      : { '@type': 'Organization', name: siteName ?? '', url: BASE_URL },
     publisher: {
       '@type': 'Organization',
-      name: siteName,
+      name: siteName ?? '',
       url: BASE_URL,
     },
   }
@@ -128,6 +118,8 @@ export function personSchema(params: {
   twitter?: string
   website?: string
   avatarUrl?: string
+  /** Site name — pass from getSiteSettings() */
+  siteName?: string
 }) {
   const name = `${params.firstName} ${params.lastName}`.trim()
   const sameAs = [params.linkedin, params.twitter, params.website].filter(Boolean)
@@ -141,6 +133,6 @@ export function personSchema(params: {
     ...(params.avatarUrl ? { image: { '@type': 'ImageObject', url: params.avatarUrl } } : {}),
     ...(params.expertiseAreas?.length ? { knowsAbout: params.expertiseAreas } : {}),
     ...(sameAs.length ? { sameAs } : {}),
-    worksFor: { '@type': 'Organization', name: getSiteName(params.language), url: BASE_URL },
+    worksFor: { '@type': 'Organization', name: params.siteName ?? '', url: BASE_URL },
   }
 }

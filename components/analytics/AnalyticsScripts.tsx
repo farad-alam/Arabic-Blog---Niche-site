@@ -16,7 +16,7 @@ export default async function AnalyticsScripts() {
   const settings = await getSiteSettings()
   if (!settings) return null
 
-  const { gaId } = settings
+  const { gaId, adsenseClient } = settings
 
   return (
     <>
@@ -38,6 +38,16 @@ export default async function AnalyticsScripts() {
         </>
       )}
 
+      {/* ── Google AdSense ────────────────────────────────────────────────── */}
+      {/* Only rendered when adsenseClient is saved in Sanity Site Settings.  */}
+      {/* Set it to ca-pub-XXXXXXXX once your site is approved by AdSense.    */}
+      {adsenseClient && (
+        <Script
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`}
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+      )}
     </>
   )
 }

@@ -197,6 +197,14 @@ export const siteSettingsSchema = defineType({
       description: 'Alternative to Clarity for heatmaps. Find in Hotjar → Settings → Tracking Code.',
       placeholder: '1234567',
     }),
+    defineField({
+      name: 'adsenseClient',
+      title: 'Google AdSense — Publisher Client ID',
+      type: 'string',
+      group: 'analytics',
+      description: 'Starts with "ca-pub-". Leave blank until your site is approved by AdSense. Once you save this, ads go live on the next visitor — no redeploy needed.',
+      placeholder: 'ca-pub-XXXXXXXXXXXXXXXX',
+    }),
 
     // ── Social Links ──────────────────────────────────────────────────────────
     defineField({

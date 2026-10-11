@@ -430,6 +430,7 @@ export type SanitySiteSettings = {
   bingVerification?: string
   clarityId?: string
   hotjarId?: string
+  adsenseClient?: string
   // Social
   twitter?: string
   facebook?: string
@@ -486,6 +487,7 @@ export const getSiteSettings = cache(
         bingVerification,
         clarityId,
         hotjarId,
+        adsenseClient,
         twitter,
         facebook,
         instagram,

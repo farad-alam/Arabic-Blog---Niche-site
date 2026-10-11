@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type Locale, locales, formatDate, t } from '@/lib/i18n'
-import { getPost, getRecentPostSlugs, type SanityBlock } from '@/sanity/queries'
+import { getPost, getRecentPostSlugs, getSiteSettings, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema } from '@/lib/schema'
@@ -109,6 +109,11 @@ export default async function PostPage({
 
   const [bodyIntro, bodyRest] = post.body ? splitBodyForAd(post.body) : [[], []]
 
+  // getSiteSettings() is React-cached — no extra API call, shares the result
+  // already fetched by the layout, navbar and footer in the same render tree.
+  const settings = await getSiteSettings()
+  const siteName = l === 'ar' ? (settings?.siteNameAr ?? '') : (settings?.siteNameEn ?? '')
+
   const jsonLd = articleSchema({
     title: post.title,
     description: post.excerpt,
@@ -119,6 +124,7 @@ export default async function PostPage({
     keywords: post.keywords,
     imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630 }),
     wordCount: post.wordCount,
+    siteName,
     author: post.author ? {
       firstName: post.author.firstName,
       lastName: post.author.lastName,

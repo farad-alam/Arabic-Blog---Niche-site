@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
-import { getAllAuthorSlugs, getAuthor } from '@/sanity/queries'
+import { getAllAuthorSlugs, getAuthor, getSiteSettings } from '@/sanity/queries'
 import { personSchema } from '@/lib/schema'
 import { urlFor } from '@/sanity/image'
 
@@ -53,6 +53,9 @@ export default async function AuthorPage({
     ? urlFor(author.avatar as any).width(200).height(200).format('webp').url()
     : undefined
 
+  const settings = await getSiteSettings()
+  const siteName = l === 'ar' ? (settings?.siteNameAr ?? '') : (settings?.siteNameEn ?? '')
+
   const personJsonLd = personSchema({
     firstName: author.firstName,
     lastName: author.lastName,
@@ -65,6 +68,7 @@ export default async function AuthorPage({
     twitter: author.twitter,
     website: author.website,
     avatarUrl,
+    siteName,
   })
 
   return (
