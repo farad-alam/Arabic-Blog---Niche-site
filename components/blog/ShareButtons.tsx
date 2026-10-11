@@ -55,7 +55,7 @@ export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButton
       aria-label={t.heading}
       className="my-8 md:my-10 py-5 md:py-6 border-t border-b border-surface-border"
     >
-      <h2 className="font-arabic-heading font-bold text-text-primary text-base mb-3">{t.heading}</h2>
+      <p className="font-arabic-heading font-bold text-text-primary text-base mb-3">{t.heading}</p>
 
       {canNativeShare && (
         <button

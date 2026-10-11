@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { PortableText as SanityPortableText, type PortableTextComponents } from 'next-sanity'
 import Image from 'next/image'
@@ -6,16 +6,16 @@ import { urlFor } from './image'
 import type { SanityBlock } from './queries'
 import { resolveAffiliateUrl } from '@/lib/affiliates'
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Anchor ID generator for headings (used by Table of Contents)
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function slugify(text: unknown): string {
   if (!text) return ''
   const str = Array.isArray(text)
     ? text.map((t) => (typeof t === 'string' ? t : (t as { text?: string })?.text ?? '')).join('')
     : String(text)
-  // Handle Arabic text — preserve Arabic characters in the ID
+  // Handle Arabic text â€” preserve Arabic characters in the ID
   return str
     .trim()
     .replace(/\s+/g, '-')
@@ -23,9 +23,9 @@ function slugify(text: unknown): string {
     .toLowerCase()
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Star Rating Helper
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function StarRating({ rating }: { rating: number }) {
   const full = Math.floor(rating)
@@ -33,20 +33,20 @@ function StarRating({ rating }: { rating: number }) {
   const empty = 5 - full - (half ? 1 : 0)
   return (
     <span className="inline-flex items-center gap-0.5 text-amber-400" aria-label={`Rating: ${rating} out of 5`}>
-      {'★'.repeat(full)}
-      {half && '½'}
-      <span className="text-stone-300">{'★'.repeat(empty)}</span>
+      {'â˜…'.repeat(full)}
+      {half && 'Â½'}
+      <span className="text-stone-300">{'â˜…'.repeat(empty)}</span>
       <span className="ms-1 text-text-muted text-xs font-body">{rating.toFixed(1)}</span>
     </span>
   )
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Portable Text Component Map
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const components: PortableTextComponents = {
-  // ── Block types ────────────────────────────────────────────────────────────
+  // â”€â”€ Block types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   block: {
     h2: ({ children, value }) => (
       <h2
@@ -81,7 +81,7 @@ const components: PortableTextComponents = {
     ),
   },
 
-  // ── Lists ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   list: {
     bullet: ({ children }) => (
       <ul className="text-text-primary/90 list-disc list-outside marker:text-brand-primary space-y-2.5 mb-6 ps-6 text-start">
@@ -99,7 +99,7 @@ const components: PortableTextComponents = {
     number: ({ children }) => <li className="leading-[1.75] rtl:leading-[1.95] ps-1">{children}</li>,
   },
 
-  // ── Marks (inline) ─────────────────────────────────────────────────────────
+  // â”€â”€ Marks (inline) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   marks: {
     strong: ({ children }) => (
       <strong className="font-semibold text-text-primary">{children}</strong>
@@ -121,9 +121,9 @@ const components: PortableTextComponents = {
     ),
   },
 
-  // ── Custom types ───────────────────────────────────────────────────────────
+  // â”€â”€ Custom types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   types: {
-    // ── Inline image ──────────────────────────────────────────────────────────
+    // â”€â”€ Inline image â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     image: ({ value }) => {
       if (!value?.asset) return null
       return (
@@ -148,7 +148,7 @@ const components: PortableTextComponents = {
       )
     },
 
-    // ── Amazon Product Card ───────────────────────────────────────────────────
+    // â”€â”€ Amazon Product Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     amazonProductCard: ({ value }) => {
       if (!value?.name) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
@@ -195,10 +195,12 @@ const components: PortableTextComponents = {
                 </div>
               )}
               {value.price && (
-                <p className="text-text-primary font-bold text-lg sm:text-xl">{value.price}</p>
+                <p className="text-text-primary font-bold text-lg sm:text-xl">
+                  {value.price} <span className="text-text-muted text-sm font-normal">{lang === 'ar' ? 'Ø±.Ø³' : 'SAR'}</span>
+                </p>
               )}
             </div>
-            {/* CTA — full width under the image + details on phones, inline on sm+ */}
+            {/* CTA â€” full width under the image + details on phones, inline on sm+ */}
             {affiliateUrl && (
               <div className={`${hasImg ? 'col-span-2 sm:col-span-1 sm:col-start-2' : ''} px-3 pb-3 sm:px-5 sm:pb-5 sm:pt-0`}>
                 <a
@@ -212,7 +214,7 @@ const components: PortableTextComponents = {
                     <circle cx="20" cy="21" r="1"></circle>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                   </svg>
-                  {lang === 'ar' ? 'اشتري الآن من أمازون' : 'Buy on Amazon'}
+                  {lang === 'ar' ? 'Ø§Ø´ØªØ±ÙŠ Ø§Ù„Ø¢Ù† Ù…Ù† Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Buy on Amazon'}
                 </a>
               </div>
             )}
@@ -222,15 +224,15 @@ const components: PortableTextComponents = {
 
     },
 
-    // ── Product Comparison Table ──────────────────────────────────────────────
+    // â”€â”€ Product Comparison Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     productComparisonTable: ({ value }) => {
       if (!value?.products?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       const verdictLabels: Record<string, string> = {
-        'best-overall': lang === 'ar' ? '🥇 الأفضل' : '🥇 Best Overall',
-        'best-budget': lang === 'ar' ? '💰 الأوفر' : '💰 Best Budget',
-        'best-premium': lang === 'ar' ? '👑 الأفخم' : '👑 Best Premium',
-        'editors-choice': lang === 'ar' ? "✏️ اختيار المحررين" : "✏️ Editor's Choice",
+        'best-overall': lang === 'ar' ? 'ðŸ¥‡ Ø§Ù„Ø£ÙØ¶Ù„' : 'ðŸ¥‡ Best Overall',
+        'best-budget': lang === 'ar' ? 'ðŸ’° Ø§Ù„Ø£ÙˆÙØ±' : 'ðŸ’° Best Budget',
+        'best-premium': lang === 'ar' ? 'ðŸ‘‘ Ø§Ù„Ø£ÙØ®Ù…' : 'ðŸ‘‘ Best Premium',
+        'editors-choice': lang === 'ar' ? "âœï¸ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…Ø­Ø±Ø±ÙŠÙ†" : "âœï¸ Editor's Choice",
       }
 
       return (
@@ -262,7 +264,7 @@ const components: PortableTextComponents = {
                 )}
                 <h4 className="font-bold text-text-primary text-[15px] leading-snug mb-1.5 line-clamp-3">{p.name}</h4>
                 {p.rating && <StarRating rating={p.rating} />}
-                {p.price && <p className="font-bold text-text-primary text-lg mt-1.5">{p.price}</p>}
+                {p.price && <p className="font-bold text-text-primary text-lg mt-1.5">{p.price} <span className="text-text-muted text-xs font-normal">{lang === 'ar' ? 'Ø±.Ø³' : 'SAR'}</span></p>}
                 {(() => {
                   const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
                   return url ? (
@@ -278,7 +280,7 @@ const components: PortableTextComponents = {
                         <circle cx="20" cy="21" r="1"></circle>
                         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                       </svg>
-                      {lang === 'ar' ? 'أمازون' : 'Amazon'}
+                      {lang === 'ar' ? 'Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Amazon'}
                     </a>
                   ) : null
                 })()}
@@ -287,7 +289,7 @@ const components: PortableTextComponents = {
           </div>
           {value.products.length > 1 && (
             <p className="sm:hidden text-center text-xs text-text-muted mt-1" aria-hidden="true">
-              {lang === 'ar' ? '← اسحب لمشاهدة المزيد →' : '← Swipe to compare →'}
+              {lang === 'ar' ? 'â† Ø§Ø³Ø­Ø¨ Ù„Ù…Ø´Ø§Ù‡Ø¯Ø© Ø§Ù„Ù…Ø²ÙŠØ¯ â†’' : 'â† Swipe to compare â†’'}
             </p>
           )}
 
@@ -297,7 +299,7 @@ const components: PortableTextComponents = {
               <thead>
                 <tr className="bg-surface-card border-b border-surface-border">
                   <th className="p-4 text-text-muted font-medium rtl:text-right ltr:text-left">
-                    {lang === 'ar' ? 'المنتج' : 'Product'}
+                    {lang === 'ar' ? 'Ø§Ù„Ù…Ù†ØªØ¬' : 'Product'}
                   </th>
                   {value.products.map((p: any, i: number) => (
                     <th key={i} className="p-4 text-center">
@@ -317,21 +319,21 @@ const components: PortableTextComponents = {
               </thead>
               <tbody>
                 <tr className="border-b border-surface-border/50">
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'التقييم' : 'Rating'}</td>
+                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'Rating'}</td>
                   {value.products.map((p: any, i: number) => (
                     <td key={i} className="p-4 text-center">
-                      {p.rating ? <StarRating rating={p.rating} /> : '—'}
+                      {p.rating ? <StarRating rating={p.rating} /> : 'â€”'}
                     </td>
                   ))}
                 </tr>
                 <tr className="border-b border-surface-border/50">
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'السعر' : 'Price'}</td>
+                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„Ø³Ø¹Ø±' : 'Price'}</td>
                   {value.products.map((p: any, i: number) => (
-                    <td key={i} className="p-4 text-center font-bold text-text-primary">{p.price ?? '—'}</td>
+                    <td key={i} className="p-4 text-center font-bold text-text-primary">{p.price ?? 'â€”'}</td>
                   ))}
                 </tr>
                 <tr>
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'الشراء' : 'Buy'}</td>
+                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„Ø´Ø±Ø§Ø¡' : 'Buy'}</td>
                   {value.products.map((p: any, i: number) => (
                     <td key={i} className="p-4 text-center">
                       {(() => {
@@ -348,9 +350,9 @@ const components: PortableTextComponents = {
                               <circle cx="20" cy="21" r="1"></circle>
                               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                             </svg>
-                            {lang === 'ar' ? 'أمازون' : 'Amazon'}
+                            {lang === 'ar' ? 'Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Amazon'}
                           </a>
-                        ) : '—'
+                        ) : 'â€”'
                       })()}
                     </td>
                   ))}
@@ -362,7 +364,7 @@ const components: PortableTextComponents = {
       )
     },
 
-    // ── Pros & Cons ───────────────────────────────────────────────────────────
+    // â”€â”€ Pros & Cons â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     prosConsBlock: ({ value }) => {
       if (!value?.pros?.length && !value?.cons?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
@@ -371,13 +373,13 @@ const components: PortableTextComponents = {
           {value.pros?.length > 0 && (
             <div className="bg-state-success/5 border border-state-success/20 rounded-xl p-4 sm:p-5">
               <h4 className="font-arabic-heading font-bold text-state-success mb-3 flex items-center gap-2 text-lg">
-                <span>✅</span>
-                {lang === 'ar' ? 'المميزات' : 'Pros'}
+                <span>âœ…</span>
+                {lang === 'ar' ? 'Ø§Ù„Ù…Ù…ÙŠØ²Ø§Øª' : 'Pros'}
               </h4>
               <ul className="space-y-2.5">
                 {value.pros.map((pro: string, i: number) => (
                   <li key={i} className="text-text-primary/90 text-[15px] leading-relaxed flex items-start gap-2">
-                    <span className="text-state-success mt-0.5 shrink-0">✓</span>
+                    <span className="text-state-success mt-0.5 shrink-0">âœ“</span>
                     {pro}
                   </li>
                 ))}
@@ -387,13 +389,13 @@ const components: PortableTextComponents = {
           {value.cons?.length > 0 && (
             <div className="bg-state-error/5 border border-state-error/20 rounded-xl p-4 sm:p-5">
               <h4 className="font-arabic-heading font-bold text-state-error mb-3 flex items-center gap-2 text-lg">
-                <span>❌</span>
-                {lang === 'ar' ? 'العيوب' : 'Cons'}
+                <span>âŒ</span>
+                {lang === 'ar' ? 'Ø§Ù„Ø¹ÙŠÙˆØ¨' : 'Cons'}
               </h4>
               <ul className="space-y-2.5">
                 {value.cons.map((con: string, i: number) => (
                   <li key={i} className="text-text-primary/90 text-[15px] leading-relaxed flex items-start gap-2">
-                    <span className="text-state-error mt-0.5 shrink-0">✗</span>
+                    <span className="text-state-error mt-0.5 shrink-0">âœ—</span>
                     {con}
                   </li>
                 ))}
@@ -404,14 +406,14 @@ const components: PortableTextComponents = {
       )
     },
 
-    // ── FAQ Block ─────────────────────────────────────────────────────────────
+    // â”€â”€ FAQ Block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     faqBlock: ({ value }) => {
       if (!value?.items?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       return (
         <div className="my-8 md:my-10">
           <h3 className="font-arabic-heading font-bold text-text-primary text-[19px] sm:text-xl mb-4 md:mb-6 text-start">
-            {lang === 'ar' ? 'الأسئلة الشائعة' : 'Frequently Asked Questions'}
+            {lang === 'ar' ? 'Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø´Ø§Ø¦Ø¹Ø©' : 'Frequently Asked Questions'}
           </h3>
           <div className="space-y-3">
             {value.items.map((item: { question: string; answer: string }, i: number) => (
@@ -438,14 +440,14 @@ const components: PortableTextComponents = {
       )
     },
 
-    // ── Callout Block ─────────────────────────────────────────────────────────
+    // â”€â”€ Callout Block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     calloutBlock: ({ value }) => {
       if (!value?.text) return null
       const styles: Record<string, { border: string; bg: string; icon: string; label: string }> = {
-        tip:       { border: 'border-emerald-500/30', bg: 'bg-emerald-500/5',  icon: '💡', label: 'Tip' },
-        info:      { border: 'border-blue-500/30',    bg: 'bg-blue-500/5',     icon: 'ℹ️', label: 'Info' },
-        warning:   { border: 'border-amber-500/30',   bg: 'bg-amber-500/5',    icon: '⚠️', label: 'Warning' },
-        important: { border: 'border-red-500/30',     bg: 'bg-red-500/5',      icon: '🔴', label: 'Important' },
+        tip:       { border: 'border-emerald-500/30', bg: 'bg-emerald-500/5',  icon: 'ðŸ’¡', label: 'Tip' },
+        info:      { border: 'border-blue-500/30',    bg: 'bg-blue-500/5',     icon: 'â„¹ï¸', label: 'Info' },
+        warning:   { border: 'border-amber-500/30',   bg: 'bg-amber-500/5',    icon: 'âš ï¸', label: 'Warning' },
+        important: { border: 'border-red-500/30',     bg: 'bg-red-500/5',      icon: 'ðŸ”´', label: 'Important' },
       }
       const s = styles[value.type ?? 'info'] ?? styles.info
       return (
@@ -460,9 +462,9 @@ const components: PortableTextComponents = {
   },
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Export
-// ─────────────────────────────────────────────────────────────────────────────
+// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface PortableTextProps {
   value: SanityBlock[]
@@ -471,3 +473,4 @@ interface PortableTextProps {
 export function PortableText({ value }: PortableTextProps) {
   return <SanityPortableText value={value} components={components} />
 }
+

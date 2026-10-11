@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { type Locale, locales, formatDate } from '@/lib/i18n'
+import { type Locale, locales, formatDate, t } from '@/lib/i18n'
 import { getPost, getRecentPostSlugs, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
 import { PortableText } from '@/sanity/portableText'
@@ -174,7 +174,7 @@ export default async function PostPage({
             </ol>
           </nav>
 
-          <article itemScope itemType="https://schema.org/Article">
+          <article>
             
             {/* ── 3-Column Layout: TOC | Content | Sidebar (xl) — single readable column below ── */}
             <div className="grid grid-cols-1 xl:grid-cols-[220px_minmax(0,1fr)_280px] gap-6 xl:gap-10 max-w-[760px] mx-auto xl:max-w-none">
@@ -203,9 +203,18 @@ export default async function PostPage({
                       </Link>
                     )}
                     <span className="text-text-muted text-[13px] md:text-sm flex items-center gap-2">
-                      <time dateTime={post.publishedAt} itemProp="datePublished">
+                      <time dateTime={post.publishedAt}>
                         {formatDate(post.publishedAt, l)}
                       </time>
+                      {post.updatedAt && post.updatedAt !== post.publishedAt && (
+                        <>
+                          <span className="opacity-50" aria-hidden="true">·</span>
+                          <span className="flex items-center gap-1">
+                            <span>{t(l, 'article.updatedAt')}:</span>
+                            <time dateTime={post.updatedAt}>{formatDate(post.updatedAt, l)}</time>
+                          </span>
+                        </>
+                      )}
                       {post.readTime && (
                         <>
                           <span className="opacity-50" aria-hidden="true">•</span>
@@ -215,17 +224,17 @@ export default async function PostPage({
                     </span>
                   </div>
 
-                  <h1 itemProp="headline" className="font-arabic-heading font-bold text-[26px] sm:text-4xl md:text-5xl text-text-primary leading-[1.4] md:leading-[1.3] text-balance mb-3 md:mb-5">
+                  <h1 className="font-arabic-heading font-bold text-[26px] sm:text-4xl md:text-5xl text-text-primary leading-[1.4] md:leading-[1.3] text-balance mb-3 md:mb-5">
                     {post.title}
                   </h1>
                   
-                  <p itemProp="description" className="font-body text-text-muted text-base md:text-xl leading-relaxed line-clamp-3 md:line-clamp-none mb-4 md:mb-6">
+                  <p className="font-body text-text-muted text-base md:text-xl leading-relaxed line-clamp-3 md:line-clamp-none mb-4 md:mb-6">
                     {post.excerpt}
                   </p>
 
                   <div className="flex items-center gap-4 pb-4 md:pb-6 border-b border-surface-border">
                     {post.author && (
-                      <address className="not-italic min-w-0" itemProp="author" itemScope itemType="https://schema.org/Person">
+                      <address className="not-italic min-w-0">
                         <Link href={`/${l}/authors/${post.author.slug.current}`} rel="author" className="flex items-center gap-3 group min-h-[44px]">
                           {post.author.avatar?.asset ? (
                             <Image
@@ -241,7 +250,7 @@ export default async function PostPage({
                             </div>
                           )}
                           <div className="text-start min-w-0">
-                            <p itemProp="name" className="font-bold text-text-primary text-sm group-hover:text-brand-primary transition-colors truncate">
+                            <p className="font-bold text-text-primary text-sm group-hover:text-brand-primary transition-colors truncate">
                               {authorName}
                             </p>
                             {jobTitle && (
@@ -264,7 +273,6 @@ export default async function PostPage({
                         fill
                         priority
                         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 760px, 640px"
-                        itemProp="image"
                         className="object-cover"
                       />
                     </div>
@@ -294,7 +302,7 @@ export default async function PostPage({
                 {post.body && <TableOfContents body={post.body} variant="mobile" locale={l} />}
 
                 {/* ── Article body ────────────────────────────────────────────── */}
-                <section id="article-content" itemProp="articleBody" className="article-body">
+                <section id="article-content" className="article-body">
                   {post.body ? (
                     <>
                       <PortableText value={bodyIntro} />
@@ -320,9 +328,9 @@ export default async function PostPage({
                 <footer className="mt-8 md:mt-12">
                   {post.keywords && post.keywords.length > 0 && (
                     <div className="pt-6 md:pt-8 border-t border-surface-border">
-                      <h2 className="text-text-primary font-bold mb-3 text-sm">
+                      <p className="text-text-primary font-bold mb-3 text-sm">
                         {isAr ? 'الكلمات المفتاحية:' : 'Tags:'}
-                      </h2>
+                      </p>
                       <ul className="flex flex-wrap gap-2">
                         {post.keywords.map((keyword) => (
                           <li key={keyword} className="bg-surface-card border border-surface-border text-text-muted text-[13px] px-3 py-1.5 rounded-lg">

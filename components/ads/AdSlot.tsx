@@ -14,13 +14,18 @@ const HEIGHTS: Record<NonNullable<AdSlotProps['size']>, string> = {
   tall: 'min-h-[250px] xl:min-h-[600px]',
 }
 
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT
+
 /**
- * AdSense placeholder. Height is reserved up-front so the page never jumps
- * when the real ad loads (CLS). Replace the inner text with the <ins> tag later.
+ * AdSense slot. Returns null until NEXT_PUBLIC_ADSENSE_CLIENT is set in env.
+ * Height is reserved up-front so the page never jumps when the real ad loads (CLS).
+ * Replace the inner <div> with the <ins> tag once AdSense is approved.
  */
-export default function AdSlot({ locale, size = 'rectangle', className = '', label }: AdSlotProps) {
+export default function AdSlot({ locale, size = 'rectangle', className = '' }: AdSlotProps) {
+  // Hide completely until AdSense is configured — prevents showing placeholder text to visitors
+  if (!ADSENSE_CLIENT) return null
+
   const isAr = locale === 'ar'
-  const text = label ?? 'AdSense'
   return (
     <aside
       aria-label={isAr ? 'إعلان' : 'Advertisement'}
@@ -29,7 +34,9 @@ export default function AdSlot({ locale, size = 'rectangle', className = '', lab
       <p className="text-center text-[11px] text-text-muted/70 mb-1.5 tracking-wide">
         {isAr ? 'إعلان' : 'Advertisement'}
       </p>
-      <div className={`ad-slot ${HEIGHTS[size]}`}>{text}</div>
+      <div className={`ad-slot ${HEIGHTS[size]}`}>
+        {/* Replace this div with your <ins class="adsbygoogle"> tag */}
+      </div>
     </aside>
   )
 }
