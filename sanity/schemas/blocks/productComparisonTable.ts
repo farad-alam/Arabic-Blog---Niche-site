@@ -18,7 +18,7 @@ export const productComparisonTableSchema = {
       name: 'products',
       title: 'Products',
       type: 'array',
-      validation: (rule: any) => rule.min(2).max(6),
+      validation: (rule: any) => rule.min(1).max(10),
       of: [
         {
           type: 'object',

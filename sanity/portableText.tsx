@@ -224,141 +224,338 @@ const components: PortableTextComponents = {
 
     },
 
-    // â”€â”€ Product Comparison Table â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Product Comparison Table (VacuumWars-style Leaderboard) ───────────────
     productComparisonTable: ({ value }) => {
       if (!value?.products?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
+      const isAr = lang === 'ar'
+
       const verdictLabels: Record<string, string> = {
-        'best-overall': lang === 'ar' ? 'ðŸ¥‡ Ø§Ù„Ø£ÙØ¶Ù„' : 'ðŸ¥‡ Best Overall',
-        'best-budget': lang === 'ar' ? 'ðŸ’° Ø§Ù„Ø£ÙˆÙØ±' : 'ðŸ’° Best Budget',
-        'best-premium': lang === 'ar' ? 'ðŸ‘‘ Ø§Ù„Ø£ÙØ®Ù…' : 'ðŸ‘‘ Best Premium',
-        'editors-choice': lang === 'ar' ? "âœï¸ Ø§Ø®ØªÙŠØ§Ø± Ø§Ù„Ù…Ø­Ø±Ø±ÙŠÙ†" : "âœï¸ Editor's Choice",
+        'best-overall': isAr ? '🥇 الأفضل على الإطلاق' : '🥇 Best Overall',
+        'best-budget': isAr ? '💰 الأفضل قيمة وسعراً' : '💰 Best Budget',
+        'best-premium': isAr ? '👑 الخيار الفاخر' : '👑 Best Premium',
+        'editors-choice': isAr ? "✏️ اختيار المحررين" : "✏️ Editor's Choice",
       }
 
       return (
-        <div className="my-8 md:my-10">
-          {value.heading && (
-            <h3 className="font-arabic-heading font-bold text-text-primary text-[19px] sm:text-xl mb-4 md:mb-6 text-start">
-              {value.heading}
+        <div className="my-8 md:my-12">
+          {/* Eyebrow & Title */}
+          <div className="mb-4">
+            <span className="text-[12px] font-bold uppercase tracking-wider text-brand-primary block mb-1">
+              {isAr ? 'الترتيب والتصنيف' : 'THE RANKING'}
+            </span>
+            <h3 className="font-arabic-heading font-extrabold text-text-primary text-xl sm:text-2xl md:text-3xl tracking-tight text-start">
+              {value.heading || (isAr ? 'أفضل الخيارات' : 'The Top Picks')}
             </h3>
-          )}
-          {/* Mobile: swipeable snap cards (next card peeks in to hint at scrolling) */}
-          <div
-            className="flex gap-3 overflow-x-auto snap-x snap-mandatory pb-3 -mx-4 px-4 scroll-px-4 scrollbar-hide sm:hidden overscroll-x-contain"
-            role="list"
-          >
-            {value.products.map((p: any, i: number) => (
-              <div
-                key={i}
-                role="listitem"
-                className="snap-start w-[78%] min-w-[78%] max-w-[300px] bg-surface-card rounded-xl border border-surface-border p-3.5 shrink-0 flex flex-col shadow-card"
-              >
-                {p.verdict && (
-                  <span className="inline-block bg-brand-primary/10 text-brand-primary text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit">
-                    {verdictLabels[p.verdict] ?? p.verdict}
-                  </span>
-                )}
-                {p.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={p.imageUrl} alt={p.name} className="w-full h-32 object-contain bg-white rounded-lg mb-3 p-2" loading="lazy" decoding="async" />
-                )}
-                <h4 className="font-bold text-text-primary text-[15px] leading-snug mb-1.5 line-clamp-3">{p.name}</h4>
-                {p.rating && <StarRating rating={p.rating} />}
-                {p.price && <p className="font-bold text-text-primary text-lg mt-1.5">{p.price} <span className="text-text-muted text-xs font-normal">{lang === 'ar' ? 'Ø±.Ø³' : 'SAR'}</span></p>}
-                {(() => {
-                  const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
-                  return url ? (
-                    <a
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer nofollow sponsored"
-                      className="mt-auto flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-dark active:bg-brand-deep text-white font-bold text-sm w-full min-h-[48px] rounded-lg transition-colors shadow-sm"
-                      style={{ marginTop: 'auto' }}
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <circle cx="9" cy="21" r="1"></circle>
-                        <circle cx="20" cy="21" r="1"></circle>
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                      </svg>
-                      {lang === 'ar' ? 'Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Amazon'}
-                    </a>
-                  ) : null
-                })()}
-              </div>
-            ))}
           </div>
-          {value.products.length > 1 && (
-            <p className="sm:hidden text-center text-xs text-text-muted mt-1" aria-hidden="true">
-              {lang === 'ar' ? 'â† Ø§Ø³Ø­Ø¨ Ù„Ù…Ø´Ø§Ù‡Ø¯Ø© Ø§Ù„Ù…Ø²ÙŠØ¯ â†’' : 'â† Swipe to compare â†’'}
-            </p>
-          )}
 
-          {/* Desktop: table */}
-          <div className="hidden sm:block overflow-x-auto rounded-xl border border-surface-border">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="bg-surface-card border-b border-surface-border">
-                  <th className="p-4 text-text-muted font-medium rtl:text-right ltr:text-left">
-                    {lang === 'ar' ? 'Ø§Ù„Ù…Ù†ØªØ¬' : 'Product'}
-                  </th>
-                  {value.products.map((p: any, i: number) => (
-                    <th key={i} className="p-4 text-center">
-                      {p.verdict && (
-                        <span className="block bg-brand-primary/10 text-brand-primary text-xs px-2 py-0.5 rounded-full mb-2 mx-auto w-fit">
-                          {verdictLabels[p.verdict] ?? p.verdict}
-                        </span>
-                      )}
-                      {p.imageUrl && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.imageUrl} alt={p.name} width={64} height={64} className="w-16 h-16 object-contain mx-auto bg-white rounded p-1 mb-2" loading="lazy" decoding="async" />
-                      )}
-                      <span className="font-semibold text-text-primary">{p.name}</span>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-surface-border/50">
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„ØªÙ‚ÙŠÙŠÙ…' : 'Rating'}</td>
-                  {value.products.map((p: any, i: number) => (
-                    <td key={i} className="p-4 text-center">
-                      {p.rating ? <StarRating rating={p.rating} /> : 'â€”'}
-                    </td>
-                  ))}
-                </tr>
-                <tr className="border-b border-surface-border/50">
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„Ø³Ø¹Ø±' : 'Price'}</td>
-                  {value.products.map((p: any, i: number) => (
-                    <td key={i} className="p-4 text-center font-bold text-text-primary">{p.price ?? 'â€”'}</td>
-                  ))}
-                </tr>
-                <tr>
-                  <td className="p-4 text-text-muted">{lang === 'ar' ? 'Ø§Ù„Ø´Ø±Ø§Ø¡' : 'Buy'}</td>
-                  {value.products.map((p: any, i: number) => (
-                    <td key={i} className="p-4 text-center">
-                      {(() => {
-                        const url = resolveAffiliateUrl({ asin: p.asin, affiliateUrl: p.affiliateUrl }, lang)
-                        return url ? (
-                          <a
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer nofollow"
-                            className="inline-flex items-center justify-center gap-1.5 bg-brand-primary hover:bg-brand-dark active:bg-brand-deep text-white font-bold text-xs min-h-[44px] px-4 rounded-lg transition-colors shadow-sm"
+          {/* Table Container Card */}
+          <div className="bg-white rounded-2xl border border-surface-border shadow-card overflow-hidden">
+            {/* Desktop / Tablet Column Header */}
+            <div className="hidden sm:grid sm:grid-cols-[68px_minmax(0,1fr)_110px_190px] items-center gap-3 bg-[#FAF9F5] border-b border-surface-border/80 px-5 py-3 text-[11px] font-bold text-text-muted uppercase tracking-wider select-none">
+              <span className="text-center">{isAr ? 'الترتيب' : 'RANK'}</span>
+              <span className="text-start ps-1">{isAr ? 'المنتج' : 'PRODUCT'}</span>
+              <span className="text-center">{isAr ? 'التقييم' : 'SCORE'}</span>
+              <span className="text-center">{isAr ? 'الشراء' : 'ACTION'}</span>
+            </div>
+
+            {/* Product Rows List */}
+            <div className="divide-y divide-surface-border/60">
+              {value.products.map((p: any, i: number) => {
+                const affiliateUrl = resolveAffiliateUrl(
+                  { asin: p.asin, affiliateUrl: p.affiliateUrl },
+                  lang
+                )
+                const rankNumber = i + 1
+                const rankBadgeClass =
+                  rankNumber === 1
+                    ? 'bg-amber-400 text-stone-950 font-black'
+                    : rankNumber === 2
+                    ? 'bg-amber-300 text-stone-950 font-black'
+                    : rankNumber === 3
+                    ? 'bg-amber-200 text-stone-950 font-black'
+                    : 'bg-[#1E3A5F] text-white font-extrabold'
+
+                const formattedScore =
+                  typeof p.rating === 'number'
+                    ? p.rating % 1 === 0
+                      ? p.rating.toFixed(1)
+                      : p.rating.toFixed(2)
+                    : null
+
+                const hasDetails = Boolean(
+                  p.verdict || (p.pros && p.pros.length > 0) || (p.cons && p.cons.length > 0)
+                )
+
+                return (
+                  <details
+                    key={i}
+                    className="group transition-colors duration-150 hover:bg-stone-50/50"
+                  >
+                    <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer select-none">
+                      {/* ── Desktop Row Layout ── */}
+                      <div className="hidden sm:grid sm:grid-cols-[68px_minmax(0,1fr)_110px_190px] items-center gap-3 px-5 py-4">
+                        {/* 1. Rank Badge */}
+                        <div className="flex justify-center">
+                          <span
+                            className={`inline-flex items-center justify-center min-w-[38px] h-8 px-2.5 rounded-lg text-sm shadow-xs ${rankBadgeClass}`}
+                            aria-label={`Rank #${rankNumber}`}
                           >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                              <circle cx="9" cy="21" r="1"></circle>
-                              <circle cx="20" cy="21" r="1"></circle>
-                              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-                            </svg>
-                            {lang === 'ar' ? 'Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Amazon'}
-                          </a>
-                        ) : 'â€”'
-                      })()}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+                            #{rankNumber}
+                          </span>
+                        </div>
+
+                        {/* 2. Product (Image + Title + Verdict) */}
+                        <div className="flex items-center gap-3.5 min-w-0">
+                          {p.imageUrl ? (
+                            <div className="w-14 h-14 shrink-0 rounded-lg bg-white p-1 border border-surface-border/70 flex items-center justify-center overflow-hidden">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={p.imageUrl}
+                                alt={p.name}
+                                className="w-full h-full object-contain"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-14 h-14 shrink-0 rounded-lg bg-stone-100 flex items-center justify-center text-stone-400 font-bold text-xs">
+                              #{rankNumber}
+                            </div>
+                          )}
+
+                          <div className="min-w-0 flex flex-col gap-0.5">
+                            {p.verdict && (
+                              <span className="inline-block bg-brand-primary/10 text-brand-primary text-[11px] font-semibold px-2 py-0.5 rounded-full w-fit max-w-full truncate">
+                                {verdictLabels[p.verdict] ?? p.verdict}
+                              </span>
+                            )}
+                            <h4 className="font-heading font-bold text-text-primary text-[15px] leading-snug line-clamp-2">
+                              {p.name}
+                            </h4>
+                          </div>
+                        </div>
+
+                        {/* 3. Score */}
+                        <div className="flex items-center justify-center gap-1.5 text-center">
+                          {formattedScore ? (
+                            <span className="inline-flex items-center gap-1 font-bold text-[15px] text-text-primary">
+                              <span className="text-amber-500 text-sm">★</span>
+                              <span>{formattedScore}</span>
+                            </span>
+                          ) : (
+                            <span className="text-text-muted text-sm">—</span>
+                          )}
+                        </div>
+
+                        {/* 4. CTA Button & Expand Chevron */}
+                        <div className="flex items-center justify-end gap-2">
+                          {affiliateUrl ? (
+                            <a
+                              href={affiliateUrl}
+                              target="_blank"
+                              rel="noopener noreferrer nofollow sponsored"
+                              onClick={(e) => e.stopPropagation()}
+                              className="inline-flex items-center justify-center gap-1.5 bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-stone-950 font-bold text-xs px-3.5 py-2 rounded-xl shadow-xs transition-colors whitespace-nowrap min-h-[38px]"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.4"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                              </svg>
+                              <span>{isAr ? 'شاهد في أمازون' : 'See at Amazon'}</span>
+                            </a>
+                          ) : null}
+
+                          {hasDetails && (
+                            <span
+                              className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 group-hover:text-stone-700 transition-colors shrink-0"
+                              title={isAr ? 'عرض التفاصيل' : 'View details'}
+                            >
+                              <svg
+                                className="w-4 h-4 transition-transform duration-200 group-open:rotate-180"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* ── Mobile Layout (< sm) ── */}
+                      <div className="block sm:hidden p-3.5">
+                        {/* Header bar: Rank + Verdict + Score */}
+                        <div className="flex items-center justify-between gap-2 mb-2.5">
+                          <div className="flex items-center gap-2">
+                            <span
+                              className={`inline-flex items-center justify-center min-w-[34px] h-7 px-2 rounded-md text-xs shadow-xs ${rankBadgeClass}`}
+                            >
+                              #{rankNumber}
+                            </span>
+                            {p.verdict && (
+                              <span className="inline-block bg-brand-primary/10 text-brand-primary text-[10px] font-semibold px-2 py-0.5 rounded-full truncate max-w-[150px]">
+                                {verdictLabels[p.verdict] ?? p.verdict}
+                              </span>
+                            )}
+                          </div>
+
+                          {formattedScore && (
+                            <span className="inline-flex items-center gap-1 font-bold text-xs text-text-primary">
+                              <span className="text-amber-500 text-xs">★</span>
+                              <span>{formattedScore}</span>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Middle: Thumbnail + Name */}
+                        <div className="flex items-center gap-3 mb-3">
+                          {p.imageUrl && (
+                            <div className="w-12 h-12 shrink-0 rounded-lg bg-white p-1 border border-surface-border/70 flex items-center justify-center overflow-hidden">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={p.imageUrl}
+                                alt={p.name}
+                                className="w-full h-full object-contain"
+                                loading="lazy"
+                                decoding="async"
+                              />
+                            </div>
+                          )}
+                          <h4 className="font-heading font-bold text-text-primary text-sm leading-snug line-clamp-2">
+                            {p.name}
+                          </h4>
+                        </div>
+
+                        {/* Bottom: CTA + Expand Chevron */}
+                        <div className="flex items-center gap-2">
+                          {affiliateUrl && (
+                            <a
+                              href={affiliateUrl}
+                              target="_blank"
+                              rel="noopener noreferrer nofollow sponsored"
+                              onClick={(e) => e.stopPropagation()}
+                              className="flex-1 inline-flex items-center justify-center gap-1.5 bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-stone-950 font-bold text-xs px-3 py-2.5 rounded-xl shadow-xs transition-colors min-h-[40px]"
+                            >
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.4"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                              </svg>
+                              <span>{isAr ? 'شاهد في أمازون' : 'See at Amazon'}</span>
+                            </a>
+                          )}
+
+                          {hasDetails && (
+                            <span className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
+                              <svg
+                                className="w-4 h-4 transition-transform duration-200 group-open:rotate-180"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                aria-hidden="true"
+                              >
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </summary>
+
+                    {/* ── Expanded Product Details Drawer ── */}
+                    {hasDetails && (
+                      <div className="border-t border-surface-border/60 bg-[#FAF9F5]/80 px-4 sm:px-6 py-4 sm:py-5">
+                        {p.verdict && (
+                          <div className="mb-3 text-xs font-semibold text-brand-primary flex items-center gap-1.5">
+                            <span>{verdictLabels[p.verdict] ?? p.verdict}</span>
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                          {p.pros && p.pros.length > 0 && (
+                            <div className="bg-emerald-50/60 border border-emerald-200/60 rounded-xl p-3 sm:p-3.5">
+                              <div className="text-emerald-800 font-bold text-xs mb-2 flex items-center gap-1.5">
+                                <span>✓</span>
+                                <span>{isAr ? 'المميزات' : 'Pros'}</span>
+                              </div>
+                              <ul className="space-y-1.5 text-xs text-text-primary/90">
+                                {p.pros.map((pro: string, pIdx: number) => (
+                                  <li key={pIdx} className="flex items-start gap-1.5">
+                                    <span className="text-emerald-600 font-bold shrink-0">✓</span>
+                                    <span>{pro}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {p.cons && p.cons.length > 0 && (
+                            <div className="bg-rose-50/60 border border-rose-200/60 rounded-xl p-3 sm:p-3.5">
+                              <div className="text-rose-800 font-bold text-xs mb-2 flex items-center gap-1.5">
+                                <span>✕</span>
+                                <span>{isAr ? 'العيوب' : 'Cons'}</span>
+                              </div>
+                              <ul className="space-y-1.5 text-xs text-text-primary/90">
+                                {p.cons.map((con: string, cIdx: number) => (
+                                  <li key={cIdx} className="flex items-start gap-1.5">
+                                    <span className="text-rose-600 font-bold shrink-0">✕</span>
+                                    <span>{con}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+
+                        {affiliateUrl && (
+                          <div className="mt-3 pt-3 border-t border-surface-border/40 flex justify-end">
+                            <a
+                              href={affiliateUrl}
+                              target="_blank"
+                              rel="noopener noreferrer nofollow sponsored"
+                              className="text-xs font-bold text-brand-primary hover:underline inline-flex items-center gap-1"
+                            >
+                              <span>{isAr ? `عرض ${p.name} على أمازون` : `View ${p.name} on Amazon`}</span>
+                              <span>→</span>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </details>
+                )
+              })}
+            </div>
           </div>
         </div>
       )
