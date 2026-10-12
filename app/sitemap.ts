@@ -23,11 +23,10 @@ export async function generateSitemaps() {
   ]
 }
 
-export default async function sitemap(
-  props?: { id?: string } | Promise<{ id?: string }>
-): Promise<MetadataRoute.Sitemap> {
-  const resolved = props ? await Promise.resolve(props) : undefined
-  const id = resolved?.id
+export default async function sitemap(props?: {
+  id?: string | Promise<string>
+}): Promise<MetadataRoute.Sitemap> {
+  const id = props?.id ? await Promise.resolve(props.id) : undefined
 
   // ── 1. Pages Sub-Sitemap ────────────────────────────────────────────────────
   if (id === 'pages') {
