@@ -132,7 +132,6 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
           <div className="lg:col-span-2">
             <h4 className={headingClass}>{isAr ? 'روابط مهمة' : 'Quick Links'}</h4>
             <ul className="space-y-3">
-              <li><Link href={`/${locale}/articles`} className={linkClass}>{t(locale, 'nav.articles')}</Link></li>
               <li><Link href={`/${locale}/about`} className={linkClass}>{t(locale, 'nav.about')}</Link></li>
               <li><Link href={`/${locale}/contact`} className={linkClass}>{t(locale, 'nav.contact')}</Link></li>
               <li><Link href={`/${locale}/disclosure`} className={linkClass}>{isAr ? 'إفصاح الروابط التابعة' : 'Affiliate Disclosure'}</Link></li>

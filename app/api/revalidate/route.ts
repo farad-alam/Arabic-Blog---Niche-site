@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
   // Revalidate only what changed
   if (_type === 'post') {
-    // Listings that show many posts: home, /articles, search index, sitemap
+    // Listings that show many posts: home, search index, sitemap
     expire('posts')
     if (categoryRef) expire(`category-${categoryRef}`)
 
@@ -76,7 +76,6 @@ export async function POST(req: NextRequest) {
 
     revalidatePath('/[locale]', 'page')
     revalidatePath('/[locale]/category/[categorySlug]', 'page')
-    revalidatePath('/[locale]/articles', 'page')
     revalidatePath('/search-index.json')
   }
 

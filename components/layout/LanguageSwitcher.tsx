@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { type Locale } from '@/lib/i18n'
 
 /** Pages that exist under the same path in both languages */
-const SHARED_PATHS = new Set(['', 'about', 'privacy', 'terms', 'contact', 'disclosure', 'articles', 'search'])
+const SHARED_PATHS = new Set(['', 'about', 'privacy', 'terms', 'contact', 'disclosure', 'search'])
 
 export default function LanguageSwitcher({ currentLocale }: { currentLocale: Locale }) {
   const pathname = usePathname()
