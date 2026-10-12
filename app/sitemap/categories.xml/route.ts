@@ -12,14 +12,14 @@ export async function GET() {
     if (cat.slugAr) {
       entries.push({
         url: `${BASE_URL}/ar/category/${cat.slugAr}`,
-        changefreq: 'weekly',
+        changefreq: 'monthly',
         priority: '0.7',
       })
     }
     if (cat.slugEn) {
       entries.push({
         url: `${BASE_URL}/en/category/${cat.slugEn}`,
-        changefreq: 'weekly',
+        changefreq: 'monthly',
         priority: '0.6',
       })
     }
