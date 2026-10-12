@@ -1,6 +1,5 @@
 import React from 'react'
 import { PortableText as SanityPortableText, type PortableTextComponents } from 'next-sanity'
-import Image from 'next/image'
 import { urlFor } from './image'
 import type { SanityBlock } from './queries'
 import { resolveAffiliateUrl } from '@/lib/affiliates'
