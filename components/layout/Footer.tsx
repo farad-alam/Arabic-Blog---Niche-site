@@ -79,12 +79,12 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
           <div className="lg:col-span-4">
             <Link href={`/${locale}`} className="inline-flex items-center gap-2.5 mb-5 group">
               {settings?.logo?.asset?.url ? (
-                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+                <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 drop-shadow-md">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={settings.logo.asset.url}
                     alt={settings.logo.alt || siteName}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain rounded-full"
                     loading="lazy"
                     decoding="async"
                   />

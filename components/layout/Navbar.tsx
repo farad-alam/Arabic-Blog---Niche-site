@@ -106,12 +106,12 @@ export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt 
           {/* ── Logo ───────────────────────────────────────────────────── */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
             {logoUrl ? (
-              <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center p-1 shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 drop-shadow-md">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={logoUrl}
                   alt={logoAlt || siteName}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain rounded-full"
                   loading="eager"
                   decoding="async"
                 />
