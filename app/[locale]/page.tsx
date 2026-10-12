@@ -1,11 +1,17 @@
 import { notFound } from 'next/navigation'
-import { type Locale, locales, t } from '@/lib/i18n'
-import { getCategoriesWithCounts, getPostsByLocale, getSiteSettings } from '@/sanity/queries'
+import { type Locale, locales } from '@/lib/i18n'
+import {
+  getCategoriesWithCounts,
+  getHomepageCategoriesWithPosts,
+  getPostsByLocale,
+  getSiteSettings,
+} from '@/sanity/queries'
 import Hero from '@/components/home/Hero'
 import FeaturedPosts from '@/components/home/FeaturedPosts'
-import CategoryGrid from '@/components/home/CategoryGrid'
+import CategoryShelves from '@/components/home/CategoryShelves'
+import TopPicksRibbon from '@/components/home/TopPicksRibbon'
+import HomeFaq from '@/components/home/HomeFaq'
 import TrustStrip from '@/components/home/TrustStrip'
-import PostGrid from '@/components/blog/PostGrid'
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -13,9 +19,6 @@ export function generateStaticParams() {
 
 // Static HTML, cached until the Sanity webhook fires revalidateTag/revalidatePath.
 export const revalidate = false
-
-/** Number of stories shown in the featured block (1 lead + 3 side) */
-const FEATURED_COUNT = 4
 
 export default async function HomePage({
   params,
@@ -27,36 +30,34 @@ export default async function HomePage({
 
   const l = locale as Locale
 
-  // Fetch data concurrently
-  const [categories, posts, settings] = await Promise.all([
+  // Fetch all data concurrently in parallel
+  const [categoriesWithPosts, categories, latestPosts, settings] = await Promise.all([
+    getHomepageCategoriesWithPosts(l, 4),
     getCategoriesWithCounts(l),
-    getPostsByLocale(l, 10),
+    getPostsByLocale(l, 4),
     getSiteSettings(),
   ])
 
-  const featured = posts.slice(0, FEATURED_COUNT)
-  const latest = posts.slice(FEATURED_COUNT)
-
   return (
     <main>
+      {/* 1. Compact Authority Hero (Target H1 + Quick Category Pills + Search) */}
       <Hero locale={l} settings={settings} categories={categories} />
 
-      {posts.length === 0 ? (
-        <PostGrid locale={l} posts={[]} />
-      ) : (
-        <FeaturedPosts locale={l} posts={featured} />
+      {/* 2. Fresh & Trending Editorial Feed (Immediate Crawler & Index Bait) */}
+      {latestPosts.length > 0 && (
+        <FeaturedPosts locale={l} posts={latestPosts} />
       )}
 
-      <CategoryGrid locale={l} categories={categories} />
+      {/* 3. Category Silo Shelves (Category-Wise Article Blocks) */}
+      <CategoryShelves locale={l} categories={categoriesWithPosts} />
 
-      <PostGrid
-        locale={l}
-        posts={latest}
-        title={t(l, 'home.latest')}
-        viewAllHref={`/${l}/articles`}
-        hideWhenEmpty
-      />
+      {/* 4. Quick Top 3 Buyer's Picks Ribbon (High Commercial Intent & Affiliate CTR) */}
+      <TopPicksRibbon locale={l} />
 
+      {/* 5. Topical Semantic Authority FAQ (LSI Keywords & Search Answer Depth) */}
+      <HomeFaq locale={l} />
+
+      {/* 6. Editorial E-E-A-T Trust Signals */}
       <TrustStrip locale={l} />
     </main>
   )

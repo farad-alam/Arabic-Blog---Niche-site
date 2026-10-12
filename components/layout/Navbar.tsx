@@ -164,10 +164,6 @@ export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt 
                 )}
               </div>
             )}
-
-            <Link href={`/${locale}/articles`} className={linkClass}>
-              {t(locale, 'nav.articles')}
-            </Link>
           </nav>
 
           {/* ── Actions ────────────────────────────────────────────────── */}
@@ -214,12 +210,6 @@ export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt 
                 {catTitle(cat)}
               </Link>
             ))}
-            <Link
-              href={`/${locale}/articles`}
-              className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
-            >
-              {t(locale, 'nav.articles')}
-            </Link>
             <Link
               href={`/${locale}/about`}
               className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"

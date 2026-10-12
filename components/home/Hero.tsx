@@ -16,7 +16,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
   const chips = categories.slice(0, 5)
 
   return (
-    <section className="relative pt-16 pb-14 md:pt-24 md:pb-20 overflow-hidden">
+    <section className="relative pt-6 pb-6 md:pt-12 md:pb-10 overflow-hidden">
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[520px] bg-brand-primary/10 blur-[140px] rounded-full opacity-50" />
@@ -34,7 +34,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <span className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/25 text-brand-light text-xs sm:text-sm font-body px-4 py-1.5 rounded-full mb-7">
+        <span className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/25 text-brand-light text-xs sm:text-sm font-body px-3.5 py-1 rounded-full mb-5">
           <span className="relative flex w-2 h-2">
             <span className="absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-60 animate-ping" />
             <span className="relative inline-flex w-2 h-2 rounded-full bg-brand-primary" />
@@ -42,12 +42,12 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
           {copy.badge}
         </span>
 
-        <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-text-primary leading-[1.25] md:leading-[1.2] mb-6 max-w-4xl mx-auto">
+        <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-text-primary leading-[1.25] md:leading-[1.2] mb-4 max-w-4xl mx-auto">
           {copy.heading}
-          <span className="text-gradient">{copy.highlight}</span>
+          <span className="text-gradient ms-2">{copy.highlight}</span>
         </h1>
 
-        <p className="font-body text-text-muted text-base md:text-xl max-w-2xl mx-auto mb-10 leading-[1.9]">
+        <p className="font-body text-text-muted text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-[1.8]">
           {copy.subheading}
         </p>
 

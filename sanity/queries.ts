@@ -331,6 +331,37 @@ export async function getCategoriesWithCounts(locale: Locale): Promise<SanityCat
   )
 }
 
+export type CategoryWithPosts = SanityCategory & {
+  posts: SanityPostCard[]
+}
+
+/** Top-level categories with their latest posts for the SEO-first homepage */
+export async function getHomepageCategoriesWithPosts(
+  locale: Locale,
+  postsPerCategory = 4
+): Promise<CategoryWithPosts[]> {
+  return client.fetch(
+    `*[_type == "category" && !defined(parent)] | order(order asc) {
+      _id,
+      titleAr,
+      titleEn,
+      slugAr,
+      slugEn,
+      descriptionAr,
+      descriptionEn,
+      icon,
+      order,
+      "postCount": count(*[_type == "post" && language == $locale && noIndex != true && category._ref == ^._id]),
+      "posts": *[_type == "post" && language == $locale && noIndex != true && category._ref == ^._id]
+        | order(publishedAt desc) [0...$postsPerCategory] {
+        ${POST_CARD_FRAGMENT}
+      }
+    }`,
+    { locale, postsPerCategory },
+    { next: { tags: ['categories', 'posts'] } }
+  )
+}
+
 /** Lightweight record used by the client-side search page */
 export type SearchIndexEntry = {
   title: string
