@@ -1,11 +1,10 @@
-'use client'
-
 import React from 'react'
 import { PortableText as SanityPortableText, type PortableTextComponents } from 'next-sanity'
 import Image from 'next/image'
 import { urlFor } from './image'
 import type { SanityBlock } from './queries'
 import { resolveAffiliateUrl } from '@/lib/affiliates'
+import { ProductComparisonTable } from '@/components/blog/ProductComparisonTable'
 
 // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Anchor ID generator for headings (used by Table of Contents)
@@ -24,9 +23,10 @@ function slugify(text: unknown): string {
     .toLowerCase()
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Star Rating Helper
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 function StarRating({ rating }: { rating: number }) {
   const full = Math.floor(rating)
@@ -34,273 +34,17 @@ function StarRating({ rating }: { rating: number }) {
   const empty = 5 - full - (half ? 1 : 0)
   return (
     <span className="inline-flex items-center gap-0.5 text-amber-400" aria-label={`Rating: ${rating} out of 5`}>
-      {'â˜…'.repeat(full)}
-      {half && 'Â½'}
-      <span className="text-stone-300">{'â˜…'.repeat(empty)}</span>
+      {'★'.repeat(full)}
+      {half && '½'}
+      <span className="text-stone-300">{'★'.repeat(empty)}</span>
       <span className="ms-1 text-text-muted text-xs font-body">{rating.toFixed(1)}</span>
     </span>
   )
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ranking Table — verdict label maps (stable module-level constants)
-// ─────────────────────────────────────────────────────────────────────────────
-
-const VERDICT_LABELS_AR: Record<string, string> = {
-  'best-overall':   '🥇 الأفضل على الإطلاق',
-  'best-budget':    '💰 الأفضل قيمة وسعراً',
-  'best-premium':   '👑 الخيار الفاخر',
-  'editors-choice': '✏️ اختيار المحررين',
-}
-const VERDICT_LABELS_EN: Record<string, string> = {
-  'best-overall':   '🥇 Best Overall',
-  'best-budget':    '💰 Best Budget',
-  'best-premium':   '👑 Best Premium',
-  'editors-choice': "✏️ Editor's Choice",
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// RankRow — MUST be at module level so React's component identity stays stable
-// across renders. Defining it inside a render function causes constant remounts.
-// ─────────────────────────────────────────────────────────────────────────────
-
-function RankRow({
-  p,
-  rankNumber,
-  affiliateUrl,
-  formattedScore,
-  hasDetails,
-  isAr,
-}: {
-  p: any
-  rankNumber: number
-  affiliateUrl: string | null
-  formattedScore: string | null
-  hasDetails: boolean
-  isAr: boolean
-}) {
-  const [open, setOpen] = React.useState(false)
-  const verdictLabels = isAr ? VERDICT_LABELS_AR : VERDICT_LABELS_EN
-
-  const rankBadgeClass =
-    rankNumber === 1 ? 'bg-amber-400 text-stone-950 font-black'
-    : rankNumber === 2 ? 'bg-amber-300 text-stone-950 font-black'
-    : rankNumber === 3 ? 'bg-amber-200 text-stone-950 font-black'
-    : 'bg-[#1E3A5F] text-white font-extrabold'
-
-  const toggleOpen = () => { if (hasDetails) setOpen(o => !o) }
-
-  return (
-    <div className="border-b border-surface-border/60 last:border-b-0">
-
-      {/* ── Desktop Row (sm+) ── */}
-      <div
-        className={`hidden sm:grid sm:grid-cols-[68px_minmax(0,1fr)_110px_190px] items-center gap-3 px-5 py-4 transition-colors ${hasDetails ? 'cursor-pointer hover:bg-stone-50' : ''}`}
-        onClick={toggleOpen}
-      >
-        {/* 1. Rank Badge */}
-        <div className="flex justify-center">
-          <span
-            className={`inline-flex items-center justify-center min-w-[38px] h-8 px-2.5 rounded-lg text-sm ${rankBadgeClass}`}
-            aria-label={`Rank #${rankNumber}`}
-          >
-            #{rankNumber}
-          </span>
-        </div>
-
-        {/* 2. Product — image + title + verdict */}
-        <div className="flex items-center gap-3.5 min-w-0">
-          {p.imageUrl ? (
-            <div className="w-14 h-14 shrink-0 rounded-lg bg-white p-1 border border-surface-border/70 flex items-center justify-center overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.imageUrl} alt={p.name} className="w-full h-full object-contain" loading="lazy" decoding="async" />
-            </div>
-          ) : (
-            <div className="w-14 h-14 shrink-0 rounded-lg bg-stone-100 flex items-center justify-center text-stone-400 font-bold text-xs">
-              #{rankNumber}
-            </div>
-          )}
-          <div className="min-w-0 flex flex-col gap-0.5">
-            {p.verdict && (
-              <span className="inline-block bg-brand-primary/10 text-brand-primary text-[11px] font-semibold px-2 py-0.5 rounded-full w-fit max-w-full truncate">
-                {verdictLabels[p.verdict] ?? p.verdict}
-              </span>
-            )}
-            <h4 className="font-heading font-bold text-text-primary text-[15px] leading-snug line-clamp-2">{p.name}</h4>
-          </div>
-        </div>
-
-        {/* 3. Score */}
-        <div className="flex items-center justify-center">
-          {formattedScore ? (
-            <span className="inline-flex items-center gap-1 font-bold text-[15px] text-text-primary">
-              <span className="text-amber-500">★</span>
-              <span>{formattedScore}</span>
-            </span>
-          ) : (
-            <span className="text-text-muted text-sm">—</span>
-          )}
-        </div>
-
-        {/* 4. CTA + chevron */}
-        <div className="flex items-center justify-end gap-2">
-          {affiliateUrl && (
-            <a
-              href={affiliateUrl}
-              target="_blank"
-              rel="noopener noreferrer nofollow sponsored"
-              onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center justify-center gap-1.5 bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-stone-950 font-bold text-xs px-3.5 py-2 rounded-xl transition-colors whitespace-nowrap min-h-[38px]"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
-              <span>{isAr ? 'شاهد في أمازون' : 'See at Amazon'}</span>
-            </a>
-          )}
-          {hasDetails && (
-            <span className="w-8 h-8 rounded-lg flex items-center justify-center text-stone-400 shrink-0">
-              <svg
-                className={`w-4 h-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* ── Mobile Row (< sm) ── */}
-      <div
-        className={`sm:hidden p-3.5 transition-colors ${hasDetails ? 'cursor-pointer' : ''}`}
-        onClick={toggleOpen}
-      >
-        {/* Top: Rank + Verdict + Score */}
-        <div className="flex items-center justify-between gap-2 mb-2.5">
-          <div className="flex items-center gap-2">
-            <span className={`inline-flex items-center justify-center min-w-[34px] h-7 px-2 rounded-md text-xs ${rankBadgeClass}`}>
-              #{rankNumber}
-            </span>
-            {p.verdict && (
-              <span className="inline-block bg-brand-primary/10 text-brand-primary text-[10px] font-semibold px-2 py-0.5 rounded-full truncate max-w-[150px]">
-                {verdictLabels[p.verdict] ?? p.verdict}
-              </span>
-            )}
-          </div>
-          {formattedScore && (
-            <span className="inline-flex items-center gap-1 font-bold text-xs text-text-primary">
-              <span className="text-amber-500">★</span>
-              <span>{formattedScore}</span>
-            </span>
-          )}
-        </div>
-
-        {/* Middle: Thumbnail + Name */}
-        <div className="flex items-center gap-3 mb-3">
-          {p.imageUrl && (
-            <div className="w-12 h-12 shrink-0 rounded-lg bg-white p-1 border border-surface-border/70 flex items-center justify-center overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.imageUrl} alt={p.name} className="w-full h-full object-contain" loading="lazy" decoding="async" />
-            </div>
-          )}
-          <h4 className="font-heading font-bold text-text-primary text-sm leading-snug line-clamp-2">{p.name}</h4>
-        </div>
-
-        {/* Bottom: CTA + Chevron */}
-        <div className="flex items-center gap-2">
-          {affiliateUrl && (
-            <a
-              href={affiliateUrl}
-              target="_blank"
-              rel="noopener noreferrer nofollow sponsored"
-              onClick={(e) => e.stopPropagation()}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 bg-amber-400 hover:bg-amber-500 active:bg-amber-600 text-stone-950 font-bold text-xs px-3 py-2.5 rounded-xl transition-colors min-h-[40px]"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-              </svg>
-              <span>{isAr ? 'شاهد في أمازون' : 'See at Amazon'}</span>
-            </a>
-          )}
-          {hasDetails && (
-            <span className="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-500 shrink-0">
-              <svg
-                className={`w-4 h-4 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-                viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* ── Expanded Details Drawer (always in DOM for SEO crawlability, toggled via CSS) ── */}
-      {hasDetails && (
-        <div className={`border-t border-surface-border/60 bg-[#FAF9F5] px-4 sm:px-6 py-4 sm:py-5 ${open ? 'block' : 'hidden'}`}>
-          {p.verdict && (
-            <div className="mb-3 text-xs font-semibold text-brand-primary">
-              {verdictLabels[p.verdict] ?? p.verdict}
-            </div>
-          )}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            {p.pros && p.pros.length > 0 && (
-              <div className="bg-emerald-50 border border-emerald-200/60 rounded-xl p-3 sm:p-3.5">
-                <div className="text-emerald-800 font-bold text-xs mb-2 flex items-center gap-1.5">
-                  <span>✓</span><span>{isAr ? 'المميزات' : 'Pros'}</span>
-                </div>
-                <ul className="space-y-1.5 text-xs text-text-primary/90">
-                  {p.pros.map((pro: string, pIdx: number) => (
-                    <li key={pIdx} className="flex items-start gap-1.5">
-                      <span className="text-emerald-600 font-bold shrink-0">✓</span>
-                      <span>{pro}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            {p.cons && p.cons.length > 0 && (
-              <div className="bg-rose-50 border border-rose-200/60 rounded-xl p-3 sm:p-3.5">
-                <div className="text-rose-800 font-bold text-xs mb-2 flex items-center gap-1.5">
-                  <span>✕</span><span>{isAr ? 'العيوب' : 'Cons'}</span>
-                </div>
-                <ul className="space-y-1.5 text-xs text-text-primary/90">
-                  {p.cons.map((con: string, cIdx: number) => (
-                    <li key={cIdx} className="flex items-start gap-1.5">
-                      <span className="text-rose-600 font-bold shrink-0">✕</span>
-                      <span>{con}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-          {affiliateUrl && (
-            <div className="mt-3 pt-3 border-t border-surface-border/40 flex justify-end">
-              <a
-                href={affiliateUrl}
-                target="_blank"
-                rel="noopener noreferrer nofollow sponsored"
-                className="text-xs font-bold text-brand-primary hover:underline inline-flex items-center gap-1"
-              >
-                <span>{isAr ? `عرض ${p.name} على أمازون` : `View ${p.name} on Amazon`}</span>
-                <span>{isAr ? '←' : '→'}</span>
-              </a>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 // Portable Text Component Map
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 const components: PortableTextComponents = {
   // â”€â”€ Block types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -485,57 +229,12 @@ const components: PortableTextComponents = {
     productComparisonTable: ({ value }) => {
       if (!value?.products?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
-      const isAr = lang === 'ar'
-
       return (
-        <div className="my-8 md:my-12">
-          {/* Eyebrow & Title */}
-          <div className="mb-4">
-            <span className="text-[12px] font-bold uppercase tracking-wider text-brand-primary block mb-1">
-              {isAr ? 'الترتيب والتصنيف' : 'THE RANKING'}
-            </span>
-            <h3 className="font-arabic-heading font-extrabold text-text-primary text-xl sm:text-2xl md:text-3xl tracking-tight text-start">
-              {value.heading || (isAr ? 'أفضل الخيارات' : 'The Top Picks')}
-            </h3>
-          </div>
-
-          {/* Table Container */}
-          <div className="bg-white rounded-2xl border border-surface-border shadow-card overflow-hidden">
-            {/* Desktop Header */}
-            <div className="hidden sm:grid sm:grid-cols-[68px_minmax(0,1fr)_110px_190px] items-center gap-3 bg-[#FAF9F5] border-b border-surface-border/80 px-5 py-3 text-[11px] font-bold text-text-muted uppercase tracking-wider select-none">
-              <span className="text-center">{isAr ? 'الترتيب' : 'RANK'}</span>
-              <span className="text-start ps-1">{isAr ? 'المنتج' : 'PRODUCT'}</span>
-              <span className="text-center">{isAr ? 'التقييم' : 'SCORE'}</span>
-              <span className="text-center">{isAr ? 'الشراء' : 'ACTION'}</span>
-            </div>
-
-            {/* Rows */}
-            {value.products.map((p: any, i: number) => {
-              const affiliateUrl = resolveAffiliateUrl(
-                { asin: p.asin, affiliateUrl: p.affiliateUrl },
-                lang
-              )
-              const formattedScore =
-                typeof p.rating === 'number'
-                  ? p.rating % 1 === 0 ? p.rating.toFixed(1) : p.rating.toFixed(2)
-                  : null
-              const hasDetails = Boolean(
-                p.verdict || (p.pros && p.pros.length > 0) || (p.cons && p.cons.length > 0)
-              )
-              return (
-                <RankRow
-                  key={p._key || i}
-                  p={p}
-                  rankNumber={i + 1}
-                  affiliateUrl={affiliateUrl}
-                  formattedScore={formattedScore}
-                  hasDetails={hasDetails}
-                  isAr={isAr}
-                />
-              )
-            })}
-          </div>
-        </div>
+        <ProductComparisonTable
+          heading={value.heading}
+          products={value.products}
+          language={lang}
+        />
       )
     },
 
