@@ -238,9 +238,9 @@ function RankRow({
         </div>
       </div>
 
-      {/* ── Expanded Details Drawer ── */}
-      {hasDetails && open && (
-        <div className="border-t border-surface-border/60 bg-[#FAF9F5] px-4 sm:px-6 py-4 sm:py-5">
+      {/* ── Expanded Details Drawer (always in DOM for SEO crawlability, toggled via CSS) ── */}
+      {hasDetails && (
+        <div className={`border-t border-surface-border/60 bg-[#FAF9F5] px-4 sm:px-6 py-4 sm:py-5 ${open ? 'block' : 'hidden'}`}>
           {p.verdict && (
             <div className="mb-3 text-xs font-semibold text-brand-primary">
               {verdictLabels[p.verdict] ?? p.verdict}
@@ -524,7 +524,7 @@ const components: PortableTextComponents = {
               )
               return (
                 <RankRow
-                  key={i}
+                  key={p._key || i}
                   p={p}
                   rankNumber={i + 1}
                   affiliateUrl={affiliateUrl}
