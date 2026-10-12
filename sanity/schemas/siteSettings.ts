@@ -28,6 +28,36 @@ export const siteSettingsSchema = defineType({
       group: 'identity',
       description: 'e.g. Home & Kitchen Guide',
     }),
+    defineField({
+      name: 'logo',
+      title: 'Site Logo (Brand Icon / Emblem)',
+      type: 'image',
+      group: 'identity',
+      description: 'Brand logo icon shown beside the site name in the navbar and footer. SVG, WebP, or PNG with transparent background recommended.',
+      options: { hotspot: true },
+      fields: [
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+          description: 'Descriptive text for accessibility and SEO. e.g. "موقع المنزل والمطبخ"',
+        },
+      ],
+    }),
+    defineField({
+      name: 'favicon',
+      title: 'Favicon',
+      type: 'image',
+      group: 'identity',
+      description: 'Browser tab icon. 32×32 or 48×48 PNG, SVG, or ICO file.',
+    }),
+    defineField({
+      name: 'appleTouchIcon',
+      title: 'Apple Touch Icon (Mobile Bookmarks)',
+      type: 'image',
+      group: 'identity',
+      description: 'Square 180×180 PNG icon used when users bookmark your site to their phone home screen.',
+    }),
 
     // ── Homepage hero ─────────────────────────────────────────────────────────
     defineField({

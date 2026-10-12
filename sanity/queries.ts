@@ -418,12 +418,15 @@ export type SanitySiteSettings = {
   // Identity
   siteNameAr?: string
   siteNameEn?: string
+  logo?: { asset?: { _ref?: string; url?: string }; alt?: string }
+  favicon?: { asset?: { _ref?: string; url?: string } }
+  appleTouchIcon?: { asset?: { _ref?: string; url?: string } }
   // SEO
   seoTitleAr?: string
   seoDescriptionAr?: string
   seoTitleEn?: string
   seoDescriptionEn?: string
-  seoImage?: { asset?: { _ref: string }; alt?: string }
+  seoImage?: { asset?: { _ref?: string; url?: string }; alt?: string }
   // Analytics — all optional, script only renders if value is present
   gaId?: string
   gscVerification?: string
@@ -477,11 +480,24 @@ export const getSiteSettings = cache(
       `*[_type == "siteSettings"][0] {
         siteNameAr,
         siteNameEn,
+        logo {
+          asset->{ url },
+          alt
+        },
+        favicon {
+          asset->{ url }
+        },
+        appleTouchIcon {
+          asset->{ url }
+        },
         seoTitleAr,
         seoDescriptionAr,
         seoTitleEn,
         seoDescriptionEn,
-        seoImage { asset, alt },
+        seoImage {
+          asset->{ url },
+          alt
+        },
         gaId,
         gscVerification,
         bingVerification,

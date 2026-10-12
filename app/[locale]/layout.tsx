@@ -36,7 +36,73 @@ export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-export const metadata: Metadata = baseMetadata
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
+  const l = (locales.includes(locale as Locale) ? locale : 'ar') as Locale
+  const settings = await getSiteSettings()
+
+  const siteName =
+    l === 'ar'
+      ? settings?.siteNameAr || 'موقع المنزل والمطبخ'
+      : settings?.siteNameEn || 'Home & Kitchen Guide'
+
+  const title =
+    l === 'ar'
+      ? settings?.seoTitleAr || siteName
+      : settings?.seoTitleEn || siteName
+
+  const description =
+    l === 'ar'
+      ? settings?.seoDescriptionAr || ''
+      : settings?.seoDescriptionEn || ''
+
+  const faviconUrl = settings?.favicon?.asset?.url || '/icon.png'
+  const appleTouchIconUrl = settings?.appleTouchIcon?.asset?.url || '/icon.png'
+  const ogImageUrl = settings?.seoImage?.asset?.url || '/opengraph-image.png'
+
+  return {
+    ...baseMetadata,
+    title: {
+      template: `%s | ${siteName}`,
+      default: title,
+    },
+    description,
+    icons: {
+      icon: [
+        { url: faviconUrl },
+      ],
+      apple: [
+        { url: appleTouchIconUrl },
+      ],
+    },
+    openGraph: {
+      title,
+      description,
+      siteName,
+      locale: l === 'ar' ? 'ar_SA' : 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: siteName,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+      creator: settings?.twitter || undefined,
+    },
+  }
+}
 
 export default async function LocaleLayout({
   children,

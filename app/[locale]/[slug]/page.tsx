@@ -36,16 +36,54 @@ export async function generateMetadata({
   const { locale, slug } = await params
   if (!locales.includes(locale as Locale)) return {}
   
-  const post = await getPost(slug, locale as Locale)
+  const [post, settings] = await Promise.all([
+    getPost(slug, locale as Locale),
+    getSiteSettings(),
+  ])
   if (!post) return {}
 
   const isAr = locale === 'ar'
   const title = post.title
   const description = post.excerpt
+  const siteName =
+    locale === 'ar'
+      ? settings?.siteNameAr || 'موقع المنزل والمطبخ'
+      : settings?.siteNameEn || 'Home & Kitchen Guide'
+
+  // Featured image takes priority; fallback to Sanity static OG image, then default /opengraph-image.png
+  const ogImageUrl =
+    getImageUrl(post.mainImage, { width: 1200, height: 630 }) ||
+    settings?.seoImage?.asset?.url ||
+    '/opengraph-image.png'
 
   return {
     title,
     description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      url: `/${locale}/${slug}`,
+      siteName,
+      locale: isAr ? 'ar_SA' : 'en_US',
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.mainImage?.alt || title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [ogImageUrl],
+      creator: settings?.twitter || undefined,
+    },
     alternates: {
       canonical: `/${locale}/${slug}`,
       languages: post.translation ? {
@@ -125,6 +163,7 @@ export default async function PostPage({
     imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630 }),
     wordCount: post.wordCount,
     siteName,
+    logoUrl: settings?.logo?.asset?.url,
     author: post.author ? {
       firstName: post.author.firstName,
       lastName: post.author.lastName,

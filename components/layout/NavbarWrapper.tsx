@@ -9,5 +9,13 @@ export default async function NavbarWrapper({ locale }: { locale: Locale }) {
     getSiteSettings(),
   ])
 
-  return <Navbar locale={locale} categories={categories} siteName={getSiteName(settings, locale)} />
+  return (
+    <Navbar
+      locale={locale}
+      categories={categories}
+      siteName={getSiteName(settings, locale)}
+      logoUrl={settings?.logo?.asset?.url}
+      logoAlt={settings?.logo?.alt}
+    />
+  )
 }

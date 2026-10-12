@@ -77,11 +77,26 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 mb-14">
           {/* Brand */}
           <div className="lg:col-span-4">
-            <Link href={`/${locale}`} className="inline-flex items-center gap-2.5 mb-5">
-              <span className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-xl shadow-lg">
-                {siteName.charAt(0)}
+            <Link href={`/${locale}`} className="inline-flex items-center gap-2.5 mb-5 group">
+              {settings?.logo?.asset?.url ? (
+                <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center p-1.5 shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={settings.logo.asset.url}
+                    alt={settings.logo.alt || siteName}
+                    className="w-full h-full object-contain"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              ) : (
+                <span className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-xl shadow-lg">
+                  {siteName.charAt(0)}
+                </span>
+              )}
+              <span className="font-heading font-bold text-2xl text-white group-hover:text-white/90 transition-colors">
+                {siteName}
               </span>
-              <span className="font-heading font-bold text-2xl text-white">{siteName}</span>
             </Link>
             <p className="text-white/80 text-sm leading-relaxed max-w-sm mb-6">{copy.about}</p>
             {activeSocials.length > 0 && (

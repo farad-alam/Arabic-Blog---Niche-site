@@ -12,12 +12,14 @@ interface NavbarProps {
   locale: Locale
   categories: SanityCategory[]
   siteName: string
+  logoUrl?: string
+  logoAlt?: string
 }
 
 /** How many categories are shown inline on desktop before overflowing into "More" */
 const INLINE_CATEGORIES = 5
 
-export default function Navbar({ locale, categories, siteName }: NavbarProps) {
+export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt }: NavbarProps) {
   const router = useRouter()
   const pathname = usePathname()
   const isAr = locale === 'ar'
@@ -103,9 +105,22 @@ export default function Navbar({ locale, categories, siteName }: NavbarProps) {
         <div className="flex items-center justify-between h-16 gap-6">
           {/* ── Logo ───────────────────────────────────────────────────── */}
           <Link href={`/${locale}`} className="flex items-center gap-2.5 group shrink-0">
-            <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-lg shadow-lg group-hover:scale-105 transition-transform">
-              {siteName.charAt(0)}
-            </span>
+            {logoUrl ? (
+              <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center p-1 shadow-lg group-hover:scale-105 transition-transform overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoUrl}
+                  alt={logoAlt || siteName}
+                  className="w-full h-full object-contain"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+            ) : (
+              <span className="w-9 h-9 rounded-xl bg-white flex items-center justify-center text-brand-primary font-bold text-lg shadow-lg group-hover:scale-105 transition-transform">
+                {siteName.charAt(0)}
+              </span>
+            )}
             <span className="font-heading font-bold text-lg sm:text-xl tracking-tight text-white group-hover:text-white/90 transition-colors">
               {siteName}
             </span>

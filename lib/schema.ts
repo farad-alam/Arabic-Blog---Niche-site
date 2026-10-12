@@ -26,6 +26,7 @@ export function articleSchema(params: {
   wordCount?: number
   /** Site name for the publisher field — pass from getSiteSettings() */
   siteName?: string
+  logoUrl?: string
   author?: {
     firstName: string
     lastName: string
@@ -33,7 +34,7 @@ export function articleSchema(params: {
     jobTitle?: string
   }
 }) {
-  const { title, description, slug, language, publishedAt, updatedAt, keywords, imageUrl, wordCount, siteName, author } = params
+  const { title, description, slug, language, publishedAt, updatedAt, keywords, imageUrl, wordCount, siteName, logoUrl, author } = params
   const url = `${BASE_URL}/${language}/${slug}`
 
   return {
@@ -61,6 +62,7 @@ export function articleSchema(params: {
       '@type': 'Organization',
       name: siteName ?? '',
       url: BASE_URL,
+      ...(logoUrl ? { logo: { '@type': 'ImageObject', url: logoUrl } } : {}),
     },
   }
 }
