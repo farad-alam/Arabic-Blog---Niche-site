@@ -30,10 +30,14 @@ function cloudinaryTransform(url: string, width?: number, height?: number): stri
 /**
  * Resolve a displayable URL for any supported image shape.
  * Returns `undefined` when there is no usable image (never throws).
+ *
+ * Pass `crop: true` together with width+height to get an exact-size crop
+ * (required for og:image — without it Sanity fit=clip serves a smaller,
+ * differently-proportioned file than the declared dimensions).
  */
 export function getImageUrl(
   image: AnyImage,
-  opts: { width?: number; height?: number } = {},
+  opts: { width?: number; height?: number; crop?: boolean } = {},
 ): string | undefined {
   if (!image) return undefined
   if (image.externalUrl) return image.externalUrl
@@ -41,20 +45,23 @@ export function getImageUrl(
   const asset = image.asset
   if (!asset) return undefined
 
+  // Prefer the Sanity builder when a _ref exists so width/height/crop
+  // transforms actually apply (raw asset.url cannot be transformed).
+  // Sanity asset reference IDs look like "image-<hash>-<w>x<h>-<ext>"
+  if (asset._ref && /^image-[^-]+-\d+x\d+-\w+$/.test(asset._ref)) {
+    let b = urlFor({ asset: { _ref: asset._ref } })
+    if (opts.width) b = b.width(opts.width)
+    if (opts.height) b = b.height(opts.height)
+    if (opts.crop && opts.width && opts.height) b = b.fit('crop')
+    return b.format('webp').url()
+  }
+
   const cloudUrl = asset.secure_url ?? asset.url
   if (cloudUrl) {
     const https = cloudUrl.replace(/^http:\/\//, 'https://')
     return https.includes('res.cloudinary.com')
       ? cloudinaryTransform(https, opts.width, opts.height)
       : https
-  }
-
-  // Sanity asset reference IDs look like "image-<hash>-<w>x<h>-<ext>"
-  if (asset._ref && /^image-[^-]+-\d+x\d+-\w+$/.test(asset._ref)) {
-    let b = urlFor({ asset: { _ref: asset._ref } })
-    if (opts.width) b = b.width(opts.width)
-    if (opts.height) b = b.height(opts.height)
-    return b.format('webp').url()
   }
 
   return undefined

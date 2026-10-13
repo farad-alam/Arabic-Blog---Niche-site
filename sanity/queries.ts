@@ -526,7 +526,7 @@ export const getSiteSettings = cache(
         seoTitleEn,
         seoDescriptionEn,
         seoImage {
-          asset->{ url },
+          "asset": { "_ref": asset._ref, "url": asset->url },
           alt
         },
         gaId,

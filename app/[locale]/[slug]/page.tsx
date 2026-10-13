@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { type Locale, locales, formatDate, t } from '@/lib/i18n'
 import { getPost, getRecentPostSlugs, getSiteSettings, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
+import { getTwitterHandle } from '@/lib/site'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema, breadcrumbSchema, faqSchema, BASE_URL } from '@/lib/schema'
 import TableOfContents from '@/components/blog/TableOfContents'
@@ -51,9 +52,10 @@ export async function generateMetadata({
       : settings?.siteNameEn || 'Home & Kitchen Guide'
 
   // Featured image takes priority; fallback to Sanity static OG image, then default /opengraph-image.png
+  // crop:true → exact 1200x630 file so declared og:image dimensions match
   const ogImageUrl =
-    getImageUrl(post.mainImage, { width: 1200, height: 630 }) ||
-    settings?.seoImage?.asset?.url ||
+    getImageUrl(post.mainImage, { width: 1200, height: 630, crop: true }) ||
+    getImageUrl(settings?.seoImage, { width: 1200, height: 630, crop: true }) ||
     '/opengraph-image.png'
 
   // hreflang: self-referencing entries + x-default (default locale = ar)
@@ -87,7 +89,7 @@ export async function generateMetadata({
       title,
       description,
       images: [ogImageUrl],
-      creator: settings?.twitter || undefined,
+      creator: getTwitterHandle(settings),
     },
     alternates: {
       canonical: post.canonicalUrl || `/${locale}/${slug}`,
@@ -167,7 +169,7 @@ export default async function PostPage({
     publishedAt: post.publishedAt,
     updatedAt: post.updatedAt,
     keywords: post.keywords,
-    imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630 }),
+    imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630, crop: true }),
     wordCount: post.wordCount,
     siteName,
     logoUrl: settings?.logo?.asset?.url,

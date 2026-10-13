@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react'
 import { type Locale, t } from '@/lib/i18n'
-import { getFooterCopy, getSiteName } from '@/lib/site'
+import { getFooterCopy, getSiteName, getSocialUrl, getTwitterHandle } from '@/lib/site'
 import type { SanityCategory, SanitySiteSettings } from '@/sanity/queries'
 
 interface FooterProps {
@@ -48,16 +48,20 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
   const siteName = getSiteName(settings, locale)
   const copy = getFooterCopy(settings, locale)
 
-  const twitterHref = settings?.twitter
-    ? `https://twitter.com/${settings.twitter.replace('@', '')}`
+  // Sanitized: real handles/profile URLs only — empty values, bare domains
+  // (e.g. "https://twitter.com/") and non-profile URLs are dropped, so no
+  // broken icons render. Reusable across niche sites via CMS values.
+  const twitterHandle = getTwitterHandle(settings)
+  const twitterHref = twitterHandle
+    ? `https://twitter.com/${twitterHandle.replace('@', '')}`
     : undefined
   const socials: { name: string; href?: string }[] = [
     { name: 'twitter', href: twitterHref },
-    { name: 'facebook', href: settings?.facebook },
-    { name: 'instagram', href: settings?.instagram },
-    { name: 'youtube', href: settings?.youtube },
-    { name: 'tiktok', href: settings?.tiktok },
-    { name: 'pinterest', href: settings?.pinterest },
+    { name: 'facebook', href: getSocialUrl(settings?.facebook) },
+    { name: 'instagram', href: getSocialUrl(settings?.instagram) },
+    { name: 'youtube', href: getSocialUrl(settings?.youtube) },
+    { name: 'tiktok', href: getSocialUrl(settings?.tiktok) },
+    { name: 'pinterest', href: getSocialUrl(settings?.pinterest) },
   ]
   const activeSocials = socials.filter((s): s is { name: string; href: string } => Boolean(s.href))
 

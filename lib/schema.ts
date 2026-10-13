@@ -3,12 +3,46 @@ export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com
 type Language = 'ar' | 'en'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// WebSite — injected on homepage (includes Sitelinks Searchbox)
+// WebSite — injected on homepage
 // ─────────────────────────────────────────────────────────────────────────────
+
+export function websiteSchema(params: {
+  /** Site name for the current locale — pass from getSiteSettings() */
+  name: string
+  language: Language
+  url?: string
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: params.name,
+    url: params.url ?? BASE_URL,
+    inLanguage: params.language === 'ar' ? 'ar' : 'en',
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Organization — injected on homepage
 // ─────────────────────────────────────────────────────────────────────────────
+
+export function organizationSchema(params: {
+  /** Site name for the current locale — pass from getSiteSettings() */
+  name: string
+  url?: string
+  logoUrl?: string
+  /** Only include real, working profile URLs */
+  sameAs?: string[]
+}) {
+  const sameAs = (params.sameAs ?? []).filter(Boolean)
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: params.name,
+    url: params.url ?? BASE_URL,
+    ...(params.logoUrl ? { logo: { '@type': 'ImageObject', url: params.logoUrl } } : {}),
+    ...(sameAs.length ? { sameAs } : {}),
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // BlogPosting — injected on every article page

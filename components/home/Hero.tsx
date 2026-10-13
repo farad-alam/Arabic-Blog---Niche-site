@@ -44,7 +44,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
 
         <h1 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-text-primary leading-[1.25] md:leading-[1.2] mb-4 max-w-4xl mx-auto">
           {copy.heading}
-          <span className="text-gradient ms-2">{copy.highlight}</span>
+          {copy.highlight && <span className="text-gradient ms-2">{copy.highlight}</span>}
         </h1>
 
         <p className="font-body text-text-muted text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 leading-[1.8]">

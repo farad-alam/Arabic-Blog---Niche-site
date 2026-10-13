@@ -4,6 +4,8 @@ import { Cairo, Tajawal, Outfit } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
 import { baseMetadata } from '@/lib/seo'
+import { getTwitterHandle } from '@/lib/site'
+import { getImageUrl } from '@/sanity/image'
 import { getSiteSettings } from '@/sanity/queries'
 import NavbarWrapper from '@/components/layout/NavbarWrapper'
 import FooterWrapper from '@/components/layout/FooterWrapper'
@@ -62,7 +64,11 @@ export async function generateMetadata({
 
   const faviconUrl = settings?.favicon?.asset?.url || '/icon.png'
   const appleTouchIconUrl = settings?.appleTouchIcon?.asset?.url || '/icon.png'
-  const ogImageUrl = settings?.seoImage?.asset?.url || '/opengraph-image.png'
+  // Crop to a true 1200x630 so the declared og:image dimensions match the file
+  // (Sanity's default fit=clip would serve a smaller, differently-proportioned image).
+  const ogImageUrl =
+    getImageUrl(settings?.seoImage, { width: 1200, height: 630, crop: true }) ||
+    '/opengraph-image.png'
 
   return {
     ...baseMetadata,
@@ -99,7 +105,8 @@ export async function generateMetadata({
       title,
       description,
       images: [ogImageUrl],
-      creator: settings?.twitter || undefined,
+      // Only emit twitter:creator for a real handle — "@" alone is invalid
+      creator: getTwitterHandle(settings),
     },
   }
 }
