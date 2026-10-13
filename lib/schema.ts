@@ -1,4 +1,4 @@
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
+export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
 
 type Language = 'ar' | 'en'
 

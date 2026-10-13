@@ -5,7 +5,7 @@ import { type Locale, locales, formatDate, t } from '@/lib/i18n'
 import { getPost, getRecentPostSlugs, getSiteSettings, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
 import { PortableText } from '@/sanity/portableText'
-import { articleSchema } from '@/lib/schema'
+import { articleSchema, breadcrumbSchema, faqSchema, BASE_URL } from '@/lib/schema'
 import TableOfContents from '@/components/blog/TableOfContents'
 import RelatedArticles from '@/components/blog/RelatedArticles'
 import ShareButtons from '@/components/blog/ShareButtons'
@@ -43,8 +43,8 @@ export async function generateMetadata({
   if (!post) return {}
 
   const isAr = locale === 'ar'
-  const title = post.title
-  const description = post.excerpt
+  const title = post.seoTitle || post.title
+  const description = post.seoDescription || post.excerpt
   const siteName =
     locale === 'ar'
       ? settings?.siteNameAr || 'موقع المنزل والمطبخ'
@@ -56,16 +56,21 @@ export async function generateMetadata({
     settings?.seoImage?.asset?.url ||
     '/opengraph-image.png'
 
+  // hreflang: self-referencing entries + x-default (default locale = ar)
+  const arSlug = isAr ? slug : post.translation?.slug.current
+  const enSlug = isAr ? post.translation?.slug.current : slug
+
   return {
     title,
     description,
+    ...(post.noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title,
       description,
       type: 'article',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
-      url: `/${locale}/${slug}`,
+      url: post.canonicalUrl || `/${locale}/${slug}`,
       siteName,
       locale: isAr ? 'ar_SA' : 'en_US',
       images: [
@@ -85,11 +90,13 @@ export async function generateMetadata({
       creator: settings?.twitter || undefined,
     },
     alternates: {
-      canonical: `/${locale}/${slug}`,
-      languages: post.translation ? {
-        [isAr ? 'en' : 'ar']: `/${isAr ? 'en' : 'ar'}/${post.translation.slug.current}`
-      } : undefined
-    }
+      canonical: post.canonicalUrl || `/${locale}/${slug}`,
+      languages: {
+        ...(arSlug && { ar: `/ar/${arSlug}` }),
+        ...(enSlug && { en: `/en/${enSlug}` }),
+        ...(arSlug && { 'x-default': `/ar/${arSlug}` }),
+      },
+    },
   }
 }
 
@@ -172,12 +179,40 @@ export default async function PostPage({
     } : undefined,
   })
 
+  // BreadcrumbList JSON-LD — mirrors the visual breadcrumb above
+  const crumbs = [
+    { name: isAr ? 'الرئيسية' : 'Home', url: `${BASE_URL}/${l}` },
+    ...(categoryTitle && categorySlug
+      ? [{ name: categoryTitle, url: `${BASE_URL}/${l}/category/${categorySlug}` }]
+      : []),
+    { name: post.title, url: `${BASE_URL}/${l}/${slug}` },
+  ]
+
+  // FAQPage JSON-LD — collect items from all faqBlock blocks in the body
+  const faqItems =
+    post.body
+      ?.filter((b) => b._type === 'faqBlock')
+      .flatMap(
+        (b) =>
+          ((b as { items?: { question: string; answer: string }[] }).items ?? [])
+      ) ?? []
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(crumbs)) }}
+      />
+      {faqItems.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(faqItems)) }}
+        />
+      )}
       <ReadingProgress targetId="article-content" />
       <main className="min-h-screen bg-surface-base pt-4 md:pt-8 pb-16 md:pb-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
