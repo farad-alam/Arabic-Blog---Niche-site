@@ -422,7 +422,12 @@ export default async function PostPage({
                       </ul>
                     </div>
                   )}
-                  <ShareButtons title={post.title} slug={post.slug.current} locale={l} />
+                  <ShareButtons
+                    title={post.title}
+                    slug={post.slug.current}
+                    locale={l}
+                    twitterHandle={getTwitterHandle(settings)}
+                  />
                   <AuthorBox author={post.author} />
                 </footer>
 

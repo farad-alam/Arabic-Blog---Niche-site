@@ -1,24 +1,36 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 
 interface ShareButtonsProps {
   title: string
   slug: string
   locale?: 'ar' | 'en'
+  /** Site X/Twitter handle (with or without @) from CMS settings. Omitted → no via param. */
+  twitterHandle?: string
 }
 
 const btn =
   'inline-flex items-center justify-center gap-2 min-h-[48px] px-3 rounded-xl border border-surface-border bg-surface-card text-text-primary text-sm font-medium transition-all duration-150 active:scale-[0.97] hover:border-brand-primary/40 hover:text-brand-primary'
 
-export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButtonsProps) {
+// Web Share API detection — subscribe is a no-op (feature never changes per page load)
+const subscribeNoop = () => () => {}
+const getNativeShareSupported = () =>
+  typeof navigator !== 'undefined' && typeof navigator.share === 'function'
+
+export default function ShareButtons({ title, slug, locale = 'ar', twitterHandle }: ShareButtonsProps) {
   const isAr = locale === 'ar'
   const [copied, setCopied] = useState(false)
-  const [canNativeShare, setCanNativeShare] = useState(false)
+  const canNativeShare = useSyncExternalStore(subscribeNoop, getNativeShareSupported, () => false)
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
   const url = `${base}/${locale}/${slug}`
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)
+  // via credits the site's own X account — only include when one is configured
+  const viaHandle = twitterHandle?.replace(/^@/, '').trim()
+  const xShareUrl = `https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}${
+    viaHandle ? `&via=${encodeURIComponent(viaHandle)}` : ''
+  }`
 
   const t = {
     heading: isAr ? 'شارك المقال' : 'Share this article',
@@ -26,11 +38,6 @@ export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButton
     copy: isAr ? 'نسخ الرابط' : 'Copy link',
     copied: isAr ? 'تم النسخ!' : 'Copied!',
   }
-
-  // Web Share API = the OS share sheet (WhatsApp, Telegram, Messages…) on phones
-  useEffect(() => {
-    setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function')
-  }, [])
 
   const handleNativeShare = async () => {
     try {
@@ -105,7 +112,7 @@ export default function ShareButtons({ title, slug, locale = 'ar' }: ShareButton
 
         {/* Twitter / X */}
         <a
-          href={`https://x.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}&via=motionbiteit`}
+          href={xShareUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={isAr ? 'مشاركة على X' : 'Share on X / Twitter'}

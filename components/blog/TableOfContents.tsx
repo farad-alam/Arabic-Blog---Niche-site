@@ -220,6 +220,7 @@ function MobileToc({ items, activeId, setActiveId, locale, label }: MobileTocPro
         </span>
         <span className="flex-1 font-heading text-sm font-semibold text-text-primary">
           {label}
+          {' '}
           <span className="ms-2 text-xs font-normal text-text-muted">({items.length})</span>
         </span>
         <svg className="text-text-muted shrink-0 rtl:rotate-180" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
