@@ -2,46 +2,39 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { SanityAuthor } from '@/sanity/queries'
 import { urlFor } from '@/sanity/image'
+import type { Locale } from '@/lib/i18n'
 
 interface AuthorBoxProps {
   author?: SanityAuthor | null
+  /** Site name — used for the neutral no-author fallback */
+  siteName?: string
+  locale?: Locale
 }
 
-export default function AuthorBox({ author }: AuthorBoxProps) {
-  // Fallback when no author is assigned yet
+export default function AuthorBox({ author, siteName, locale = 'ar' }: AuthorBoxProps) {
+  // Neutral fallback when no author is assigned — no agency branding.
   if (!author) {
+    const name = siteName?.trim() || (locale === 'ar' ? 'فريق التحرير' : 'Editorial Team')
+    const initials = name
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+    const bio =
+      locale === 'ar'
+        ? 'محتوى مُعدّ ومراجَع بعناية لتقديم معلومات موثوقة للقارئ.'
+        : 'Content carefully prepared and reviewed to bring readers reliable information.'
     return (
       <div className="flex items-start gap-4 bg-surface-card border border-surface-border rounded-xl p-5 mb-10">
         <div className="shrink-0 w-12 h-12 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-xl font-heading font-bold text-brand-primary select-none">
-          MB
+          {initials || '★'}
         </div>
         <div className="flex-1 min-w-0">
           <p className="font-heading font-semibold text-text-primary text-sm leading-tight mb-0.5">
-            MotionBite Team
+            {name}
           </p>
-          <p className="font-body text-text-muted text-xs leading-relaxed mb-2">
-            Web design &amp; development agency helping businesses get found online. We build fast,
-            professional websites — delivered in 14 days.
-          </p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <Link
-              href="https://www.linkedin.com/company/motionbiteit/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-body text-xs text-brand-primary hover:underline transition-colors"
-            >
-              LinkedIn
-            </Link>
-            <span className="text-surface-border" aria-hidden="true">·</span>
-            <Link
-              href="https://x.com/motionbiteit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-body text-xs text-brand-primary hover:underline transition-colors"
-            >
-              X / Twitter
-            </Link>
-          </div>
+          <p className="font-body text-text-muted text-xs leading-relaxed">{bio}</p>
         </div>
       </div>
     )
@@ -77,7 +70,7 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
             />
           ) : (
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-brand-primary/10 border border-brand-primary/20 flex items-center justify-center text-lg font-heading font-bold text-brand-primary select-none shrink-0">
-              {initials || 'MB'}
+              {initials || '★'}
             </div>
           )}
 

@@ -95,5 +95,20 @@ export async function POST(req: NextRequest) {
     revalidatePath('/[locale]/authors/[slug]', 'page')
   }
 
+  if (_type === 'faqItem') {
+    expire('faqItems')
+    revalidatePath('/[locale]', 'page')
+  }
+
+  if (_type === 'featuredPick') {
+    expire('featuredPicks')
+    revalidatePath('/[locale]', 'page')
+  }
+
+  if (_type === 'staticPage') {
+    expire('staticPages')
+    revalidatePath('/[locale]/[key]', 'page')
+  }
+
   return NextResponse.json({ revalidated: true, type: _type, timestamp: new Date().toISOString() })
 }

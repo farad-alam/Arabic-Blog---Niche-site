@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useSyncExternalStore } from 'react'
+import { BASE_URL } from '@/lib/config'
 
 interface ShareButtonsProps {
   title: string
@@ -22,7 +23,7 @@ export default function ShareButtons({ title, slug, locale = 'ar', twitterHandle
   const isAr = locale === 'ar'
   const [copied, setCopied] = useState(false)
   const canNativeShare = useSyncExternalStore(subscribeNoop, getNativeShareSupported, () => false)
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
+  const base = BASE_URL
   const url = `${base}/${locale}/${slug}`
   const encodedUrl = encodeURIComponent(url)
   const encodedTitle = encodeURIComponent(title)

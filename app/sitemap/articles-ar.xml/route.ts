@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getAllPostsForSitemap } from '@/sanity/queries'
-
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.carcleanksa.com'
+import { BASE_URL } from '@/lib/config'
 
 export async function GET() {
   const posts = await getAllPostsForSitemap()

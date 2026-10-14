@@ -12,7 +12,7 @@ export const productComparisonTableSchema = {
       name: 'heading',
       title: 'Table Heading',
       type: 'string',
-      description: 'e.g. أفضل مكنسات الروبوت | Best Robot Vacuums',
+      description: 'e.g. أفضل المنتجات | Top Products',
     },
     {
       name: 'products',

@@ -1,5 +1,11 @@
 import type { Config } from 'tailwindcss'
 
+/**
+ * Brand & surface colors are driven by CSS variables in styles/globals.css.
+ * To re-skin a new niche site, edit the :root block in globals.css — no
+ * changes needed here. The rgb(var(--x) / <alpha-value>) pattern lets
+ * Tailwind opacity modifiers (e.g. bg-brand-primary/10) keep working.
+ */
 const config: Config = {
   content: [
     './app/**/*.{ts,tsx}',
@@ -11,41 +17,40 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          primary:  '#006C35',
-          dark:     '#005027',
-          gradient: '#00994C',
-          deep:     '#003B1C',
-          mid:      '#007F3F',
-          light:    '#006C35',   // on light bg, lighter purple looks washed — keep primary
-          glow:     'rgba(0,108,53,0.15)',
+          primary:  'rgb(var(--brand-primary) / <alpha-value>)',
+          dark:     'rgb(var(--brand-dark) / <alpha-value>)',
+          gradient: 'rgb(var(--brand-gradient) / <alpha-value>)',
+          deep:     'rgb(var(--brand-deep) / <alpha-value>)',
+          mid:      'rgb(var(--brand-mid) / <alpha-value>)',
+          light:    'rgb(var(--brand-light) / <alpha-value>)',
         },
         // ── Light-theme surface layers ─────────────────────────────────────
         // "dark.*" token names kept so existing class names still compile;
         //  values are now the light equivalents.
         dark: {
-          base:   '#FAF8F5',    // warm cream page background
-          card:   '#FFFFFF',    // card surface (pops slightly above cream)
-          border: '#E8E2D9',    // warm border (not cold grey)
+          base:   'rgb(var(--surface-base) / <alpha-value>)',
+          card:   'rgb(var(--surface-card) / <alpha-value>)',
+          border: 'rgb(var(--surface-border) / <alpha-value>)',
         },
         surface: {
-          base:   '#FAF8F5',
-          raised:  '#F4F0EA',   // slightly darker for strip / sidebar backgrounds
-          card:   '#FFFFFF',
-          border: '#E8E2D9',
-          hover:  '#F0EBE3',    // subtle hover state
+          base:   'rgb(var(--surface-base) / <alpha-value>)',
+          raised:  'rgb(var(--surface-raised) / <alpha-value>)',
+          card:   'rgb(var(--surface-card) / <alpha-value>)',
+          border: 'rgb(var(--surface-border) / <alpha-value>)',
+          hover:  'rgb(var(--surface-hover) / <alpha-value>)',
         },
         // ── Text ──────────────────────────────────────────────────────────
         text: {
-          primary: '#1C1917',   // near-black (warm stone-900)
-          muted:   '#6B6560',   // warm medium grey
-          inverse: '#FFFFFF',
-          charcoal: '#333333',
+          primary: 'rgb(var(--text-primary) / <alpha-value>)',
+          muted:   'rgb(var(--text-muted) / <alpha-value>)',
+          inverse: 'rgb(var(--text-inverse) / <alpha-value>)',
+          charcoal: 'rgb(var(--text-charcoal) / <alpha-value>)',
         },
         // ── Legacy light tokens (still used in a few places) ──────────────
         light: {
-          bg:     '#FAF8F5',
-          card:   '#FFFFFF',
-          border: '#E8E2D9',
+          bg:     'rgb(var(--surface-base) / <alpha-value>)',
+          card:   'rgb(var(--surface-card) / <alpha-value>)',
+          border: 'rgb(var(--surface-border) / <alpha-value>)',
         },
         state: {
           error:   '#DC2626',

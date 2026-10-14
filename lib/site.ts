@@ -2,31 +2,31 @@ import type { Locale } from '@/lib/i18n'
 import type { SanitySiteSettings } from '@/sanity/queries'
 
 /**
- * Default site copy (micro-niche: air fryers & small kitchen appliances).
- * Every value here can be overridden from Sanity → Site Settings.
- * Change these defaults when the site broadens to the full Home & Kitchen niche.
+ * Neutral default site copy — only shown when Site Settings in Sanity are blank.
+ * Keep these generic: a new niche site fills real values in Sanity → Site Settings,
+ * never by editing this file.
  */
 const DEFAULTS = {
   ar: {
-    siteName: 'دليل المطبخ الذكي',
-    heroBadge: 'مراجعات حقيقية بعد التجربة',
-    heroHeading: 'اختر أفضل ',
-    heroHighlight: 'قلاية هوائية لمطبخك',
+    siteName: 'مدونة عربية',
+    heroBadge: 'مراجعات ومحتوى موثوق',
+    heroHeading: 'اكتشف ',
+    heroHighlight: 'أفضل المحتويات',
     heroSubheading:
-      'نقارن لك القلايات الهوائية وأجهزة المطبخ الصغيرة بعد تجربة فعلية، لتشتري الجهاز المناسب لعائلتك وميزانيتك دون حيرة.',
+      'مراجعات صادقة ومقارنات واضحة تساعدك على اختيار الأنسب لك، دون حيرة.',
     footerAbout:
-      'دليلك العربي لاختيار القلايات الهوائية وأجهزة المطبخ الذكية: مراجعات صادقة، مقارنات واضحة، ونصائح طبخ عملية.',
+      'موقع عربي يقدم مراجعات صادقة ومقارنات واضحة ونصائح عملية.',
     copyright: 'جميع الحقوق محفوظة.',
   },
   en: {
-    siteName: 'Smart Kitchen Guide',
-    heroBadge: 'Honest, hands-on reviews',
-    heroHeading: 'Find the best ',
-    heroHighlight: 'air fryer for your kitchen',
+    siteName: 'Blog',
+    heroBadge: 'Trusted reviews & guides',
+    heroHeading: 'Find ',
+    heroHighlight: 'the best content',
     heroSubheading:
-      'We compare air fryers and small kitchen appliances so you can pick the right one for your family and budget, with no guesswork.',
+      'Honest reviews and clear comparisons that help you pick what fits you best, with no guesswork.',
     footerAbout:
-      'Your guide to choosing air fryers and smart kitchen appliances: honest reviews, clear comparisons and practical cooking tips.',
+      'A site with honest reviews, clear comparisons and practical tips.',
     copyright: 'All rights reserved.',
   },
 } as const

@@ -47,7 +47,7 @@ export const postSchema = defineType({
       group: 'content',
       validation: (rule) => rule.required().max(100),
       description:
-        'Arabic example: أفضل مكنسة روبوت 2026 | English example: Best Robot Vacuum 2026',
+        'Arabic example: أفضل دليل شراء 2026 | English example: Best Buying Guide 2026',
     }),
     defineField({
       name: 'slug',
@@ -56,7 +56,7 @@ export const postSchema = defineType({
       group: 'content',
       options: { source: 'title', maxLength: 96 },
       description:
-        'Arabic slug: افضل-مكنسة-روبوت-2026 | English slug: best-robot-vacuum-2026. Click Generate.',
+        'Arabic slug: افضل-دليل-شراء-2026 | English slug: best-buying-guide-2026. Click Generate.',
       validation: (rule) => rule.required(),
     }),
     defineField({

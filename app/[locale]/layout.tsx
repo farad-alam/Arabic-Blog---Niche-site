@@ -4,7 +4,7 @@ import { Cairo, Tajawal, Outfit } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
 import { baseMetadata } from '@/lib/seo'
-import { getTwitterHandle } from '@/lib/site'
+import { getSiteName, getTwitterHandle } from '@/lib/site'
 import { getImageUrl } from '@/sanity/image'
 import { getSiteSettings } from '@/sanity/queries'
 import NavbarWrapper from '@/components/layout/NavbarWrapper'
@@ -47,10 +47,7 @@ export async function generateMetadata({
   const l = (locales.includes(locale as Locale) ? locale : 'ar') as Locale
   const settings = await getSiteSettings()
 
-  const siteName =
-    l === 'ar'
-      ? settings?.siteNameAr || 'موقع المنزل والمطبخ'
-      : settings?.siteNameEn || 'Home & Kitchen Guide'
+  const siteName = getSiteName(settings, l)
 
   const title =
     l === 'ar'

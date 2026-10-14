@@ -3,7 +3,7 @@ import { defineType, defineField } from 'sanity'
 /**
  * Category Schema — Hierarchical + Bilingual
  *
- * Categories ARE bilingual because the same category (e.g. "Home & Kitchen" / "المنزل والمطبخ")
+ * Categories ARE bilingual because the same category (e.g. "Reviews" / "مراجعات")
  * must appear in both /ar/ and /en/ navigation.
  *
  * Categories have separate titleAr/titleEn and slugAr/slugEn.
@@ -19,14 +19,14 @@ export const categorySchema = defineType({
       title: 'Arabic Title',
       type: 'string',
       validation: (rule) => rule.required(),
-      description: 'e.g. المنزل والمطبخ',
+      description: 'e.g. مراجعات',
     }),
     defineField({
       name: 'titleEn',
       title: 'English Title',
       type: 'string',
       validation: (rule) => rule.required(),
-      description: 'e.g. Home & Kitchen',
+      description: 'e.g. Reviews',
     }),
     defineField({
       name: 'slugAr',

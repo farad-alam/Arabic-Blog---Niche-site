@@ -2,13 +2,22 @@ import { ShieldCheck, FlaskConical, RefreshCw, Languages } from 'lucide-react'
 import type { Locale } from '@/lib/i18n'
 
 /** "Why trust us" strip — important E-E-A-T signal for an affiliate review site. */
-export default function TrustStrip({ locale }: { locale: Locale }) {
+export default function TrustStrip({
+  locale,
+  testingLine,
+}: {
+  locale: Locale
+  /** Niche-specific testing line — from Site Settings → trustLineAr/En */
+  testingLine?: string
+}) {
   const isAr = locale === 'ar'
   const items = [
     {
       icon: FlaskConical,
       title: isAr ? 'مراجعات بعد التجربة' : 'Hands-on testing',
-      text: isAr ? 'نقيّم الأجهزة بالاستخدام الفعلي في المطبخ.' : 'We judge appliances by real kitchen use.',
+      text:
+        testingLine ||
+        (isAr ? 'نقيّم المنتجات بالاستخدام الفعلي والاختبار الميداني.' : 'We judge products by real hands-on testing.'),
     },
     {
       icon: ShieldCheck,

@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
+import { BASE_URL } from '@/lib/config'
 
 /**
  * Root layout — minimal pass-through.
@@ -13,7 +14,7 @@ import type { Metadata } from 'next'
  * The only route NOT under [locale] is /studio — it uses its own layout.
  */
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'),
+  metadataBase: new URL(BASE_URL),
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ══════════════════════════════════════════════════════════════════════════════
+   BRAND & THEME COLORS — edit this :root block to re-skin a new niche site.
+
+   Colors are space-separated RGB triplets so Tailwind can apply opacity
+   modifiers (e.g. bg-brand-primary/10). Format: R G B (0–255, no commas).
+   After changing these, also update the Tailwind token comments in
+   tailwind.config.ts if you rename anything.
+   ═════════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Brand palette */
+  --brand-primary: 0 108 53;      /* #006C35 — primary brand color */
+  --brand-dark: 0 80 39;          /* #005027 — darker shade (buttons, hover) */
+  --brand-gradient: 0 153 76;     /* #00994C — lighter gradient end */
+  --brand-deep: 0 59 28;          /* #003B1C — deepest shade (active states) */
+  --brand-mid: 0 127 63;          /* #007F3F — mid tone */
+  --brand-light: 0 108 53;        /* accent text on light backgrounds */
+
+  /* Surface layers (warm cream light theme) */
+  --surface-base: 250 248 245;    /* #FAF8F5 — page background */
+  --surface-raised: 244 240 234;  /* #F4F0EA — strips, sidebars */
+  --surface-card: 255 255 255;    /* #FFFFFF — card surface */
+  --surface-border: 232 226 217;  /* #E8E2D9 — warm border */
+  --surface-hover: 240 235 227;   /* #F0EBE3 — subtle hover */
+
+  /* Text */
+  --text-primary: 28 25 23;       /* #1C1917 — near-black warm */
+  --text-muted: 107 101 96;       /* #6B6560 — warm medium grey */
+  --text-inverse: 255 255 255;
+  --text-charcoal: 51 51 51;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -15,7 +46,7 @@
   button,
   summary {
     touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(0, 108, 53, 0.12);
+    -webkit-tap-highlight-color: rgb(var(--brand-primary) / 0.12);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -77,15 +108,15 @@
 
   /* ── Shared base — warm cream light theme ───────────────────────────────── */
   body {
-    background-color: #FAF8F5;  /* warm cream — easier on eyes than pure white */
-    color: #1C1917;              /* near-black warm text */
+    background-color: rgb(var(--surface-base));
+    color: rgb(var(--text-primary));
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: #006C35;
-    color: #FFFFFF;
+    background-color: rgb(var(--brand-primary));
+    color: rgb(var(--text-inverse));
   }
 
   * {
@@ -94,7 +125,7 @@
 
   /* Focus ring for accessibility */
   :focus-visible {
-    outline: 2px solid #006C35;
+    outline: 2px solid rgb(var(--brand-primary));
     outline-offset: 2px;
   }
 
@@ -114,7 +145,7 @@
 @layer utilities {
   /* ── Text gradient ──────────────────────────────────────────────────────── */
   .text-gradient {
-    background: linear-gradient(135deg, #006C35, #00994C);
+    background: linear-gradient(135deg, rgb(var(--brand-primary)), rgb(var(--brand-gradient)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -122,11 +153,11 @@
 
   /* ── Cards & borders ───────────────────────────────────────────────────── */
   .glow-border {
-    border: 1px solid rgba(0, 108, 53, 0.20);
+    border: 1px solid rgb(var(--brand-primary) / 0.20);
   }
 
   .glow-shadow {
-    box-shadow: 0 0 30px rgba(0, 108, 53, 0.08);
+    box-shadow: 0 0 30px rgb(var(--brand-primary) / 0.08);
   }
 
   /* ── Section spacing ────────────────────────────────────────────────────── */
@@ -144,8 +175,8 @@
 
   /* ── Buttons ───────────────────────────────────────────────────────────── */
   .btn-primary {
-    background-color: #005027;
-    color: #FFFFFF;
+    background-color: rgb(var(--brand-dark));
+    color: rgb(var(--text-inverse));
     box-shadow: rgba(255, 255, 255, 0.72) 0px 2px 3px 0px inset;
     border-radius: 8px;
     font-weight: 700;
@@ -158,11 +189,11 @@
   }
 
   .btn-primary:hover {
-    background-color: #006C35;
+    background-color: rgb(var(--brand-primary));
   }
 
   .btn-primary:active {
-    background-color: #003B1C;
+    background-color: rgb(var(--brand-deep));
   }
 
   /* ── Scrollbar hide ──────────────────────────────────────────────────────── */
@@ -237,18 +268,18 @@
   .ad-slot {
     min-height: 90px;
     width: 100%;
-    background: rgba(0, 108, 53, 0.03);
-    border: 1.5px dashed rgba(0, 108, 53, 0.15);
+    background: rgb(var(--brand-primary) / 0.03);
+    border: 1.5px dashed rgb(var(--brand-primary) / 0.15);
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 11px;
-    color: rgba(28, 25, 23, 0.35);
+    color: rgb(var(--text-primary) / 0.35);
   }
 
   /* ── Surface utility ────────────────────────────────────────────────────── */
   .surface-raised {
-    background-color: #F4F0EA;
+    background-color: rgb(var(--surface-raised));
   }
 }

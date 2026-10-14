@@ -51,6 +51,19 @@ export default defineConfig({
             S.listItem()
               .title('🏷️ Categories')
               .child(S.documentTypeList('category').title('Categories')),
+            S.divider(),
+            // ── Homepage sections ────────────────────────
+            S.listItem()
+              .title('⭐ Top Picks')
+              .child(S.documentTypeList('featuredPick').title('Top Picks')),
+            S.listItem()
+              .title('❓ Homepage FAQ')
+              .child(S.documentTypeList('faqItem').title('Homepage FAQ')),
+            S.divider(),
+            // ── Static pages ─────────────────────────────
+            S.listItem()
+              .title('📄 Static Pages')
+              .child(S.documentTypeList('staticPage').title('Static Pages')),
           ]),
     }),
   ],

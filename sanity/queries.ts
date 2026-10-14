@@ -481,6 +481,23 @@ export type SanitySiteSettings = {
   heroHighlightEn?: string
   heroSubheadingAr?: string
   heroSubheadingEn?: string
+  // Homepage Top Picks section chrome
+  picksBadgeAr?: string
+  picksBadgeEn?: string
+  picksHeadingAr?: string
+  picksHeadingEn?: string
+  picksSubheadingAr?: string
+  picksSubheadingEn?: string
+  picksCtaAr?: string
+  picksCtaEn?: string
+  // Homepage FAQ section chrome
+  faqBadgeAr?: string
+  faqBadgeEn?: string
+  faqHeadingAr?: string
+  faqHeadingEn?: string
+  // Trust strip
+  trustLineAr?: string
+  trustLineEn?: string
   // Footer
   footerAboutAr?: string
   footerAboutEn?: string
@@ -549,6 +566,20 @@ export const getSiteSettings = cache(
         heroHighlightEn,
         heroSubheadingAr,
         heroSubheadingEn,
+        picksBadgeAr,
+        picksBadgeEn,
+        picksHeadingAr,
+        picksHeadingEn,
+        picksSubheadingAr,
+        picksSubheadingEn,
+        picksCtaAr,
+        picksCtaEn,
+        faqBadgeAr,
+        faqBadgeEn,
+        faqHeadingAr,
+        faqHeadingEn,
+        trustLineAr,
+        trustLineEn,
         footerAboutAr,
         footerAboutEn,
         copyrightAr,
@@ -561,6 +592,135 @@ export const getSiteSettings = cache(
       }`,
       {},
       { next: { tags: ['siteSettings'] } }
+    )
+  }
+)
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Homepage FAQ items
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SanityFaqItem = {
+  _id: string
+  questionAr: string
+  questionEn: string
+  answerAr: string
+  answerEn: string
+  order?: number
+}
+
+/** Homepage FAQ items ordered for display, resolved to the given locale. */
+export async function getFaqItems(locale: Locale): Promise<{ q: string; a: string }[]> {
+  const items: SanityFaqItem[] = await client.fetch(
+    `*[_type == "faqItem"] | order(order asc) {
+      _id,
+      questionAr,
+      questionEn,
+      answerAr,
+      answerEn,
+      order
+    }`,
+    {},
+    { next: { tags: ['faqItems'] } }
+  )
+  return items
+    .map((item) => ({
+      q: locale === 'ar' ? item.questionAr : item.questionEn,
+      a: locale === 'ar' ? item.answerAr : item.answerEn,
+    }))
+    .filter((i) => i.q?.trim() && i.a?.trim())
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Homepage featured picks
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SanityFeaturedPick = {
+  _id: string
+  badgeAr: string
+  badgeEn: string
+  badgeColor?: string
+  titleAr: string
+  titleEn: string
+  specsAr?: string
+  specsEn?: string
+  verdictAr?: string
+  verdictEn?: string
+  rating?: number
+  postRefAr?: { slug: { current: string } } | null
+  postRefEn?: { slug: { current: string } } | null
+  order?: number
+}
+
+/** Homepage "Top Picks" ribbon items ordered for display. */
+export async function getFeaturedPicks(): Promise<SanityFeaturedPick[]> {
+  return client.fetch(
+    `*[_type == "featuredPick"] | order(order asc) {
+      _id,
+      badgeAr,
+      badgeEn,
+      badgeColor,
+      titleAr,
+      titleEn,
+      specsAr,
+      specsEn,
+      verdictAr,
+      verdictEn,
+      rating,
+      order,
+      "postRefAr": postRefAr-> { slug },
+      "postRefEn": postRefEn-> { slug }
+    }`,
+    {},
+    { next: { tags: ['featuredPicks'] } }
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Static pages (About / Privacy / Terms / Disclosure)
+// ─────────────────────────────────────────────────────────────────────────────
+
+export type SanityStaticPageSection = {
+  headingAr: string
+  headingEn: string
+  paragraphsAr?: string[]
+  paragraphsEn?: string[]
+}
+
+export type SanityStaticPage = {
+  _id: string
+  key: string
+  titleAr: string
+  titleEn: string
+  descriptionAr?: string
+  descriptionEn?: string
+  introAr?: string
+  introEn?: string
+  sections?: SanityStaticPageSection[]
+}
+
+/** Fetch a static page (about/privacy/terms/disclosure) by its key. */
+export const getStaticPage = cache(
+  async (key: string): Promise<SanityStaticPage | null> => {
+    return client.fetch(
+      `*[_type == "staticPage" && key == $key][0] {
+        _id,
+        key,
+        titleAr,
+        titleEn,
+        descriptionAr,
+        descriptionEn,
+        introAr,
+        introEn,
+        sections[] {
+          headingAr,
+          headingEn,
+          paragraphsAr,
+          paragraphsEn
+        }
+      }`,
+      { key },
+      { next: { tags: ['staticPages'] } }
     )
   }
 )

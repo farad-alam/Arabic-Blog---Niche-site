@@ -19,14 +19,14 @@ export const siteSettingsSchema = defineType({
       title: 'Site Name (Arabic)',
       type: 'string',
       group: 'identity',
-      description: 'e.g. موقع المنزل والمطبخ',
+      description: 'e.g. دليل المنتجات',
     }),
     defineField({
       name: 'siteNameEn',
       title: 'Site Name (English)',
       type: 'string',
       group: 'identity',
-      description: 'e.g. Home & Kitchen Guide',
+      description: 'e.g. Product Guide',
     }),
     defineField({
       name: 'logo',
@@ -40,7 +40,7 @@ export const siteSettingsSchema = defineType({
           name: 'alt',
           type: 'string',
           title: 'Alternative Text',
-          description: 'Descriptive text for accessibility and SEO. e.g. "موقع المنزل والمطبخ"',
+          description: 'Descriptive text for accessibility and SEO. e.g. "Site logo"',
         },
       ],
     }),
@@ -92,6 +92,67 @@ export const siteSettingsSchema = defineType({
       group: 'homepage',
     }),
     defineField({ name: 'heroSubheadingEn', title: 'Hero Sub-headline (English)', type: 'text', rows: 3, group: 'homepage' }),
+
+    // ── Homepage Top Picks ribbon ──────────────────────────────────────────
+    defineField({
+      name: 'picksBadgeAr',
+      title: 'Top Picks Badge (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Small pill above the picks heading. e.g. اختيارات الخبراء',
+    }),
+    defineField({ name: 'picksBadgeEn', title: 'Top Picks Badge (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'picksHeadingAr',
+      title: 'Top Picks Heading (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Section heading shown above the featured picks ribbon.',
+    }),
+    defineField({ name: 'picksHeadingEn', title: 'Top Picks Heading (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'picksSubheadingAr',
+      title: 'Top Picks Sub-heading (Arabic)',
+      type: 'text',
+      rows: 2,
+      group: 'homepage',
+    }),
+    defineField({ name: 'picksSubheadingEn', title: 'Top Picks Sub-heading (English)', type: 'text', rows: 2, group: 'homepage' }),
+    defineField({
+      name: 'picksCtaAr',
+      title: 'Top Picks Button Text (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'CTA on each pick card. Default: "قراءة المراجعة والمواصفات".',
+    }),
+    defineField({ name: 'picksCtaEn', title: 'Top Picks Button Text (English)', type: 'string', group: 'homepage' }),
+
+    // ── Homepage FAQ section ───────────────────────────────────────────────
+    defineField({
+      name: 'faqBadgeAr',
+      title: 'FAQ Badge (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Small pill above the FAQ heading. e.g. الأسئلة الشائعة والأدلة',
+    }),
+    defineField({ name: 'faqBadgeEn', title: 'FAQ Badge (English)', type: 'string', group: 'homepage' }),
+    defineField({
+      name: 'faqHeadingAr',
+      title: 'FAQ Heading (Arabic)',
+      type: 'string',
+      group: 'homepage',
+    }),
+    defineField({ name: 'faqHeadingEn', title: 'FAQ Heading (English)', type: 'string', group: 'homepage' }),
+
+    // ── Trust strip (first item line) ──────────────────────────────────────
+    defineField({
+      name: 'trustLineAr',
+      title: 'Trust Strip — Testing Line (Arabic)',
+      type: 'string',
+      group: 'homepage',
+      description: 'Text under "Hands-on testing" in the trust strip. Describe how YOU test, in your niche.',
+    }),
+    defineField({ name: 'trustLineEn', title: 'Trust Strip — Testing Line (English)', type: 'string', group: 'homepage' }),
 
     // ── Footer ────────────────────────────────────────────────────────────────
     defineField({

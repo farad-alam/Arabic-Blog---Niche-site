@@ -1,4 +1,5 @@
-export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://example.com'
+export { BASE_URL } from './config'
+import { BASE_URL } from './config'
 
 type Language = 'ar' | 'en'
 

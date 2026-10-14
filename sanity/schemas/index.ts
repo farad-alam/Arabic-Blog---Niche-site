@@ -2,6 +2,9 @@ import { postSchema } from './post'
 import { categorySchema } from './category'
 import { authorSchema } from './author'
 import { siteSettingsSchema } from './siteSettings'
+import { faqItemSchema } from './faqItem'
+import { featuredPickSchema } from './featuredPick'
+import { staticPageSchema } from './staticPage'
 import { productComparisonTableSchema } from './blocks/productComparisonTable'
 import { amazonProductCardSchema } from './blocks/amazonProductCard'
 import { prosConsBlockSchema } from './blocks/prosConsBlock'
@@ -14,6 +17,9 @@ export const schemaTypes = [
   postSchema,
   authorSchema,
   categorySchema,
+  faqItemSchema,
+  featuredPickSchema,
+  staticPageSchema,
   // Custom Portable Text block objects
   productComparisonTableSchema,
   amazonProductCardSchema,

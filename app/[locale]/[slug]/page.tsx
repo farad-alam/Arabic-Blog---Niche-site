@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { type Locale, locales, formatDate, t } from '@/lib/i18n'
 import { getPost, getRecentPostSlugs, getSiteSettings, type SanityBlock } from '@/sanity/queries'
 import { urlFor, getImageUrl } from '@/sanity/image'
-import { getTwitterHandle } from '@/lib/site'
+import { getSiteName, getTwitterHandle } from '@/lib/site'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema, breadcrumbSchema, faqSchema, BASE_URL } from '@/lib/schema'
 import TableOfContents from '@/components/blog/TableOfContents'
@@ -46,10 +46,7 @@ export async function generateMetadata({
   const isAr = locale === 'ar'
   const title = post.seoTitle || post.title
   const description = post.seoDescription || post.excerpt
-  const siteName =
-    locale === 'ar'
-      ? settings?.siteNameAr || 'موقع المنزل والمطبخ'
-      : settings?.siteNameEn || 'Home & Kitchen Guide'
+  const siteName = getSiteName(settings, locale as Locale)
 
   // Featured image takes priority; fallback to Sanity static OG image, then default /opengraph-image.png
   // crop:true → exact 1200x630 file so declared og:image dimensions match
@@ -159,7 +156,7 @@ export default async function PostPage({
   // getSiteSettings() is React-cached — no extra API call, shares the result
   // already fetched by the layout, navbar and footer in the same render tree.
   const settings = await getSiteSettings()
-  const siteName = l === 'ar' ? (settings?.siteNameAr ?? '') : (settings?.siteNameEn ?? '')
+  const siteName = getSiteName(settings, l)
 
   const jsonLd = articleSchema({
     title: post.title,
@@ -428,7 +425,7 @@ export default async function PostPage({
                     locale={l}
                     twitterHandle={getTwitterHandle(settings)}
                   />
-                  <AuthorBox author={post.author} />
+                  <AuthorBox author={post.author} siteName={siteName} locale={l} />
                 </footer>
 
                 {/* Phones / tablets: swipeable "Read also" rail right after the author box */}

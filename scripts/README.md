@@ -1,4 +1,19 @@
-# Bulk Publishing Scripts
+# Scripts
+
+## seed-cms.ts (one-time migration)
+
+Migrates the previously-hardcoded homepage FAQ, Top Picks, static pages
+(About/Privacy/Terms/Disclosure), and Site Settings section copy into Sanity.
+Safe to re-run: documents matched by `key` are updated in place.
+
+```bash
+npx tsx scripts/seed-cms.ts
+```
+
+Requires `SANITY_WRITE_TOKEN` in `.env`. Run once per site during initial setup,
+or after resetting a clone's CMS content.
+
+---
 
 ## bulk-import.ts
 
@@ -25,16 +40,16 @@ Create a JSON file with an array of articles:
 ```json
 [
   {
-    "title": "أفضل مكنسة روبوت 2026",
-    "slug": "افضل-مكنسة-روبوت-2026",
+    "title": "أفضل دليل شراء 2026",
+    "slug": "افضل-دليل-شراء-2026",
     "language": "ar",
-    "excerpt": "مراجعة شاملة لأفضل مكانس الروبوت في السعودية لعام 2026 مع مقارنة الأسعار والمميزات.",
+    "excerpt": "مراجعة شاملة مع مقارنة الأسعار والمميزات.",
     "body": "الفقرة الأولى هنا.\n\nالفقرة الثانية هنا.\n\nالفقرة الثالثة هنا.",
-    "categorySlug": "منزل-ومطبخ",
+    "categorySlug": "مراجعات",
     "authorSlug": "admin",
     "publishedAt": "2026-09-30T00:00:00Z",
     "mainImageUrl": "https://images.unsplash.com/photo-xxx",
-    "keywords": ["مكنسة روبوت", "روبوت تنظيف 2026"],
+    "keywords": ["دليل شراء", "مراجعة 2026"],
     "articleType": "review",
     "affiliateDisclosure": true
   }
@@ -46,7 +61,7 @@ Create a JSON file with an array of articles:
 | Field | Required | Description |
 |-------|----------|-------------|
 | `title` | ✅ | Article title in the article's language |
-| `slug` | ✅ | URL slug. Arabic: `افضل-مكنسة-روبوت`. English: `best-robot-vacuum` |
+| `slug` | ✅ | URL slug. Arabic: `افضل-دليل-شراء`. English: `best-buying-guide` |
 | `language` | ✅ | `"ar"` or `"en"` |
 | `excerpt` | ✅ | Short description, max 160 chars |
 | `body` | ✅ | Article body. Separate paragraphs with double newlines (`\n\n`) |
@@ -62,8 +77,8 @@ Create a JSON file with an array of articles:
 ### Tips for Arabic Slugs
 
 Arabic slugs can contain Arabic characters. Example:
-- Title: `أفضل مكنسة روبوت 2026`
-- Slug: `افضل-مكنسة-روبوت-2026`
+- Title: `أفضل دليل شراء 2026`
+- Slug: `افضل-دليل-شراء-2026`
 
 Remove diacritics (tashkeel) from slugs. Use hyphens between words.
 
@@ -77,4 +92,4 @@ Remove diacritics (tashkeel) from slugs. Use hyphens between words.
 ### After Import
 
 The Sanity webhook automatically triggers revalidation at `/api/revalidate` for each new post.
-New pages go live on Vercel within seconds of import completion.
+New pages go live within seconds of import completion.

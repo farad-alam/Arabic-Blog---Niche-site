@@ -25,7 +25,7 @@ export default function Hero({ locale, settings, categories }: HeroProps) {
           className="absolute inset-0 opacity-[0.025]"
           style={{
             backgroundImage:
-              'linear-gradient(#7D40FF 1px, transparent 1px), linear-gradient(90deg, #7D40FF 1px, transparent 1px)',
+              'linear-gradient(rgb(var(--brand-primary)) 1px, transparent 1px), linear-gradient(90deg, rgb(var(--brand-primary)) 1px, transparent 1px)',
             backgroundSize: '48px 48px',
             maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
             WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 75%)',
