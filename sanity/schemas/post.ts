@@ -34,7 +34,8 @@ export const postSchema = defineType({
         layout: 'radio',
         direction: 'horizontal',
       },
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().error('Language is required — choose Arabic (ar) or English (en).'),
       description:
         'The language of this article. Determines the URL prefix: /ar/slug or /en/slug.',
     }),
@@ -45,7 +46,12 @@ export const postSchema = defineType({
       title: 'Title',
       type: 'string',
       group: 'content',
-      validation: (rule) => rule.required().max(100),
+      validation: (rule) =>
+        rule
+          .required()
+          .error('Title is required (Content tab).')
+          .max(100)
+          .error('Title must be 100 characters or less (Content tab).'),
       description:
         'Arabic example: أفضل دليل شراء 2026 | English example: Best Buying Guide 2026',
     }),
@@ -57,7 +63,8 @@ export const postSchema = defineType({
       options: { source: 'title', maxLength: 96 },
       description:
         'Arabic slug: افضل-دليل-شراء-2026 | English slug: best-buying-guide-2026. Click Generate.',
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule.required().error('Slug (URL) is required — click "Generate" (Content tab).'),
     }),
     defineField({
       name: 'excerpt',
@@ -66,7 +73,12 @@ export const postSchema = defineType({
       rows: 3,
       group: 'content',
       description: 'Shown in article listings and used as meta description. Keep under 160 chars.',
-      validation: (rule) => rule.required().max(160),
+      validation: (rule) =>
+        rule
+          .required()
+          .error('Excerpt is required (Content tab).')
+          .max(160)
+          .error('Excerpt must be 160 characters or less (Content tab).'),
     }),
     defineField({
       name: 'mainImage',
@@ -91,7 +103,10 @@ export const postSchema = defineType({
           title: 'Alt Text',
           type: 'string',
           description: 'Describe the image for accessibility and Google Image Search.',
-          validation: (rule) => rule.required(),
+          validation: (rule) =>
+            rule
+              .required()
+              .error('Cover Image: Alt Text is required (Content tab → Cover Image section).'),
         }),
       ],
     }),
@@ -126,7 +141,10 @@ export const postSchema = defineType({
                     name: 'href',
                     type: 'string',
                     title: 'URL',
-                    validation: (rule: any) => rule.required(),
+                    validation: (rule: any) =>
+                      rule
+                        .required()
+                        .error('Article Body → a Link is missing its URL. Open the link inside the body text and set the URL.'),
                   },
                   {
                     name: 'blank',
@@ -153,7 +171,10 @@ export const postSchema = defineType({
               name: 'alt',
               type: 'string',
               title: 'Alt Text',
-              validation: (rule: any) => rule.required(),
+              validation: (rule: any) =>
+                rule
+                  .required()
+                  .error('Article Body → an inline Image is missing Alt Text. Open the image in the body and add alt text.'),
             },
             {
               name: 'caption',
@@ -175,7 +196,7 @@ export const postSchema = defineType({
       type: 'reference',
       to: [{ type: 'category' }],
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().error('Category is required (Content tab).'),
     }),
     defineField({
       name: 'author',
@@ -183,14 +204,14 @@ export const postSchema = defineType({
       type: 'reference',
       to: [{ type: 'author' }],
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().error('Author is required (Content tab).'),
     }),
     defineField({
       name: 'publishedAt',
       title: 'Published At',
       type: 'datetime',
       group: 'content',
-      validation: (rule) => rule.required(),
+      validation: (rule) => rule.required().error('Published At date is required (Content tab).'),
     }),
     defineField({
       name: 'updatedAt',
@@ -291,7 +312,12 @@ export const postSchema = defineType({
       title: 'Overall Product Rating (1–5)',
       type: 'number',
       group: 'affiliate',
-      validation: (rule) => rule.min(1).max(5),
+      validation: (rule) =>
+        rule
+          .min(1)
+          .error('Overall Rating must be at least 1 (Affiliate tab).')
+          .max(5)
+          .error('Overall Rating must be 5 or less (Affiliate tab).'),
       description: 'Used for star rating display and Product schema. Only set for review articles.',
     }),
   ],

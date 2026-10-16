@@ -21,14 +21,14 @@ export const faqBlockSchema = {
               name: 'question',
               title: 'Question',
               type: 'string',
-              validation: (rule: any) => rule.required(),
+              validation: (rule: any) => rule.required().error('FAQ Block: every item needs a Question.'),
             },
             {
               name: 'answer',
               title: 'Answer',
               type: 'text',
               rows: 3,
-              validation: (rule: any) => rule.required(),
+              validation: (rule: any) => rule.required().error('FAQ Block: every item needs an Answer.'),
             },
           ],
           preview: {

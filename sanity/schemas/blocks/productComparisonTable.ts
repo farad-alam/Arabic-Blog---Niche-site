@@ -23,7 +23,7 @@ export const productComparisonTableSchema = {
         {
           type: 'object',
           fields: [
-            { name: 'name', type: 'string', title: 'Product Name', validation: (r: any) => r.required() },
+            { name: 'name', type: 'string', title: 'Product Name', validation: (r: any) => r.required().error('Comparison Table: every product row needs a Product Name.') },
             { name: 'imageUrl', type: 'url', title: 'Product Image URL' },
             {
               name: 'rating',

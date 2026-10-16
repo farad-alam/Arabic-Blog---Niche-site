@@ -29,7 +29,7 @@ export const calloutBlockSchema = {
       title: 'Callout Text',
       type: 'text',
       rows: 2,
-      validation: (rule: any) => rule.required(),
+      validation: (rule: any) => rule.required().error('Callout Block: Callout Text is required.'),
     },
   ],
   preview: {

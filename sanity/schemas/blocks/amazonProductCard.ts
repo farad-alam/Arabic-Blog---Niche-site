@@ -18,7 +18,7 @@ export const amazonProductCardSchema = {
       name: 'name',
       title: 'Product Name',
       type: 'string',
-      validation: (rule: any) => rule.required(),
+      validation: (rule: any) => rule.required().error('Amazon Product Card: Product Name is required.'),
     },
     {
       name: 'imageUrl',
@@ -48,7 +48,7 @@ export const amazonProductCardSchema = {
       title: 'Affiliate Link',
       type: 'url',
       description: 'Full Amazon URL with your affiliate tag. e.g. https://www.amazon.com/dp/ASIN?tag=your-tag-20',
-      validation: (rule: any) => rule.required(),
+      validation: (rule: any) => rule.required().error('Amazon Product Card: Affiliate Link is required.'),
     },
     {
       name: 'badge',
