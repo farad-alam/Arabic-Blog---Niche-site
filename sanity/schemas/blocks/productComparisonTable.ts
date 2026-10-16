@@ -50,18 +50,12 @@ export const productComparisonTableSchema = {
               title: 'Cons',
               of: [{ type: 'string' }],
             },
+            { name: 'asin', type: 'string', title: 'Amazon ASIN (optional)' },
             {
               name: 'verdict',
               type: 'string',
               title: 'Verdict Badge',
-              options: {
-                list: [
-                  { title: '🥇 Best Overall', value: 'best-overall' },
-                  { title: '💰 Best Budget', value: 'best-budget' },
-                  { title: '👑 Best Premium', value: 'best-premium' },
-                  { title: "✏️ Editor's Choice", value: 'editors-choice' },
-                ],
-              },
+              description: 'Free text, e.g. Best Overall · Best Budget · Editor\'s Choice',
             },
           ],
           preview: {
