@@ -36,6 +36,7 @@ export async function generateMetadata({
   return {
     alternates: {
       canonical: `/${l}`,
+      languages: { ar: '/ar', en: '/en', 'x-default': '/ar' },
     },
   }
 }

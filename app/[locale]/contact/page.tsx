@@ -19,7 +19,10 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     description: isAr
       ? 'تواصل معنا لأي استفسار أو اقتراح أو طلب تعاون.'
       : 'Get in touch for questions, suggestions or collaboration requests.',
-    alternates: { canonical: `/${locale}/contact` },
+    alternates: {
+      canonical: `/${locale}/contact`,
+      languages: { ar: '/ar/contact', en: '/en/contact', 'x-default': '/ar/contact' },
+    },
   }
 }
 

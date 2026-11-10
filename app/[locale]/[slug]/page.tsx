@@ -59,8 +59,14 @@ export async function generateMetadata({
   const arSlug = isAr ? slug : post.translation?.slug.current
   const enSlug = isAr ? post.translation?.slug.current : slug
 
+  // Search engines cut titles at roughly 60 characters. Append the site name only
+  // when the whole title still fits; otherwise the article title stands alone.
+  const MAX_TITLE = 60
+  const withSiteName = `${title} | ${siteName}`
+  const documentTitle = withSiteName.length <= MAX_TITLE ? withSiteName : title
+
   return {
-    title,
+    title: { absolute: documentTitle },
     description,
     ...(post.noIndex ? { robots: { index: false, follow: true } } : {}),
     openGraph: {

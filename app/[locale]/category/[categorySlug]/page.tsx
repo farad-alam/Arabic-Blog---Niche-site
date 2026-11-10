@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { type Locale, locales } from '@/lib/i18n'
 import { getCategoryBySlug, getPostsByCategory, getAllCategorySlugs } from '@/sanity/queries'
+import { breadcrumbSchema, BASE_URL } from '@/lib/schema'
 import PostGrid from '@/components/blog/PostGrid'
 
 // Static HTML, cached until the Sanity webhook fires revalidateTag('categories') / `category-${id}`.
@@ -27,9 +28,14 @@ export async function generateMetadata({
   const title = locale === 'ar' ? category.titleAr : category.titleEn
   const description = locale === 'ar' ? category.descriptionAr : category.descriptionEn
 
+  // Category pages are deliberately kept OUT of Google's index (they are navigation
+  // for visitors; the articles are what should rank). "follow" lets link value still
+  // flow through to the articles. They are not in the sitemap, and they carry no
+  // hreflang, because hreflang must not point at noindex pages.
   return {
     title,
     description,
+    robots: { index: false, follow: true },
     alternates: {
       canonical: `/${locale}/category/${categorySlug}`,
     },
@@ -53,7 +59,17 @@ export default async function CategoryPage({
   const title = l === 'ar' ? category.titleAr : category.titleEn
   const description = l === 'ar' ? category.descriptionAr : category.descriptionEn
 
+  const crumbs = [
+    { name: l === 'ar' ? 'الرئيسية' : 'Home', url: `${BASE_URL}/${l}` },
+    { name: title, url: `${BASE_URL}/${l}/category/${categorySlug}` },
+  ]
+
   return (
+    <>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(crumbs)) }}
+    />
     <main className="min-h-screen bg-surface-base pt-12 pb-24">
       <header className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="flex items-center gap-4 mb-4">
@@ -77,5 +93,6 @@ export default async function CategoryPage({
         <PostGrid locale={l} posts={posts} title={l === 'ar' ? 'مقالات القسم' : 'Category Articles'} />
       </section>
     </main>
+    </>
   )
 }

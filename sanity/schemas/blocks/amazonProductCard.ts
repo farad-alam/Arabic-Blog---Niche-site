@@ -47,7 +47,7 @@ export const amazonProductCardSchema = {
       name: 'affiliateUrl',
       title: 'Affiliate Link',
       type: 'url',
-      description: 'Full Amazon URL with your affiliate tag. e.g. https://www.amazon.com/dp/ASIN?tag=your-tag-20',
+      description: 'Amazon.sa product URL, e.g. https://www.amazon.sa/dp/ASIN. Do not add a tag: your affiliate tag is added automatically.',
       validation: (rule: any) => rule.required().error('Amazon Product Card: Affiliate Link is required.'),
     },
     {

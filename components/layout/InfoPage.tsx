@@ -19,7 +19,10 @@ export async function infoMetadata(key: InfoPageKey, localeParam: string): Promi
   return {
     title,
     description,
-    alternates: { canonical: `/${locale}/${key}` },
+    alternates: {
+      canonical: `/${locale}/${key}`,
+      languages: { ar: `/ar/${key}`, en: `/en/${key}`, 'x-default': `/ar/${key}` },
+    },
   }
 }
 

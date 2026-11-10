@@ -145,7 +145,7 @@ export default function AuthorBox({ author, siteName, locale = 'ar' }: AuthorBox
               </Link>
             ))}
             <Link
-              href={`/authors/${author.slug.current}`}
+              href={`/${locale}/authors/${author.slug.current}`}
               className="inline-flex items-center justify-center w-full sm:w-auto min-h-[44px] mt-1 sm:mt-0 sm:ms-auto px-4 rounded-lg border border-brand-primary/30 bg-brand-primary/5 font-body text-sm font-medium text-brand-primary hover:bg-brand-primary/10 transition-colors"
             >
               View all posts →
