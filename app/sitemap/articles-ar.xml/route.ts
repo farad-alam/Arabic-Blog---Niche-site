@@ -12,7 +12,7 @@ export async function GET() {
 
     let alternateTag = ''
     if (post.translationSlug) {
-      alternateTag = `\n    <xhtml:link rel="alternate" hreflang="ar" href="${loc}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/${post.translationSlug}"/>`
+      alternateTag = `\n    <xhtml:link rel="alternate" hreflang="ar" href="${loc}"/>\n    <xhtml:link rel="alternate" hreflang="en" href="${BASE_URL}/en/${post.translationSlug}"/>\n    <xhtml:link rel="alternate" hreflang="x-default" href="${loc}"/>`
     }
 
     return `  <url>

@@ -211,6 +211,12 @@ export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt 
               </Link>
             ))}
             <Link
+              href={`/${locale}/articles`}
+              className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
+            >
+              {t(locale, 'category.allArticles')}
+            </Link>
+            <Link
               href={`/${locale}/about`}
               className="block px-3 py-3 rounded-lg text-white/90 hover:text-white hover:bg-white/10"
             >

@@ -1,20 +1,20 @@
 import React from 'react'
 import { PortableText as SanityPortableText, type PortableTextComponents } from 'next-sanity'
 import { urlFor } from './image'
-import type { SanityBlock } from './queries'
-import { resolveAffiliateUrl } from '@/lib/affiliates'
+import { getSiteSettings, type SanityBlock } from './queries'
+import { resolveAffiliateUrl, addAffiliateTag, isAmazonAffiliateTarget } from '@/lib/affiliates'
 import { ProductComparisonTable } from '@/components/blog/ProductComparisonTable'
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 // Anchor ID generator for headings (used by Table of Contents)
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 function slugify(text: unknown): string {
   if (!text) return ''
   const str = Array.isArray(text)
     ? text.map((t) => (typeof t === 'string' ? t : (t as { text?: string })?.text ?? '')).join('')
     : String(text)
-  // Handle Arabic text â€” preserve Arabic characters in the ID
+  // Handle Arabic text — preserve Arabic characters in the ID
   return str
     .trim()
     .replace(/\s+/g, '-')
@@ -45,8 +45,10 @@ function StarRating({ rating }: { rating: number }) {
 // Portable Text Component Map
 // ─────────────────────────────────────────────────────────────────────────────
 
-const components: PortableTextComponents = {
-  // â”€â”€ Block types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/** Builds the renderers. `tag` is the Amazon Associates tag from Site Settings (may be empty). */
+function makeComponents(tag?: string | null): PortableTextComponents {
+  return {
+  // ── Block types ────────────────────────────────────────────────────────────
   block: {
     h2: ({ children, value }) => (
       <h2
@@ -81,7 +83,7 @@ const components: PortableTextComponents = {
     ),
   },
 
-  // â”€â”€ Lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Lists ──────────────────────────────────────────────────────────────────
   list: {
     bullet: ({ children }) => (
       <ul className="text-text-primary/90 list-disc list-outside marker:text-brand-primary space-y-2.5 mb-6 ps-6 text-start">
@@ -99,31 +101,45 @@ const components: PortableTextComponents = {
     number: ({ children }) => <li className="leading-[1.75] rtl:leading-[1.95] ps-1">{children}</li>,
   },
 
-  // â”€â”€ Marks (inline) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Marks (inline) ─────────────────────────────────────────────────────────
   marks: {
     strong: ({ children }) => (
       <strong className="font-semibold text-text-primary">{children}</strong>
     ),
     em: ({ children }) => <em className="italic">{children}</em>,
     underline: ({ children }) => <u>{children}</u>,
-    link: ({ children, value }) => (
-      <a
-        href={value?.href}
-        target={value?.blank ? '_blank' : undefined}
-        rel={[
-          value?.blank ? 'noopener noreferrer' : '',
-          value?.nofollow ? 'nofollow' : '',
-        ].filter(Boolean).join(' ') || undefined}
-        className="text-brand-primary underline decoration-brand-primary/30 hover:decoration-brand-primary underline-offset-4 transition-colors break-words"
-      >
-        {children}
-      </a>
-    ),
+    link: ({ children, value }) => {
+      const rawHref: string | undefined = value?.href
+      // Amazon product links typed into the editor: always tagged, opened in a new
+      // tab and marked nofollow + sponsored (Google's rule for affiliate links),
+      // whatever the editor ticked in the link dialog.
+      const isAmazon = isAmazonAffiliateTarget(rawHref)
+      const href = isAmazon && rawHref ? addAffiliateTag(rawHref, tag) : rawHref
+      const opensNewTab = Boolean(value?.blank) || isAmazon
+      const rel =
+        [
+          opensNewTab ? 'noopener noreferrer' : '',
+          value?.nofollow || isAmazon ? 'nofollow' : '',
+          isAmazon ? 'sponsored' : '',
+        ]
+          .filter(Boolean)
+          .join(' ') || undefined
+      return (
+        <a
+          href={href}
+          target={opensNewTab ? '_blank' : undefined}
+          rel={rel}
+          className="text-brand-primary underline decoration-brand-primary/30 hover:decoration-brand-primary underline-offset-4 transition-colors break-words"
+        >
+          {children}
+        </a>
+      )
+    },
   },
 
-  // â”€â”€ Custom types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // ── Custom types ───────────────────────────────────────────────────────────
   types: {
-    // â”€â”€ Inline image â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Inline image ──────────────────────────────────────────────────────────
     image: ({ value }) => {
       if (!value?.asset) return null
       return (
@@ -148,14 +164,15 @@ const components: PortableTextComponents = {
       )
     },
 
-    // â”€â”€ Amazon Product Card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Amazon Product Card ───────────────────────────────────────────────────
     amazonProductCard: ({ value }) => {
       if (!value?.name) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       // resolveAffiliateUrl handles both ASIN and raw URL, always injects the tag
       const affiliateUrl = resolveAffiliateUrl(
         { asin: value.asin, affiliateUrl: value.affiliateUrl },
-        lang
+        lang,
+        tag
       )
 
       const hasImg = Boolean(value.imageUrl)
@@ -196,11 +213,11 @@ const components: PortableTextComponents = {
               )}
               {value.price && (
                 <p className="text-text-primary font-bold text-lg sm:text-xl">
-                  {value.price} <span className="text-text-muted text-sm font-normal">{lang === 'ar' ? 'Ø±.Ø³' : 'SAR'}</span>
+                  {value.price} <span className="text-text-muted text-sm font-normal">{lang === 'ar' ? 'ر.س' : 'SAR'}</span>
                 </p>
               )}
             </div>
-            {/* CTA â€” full width under the image + details on phones, inline on sm+ */}
+            {/* CTA — full width under the image + details on phones, inline on sm+ */}
             {affiliateUrl && (
               <div className={`${hasImg ? 'col-span-2 sm:col-span-1 sm:col-start-2' : ''} px-3 pb-3 sm:px-5 sm:pb-5 sm:pt-0`}>
                 <a
@@ -214,7 +231,7 @@ const components: PortableTextComponents = {
                     <circle cx="20" cy="21" r="1"></circle>
                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                   </svg>
-                  {lang === 'ar' ? 'Ø§Ø´ØªØ±ÙŠ Ø§Ù„Ø¢Ù† Ù…Ù† Ø£Ù…Ø§Ø²ÙˆÙ†' : 'Buy on Amazon'}
+                  {lang === 'ar' ? 'اشتري الآن من أمازون' : 'Buy on Amazon'}
                 </a>
               </div>
             )}
@@ -233,18 +250,19 @@ const components: PortableTextComponents = {
           heading={value.heading}
           products={value.products}
           language={lang}
+          affiliateTag={tag}
         />
       )
     },
 
-    // â”€â”€ FAQ Block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── FAQ Block ─────────────────────────────────────────────────────────────
     faqBlock: ({ value }) => {
       if (!value?.items?.length) return null
       const lang = (value._language as 'ar' | 'en') ?? 'ar'
       return (
         <div className="my-8 md:my-10">
           <h3 className="font-arabic-heading font-bold text-text-primary text-[19px] sm:text-xl mb-4 md:mb-6 text-start">
-            {lang === 'ar' ? 'Ø§Ù„Ø£Ø³Ø¦Ù„Ø© Ø§Ù„Ø´Ø§Ø¦Ø¹Ø©' : 'Frequently Asked Questions'}
+            {lang === 'ar' ? 'الأسئلة الشائعة' : 'Frequently Asked Questions'}
           </h3>
           <div className="space-y-3">
             {value.items.map((item: { question: string; answer: string }, i: number) => (
@@ -271,14 +289,14 @@ const components: PortableTextComponents = {
       )
     },
 
-    // â”€â”€ Callout Block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+    // ── Callout Block ─────────────────────────────────────────────────────────
     calloutBlock: ({ value }) => {
       if (!value?.text) return null
       const styles: Record<string, { border: string; bg: string; icon: string; label: string }> = {
-        tip:       { border: 'border-emerald-500/30', bg: 'bg-emerald-500/5',  icon: 'ðŸ’¡', label: 'Tip' },
-        info:      { border: 'border-blue-500/30',    bg: 'bg-blue-500/5',     icon: 'â„¹ï¸', label: 'Info' },
-        warning:   { border: 'border-amber-500/30',   bg: 'bg-amber-500/5',    icon: 'âš ï¸', label: 'Warning' },
-        important: { border: 'border-red-500/30',     bg: 'bg-red-500/5',      icon: 'ðŸ”´', label: 'Important' },
+        tip:       { border: 'border-emerald-500/30', bg: 'bg-emerald-500/5',  icon: '💡', label: 'Tip' },
+        info:      { border: 'border-blue-500/30',    bg: 'bg-blue-500/5',     icon: 'ℹ️', label: 'Info' },
+        warning:   { border: 'border-amber-500/30',   bg: 'bg-amber-500/5',    icon: '⚠️', label: 'Warning' },
+        important: { border: 'border-red-500/30',     bg: 'bg-red-500/5',      icon: '🔴', label: 'Important' },
       }
       const s = styles[value.type ?? 'info'] ?? styles.info
       return (
@@ -291,17 +309,20 @@ const components: PortableTextComponents = {
       )
     },
   },
+  }
 }
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 // Export
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─────────────────────────────────────────────────────────────────────────────
 
 interface PortableTextProps {
   value: SanityBlock[]
 }
 
-export function PortableText({ value }: PortableTextProps) {
-  return <SanityPortableText value={value} components={components} />
+export async function PortableText({ value }: PortableTextProps) {
+  // Cached per request and refreshed by the Sanity webhook, so this is free.
+  const settings = await getSiteSettings()
+  return <SanityPortableText value={value} components={makeComponents(settings?.amazonTag)} />
 }
 

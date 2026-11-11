@@ -19,6 +19,8 @@ export interface ProductComparisonTableProps {
   heading?: string
   products: ProductItem[]
   language?: 'ar' | 'en'
+  /** Amazon Associates tag from Site Settings (optional) */
+  affiliateTag?: string | null
 }
 
 const VERDICT_LABELS_AR: Record<string, string> = {
@@ -40,18 +42,21 @@ function ProductRow({
   rankNumber,
   isAr,
   lang,
+  tag,
 }: {
   product: ProductItem
   rankNumber: number
   isAr: boolean
   lang: 'ar' | 'en'
+  tag?: string | null
 }) {
   const [open, setOpen] = useState(false)
   const verdictLabels = isAr ? VERDICT_LABELS_AR : VERDICT_LABELS_EN
 
   const affiliateUrl = resolveAffiliateUrl(
     { asin: product.asin, affiliateUrl: product.affiliateUrl },
-    lang
+    lang,
+    tag
   )
 
   const formattedScore =
@@ -370,6 +375,7 @@ export function ProductComparisonTable({
   heading,
   products,
   language = 'ar',
+  affiliateTag,
 }: ProductComparisonTableProps) {
   if (!products || products.length === 0) return null
   const isAr = language === 'ar'
@@ -404,6 +410,7 @@ export function ProductComparisonTable({
             rankNumber={i + 1}
             isAr={isAr}
             lang={language}
+            tag={affiliateTag}
           />
         ))}
       </div>

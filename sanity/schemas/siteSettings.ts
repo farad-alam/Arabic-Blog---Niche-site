@@ -296,6 +296,23 @@ export const siteSettingsSchema = defineType({
       description: 'Starts with "ca-pub-". Leave blank until your site is approved by AdSense. Once you save this, ads go live on the next visitor — no redeploy needed.',
       placeholder: 'ca-pub-XXXXXXXXXXXXXXXX',
     }),
+    defineField({
+      name: 'amazonTag',
+      title: 'Amazon Associates — Tracking ID (tag)',
+      type: 'string',
+      group: 'analytics',
+      description:
+        'Your Associates tag for amazon.sa, e.g. mystore-21. It is added to every Amazon product link on the site (product cards, comparison tables and links inside articles). Leave blank until your Associates account is approved: links then work as they are, with no tag. Saving here updates all links, no redeploy needed.',
+      placeholder: 'mystore-21',
+      validation: (Rule) =>
+        Rule.custom((value) => {
+          if (!value) return true
+          if (/\s/.test(value)) return 'The tag must not contain spaces.'
+          if (!/^[A-Za-z0-9][A-Za-z0-9_-]*-\d{2,3}$/.test(value.trim()))
+            return 'Unusual format. Associates tags normally look like mystore-21. Check it in your Associates account.'
+          return true
+        }).warning(),
+    }),
 
     // ── Social Links ──────────────────────────────────────────────────────────
     defineField({

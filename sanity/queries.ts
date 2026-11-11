@@ -187,7 +187,10 @@ export async function getAllPostsForSitemap(): Promise<
       language,
       publishedAt,
       updatedAt,
-      "translationSlug": translation->slug.current
+      "translationSlug": coalesce(
+        translation->slug.current,
+        *[_type == "post" && !(_id in path("drafts.**")) && translation._ref == ^._id][0].slug.current
+      )
     }`,
     {},
     { next: { tags: ['posts'] } }
@@ -223,7 +226,10 @@ export const getPost = cache(async (slug: string, locale: Locale): Promise<Sanit
       noIndex,
       affiliateDisclosure,
       overallRating,
-      "translation": translation->{ slug, language },
+      "translation": coalesce(
+        translation->{ slug, language },
+        *[_type == "post" && !(_id in path("drafts.**")) && translation._ref == ^._id][0]{ slug, language }
+      ),
       "readTime": round(length(pt::text(body)) / 1500) + " min",
       "wordCount": length(string::split(pt::text(body), " ")),
       "related": *[_type == "post" && language == $locale && category._ref == ^.category._ref && slug.current != $slug && noIndex != true][0...3] {
@@ -465,6 +471,8 @@ export type SanitySiteSettings = {
   clarityId?: string
   hotjarId?: string
   adsenseClient?: string
+  // Amazon Associates tag (Site Settings → Analytics & Tools)
+  amazonTag?: string
   // Social
   twitter?: string
   facebook?: string
@@ -552,6 +560,7 @@ export const getSiteSettings = cache(
         clarityId,
         hotjarId,
         adsenseClient,
+        amazonTag,
         twitter,
         facebook,
         instagram,

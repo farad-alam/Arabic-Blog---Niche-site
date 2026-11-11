@@ -1,10 +1,17 @@
 import { NextResponse } from 'next/server'
 import { BASE_URL } from '@/lib/config'
+import { getAllPostsForSitemap } from '@/sanity/queries'
 
 export async function GET() {
-  const pages = [
-    { url: `${BASE_URL}/ar`, changefreq: 'daily', priority: '1.0' },
-    { url: `${BASE_URL}/en`, changefreq: 'daily', priority: '0.9' },
+  const posts = await getAllPostsForSitemap()
+  const newest = posts.map((p) => p.updatedAt || p.publishedAt).filter(Boolean).sort().pop()
+  const feedLastmod = newest ? newest.split('T')[0] : undefined
+
+  const pages: { url: string; changefreq: string; priority: string; lastmod?: string }[] = [
+    { url: `${BASE_URL}/ar`, changefreq: 'daily', priority: '1.0', lastmod: feedLastmod },
+    { url: `${BASE_URL}/en`, changefreq: 'daily', priority: '0.9', lastmod: feedLastmod },
+    { url: `${BASE_URL}/ar/articles`, changefreq: 'daily', priority: '0.8', lastmod: feedLastmod },
+    { url: `${BASE_URL}/en/articles`, changefreq: 'daily', priority: '0.7', lastmod: feedLastmod },
     { url: `${BASE_URL}/ar/about`, changefreq: 'monthly', priority: '0.4' },
     { url: `${BASE_URL}/en/about`, changefreq: 'monthly', priority: '0.4' },
     { url: `${BASE_URL}/ar/contact`, changefreq: 'monthly', priority: '0.4' },
@@ -22,7 +29,7 @@ export async function GET() {
 ${pages
   .map(
     (p) => `  <url>
-    <loc>${p.url}</loc>
+    <loc>${p.url}</loc>${p.lastmod ? `\n    <lastmod>${p.lastmod}</lastmod>` : ''}
     <changefreq>${p.changefreq}</changefreq>
     <priority>${p.priority}</priority>
   </url>`
