@@ -1,9 +1,12 @@
 import { NextResponse } from 'next/server'
 import { BASE_URL } from '@/lib/config'
-import { getAllPostsForSitemap } from '@/sanity/queries'
+import { getAllPostsForSitemap, getIndexableCategorySlugs } from '@/sanity/queries'
 
 export async function GET() {
-  const posts = await getAllPostsForSitemap()
+  const [posts, indexableCategories] = await Promise.all([
+    getAllPostsForSitemap(),
+    getIndexableCategorySlugs(),
+  ])
   const newest = posts.map((p) => p.updatedAt || p.publishedAt).filter(Boolean).sort().pop()
   const feedLastmod = newest ? newest.split('T')[0] : undefined
 
@@ -12,6 +15,11 @@ export async function GET() {
     { url: `${BASE_URL}/en`, changefreq: 'daily', priority: '0.9', lastmod: feedLastmod },
     { url: `${BASE_URL}/ar/articles`, changefreq: 'daily', priority: '0.8', lastmod: feedLastmod },
     { url: `${BASE_URL}/en/articles`, changefreq: 'daily', priority: '0.7', lastmod: feedLastmod },
+    // Category pages the editor marked "indexable" in Studio (noindex ones are never listed)
+    ...indexableCategories.flatMap((c) => [
+      { url: `${BASE_URL}/ar/category/${c.slugAr}`, changefreq: 'weekly', priority: '0.6', lastmod: feedLastmod },
+      { url: `${BASE_URL}/en/category/${c.slugEn}`, changefreq: 'weekly', priority: '0.5', lastmod: feedLastmod },
+    ]),
     { url: `${BASE_URL}/ar/about`, changefreq: 'monthly', priority: '0.4' },
     { url: `${BASE_URL}/en/about`, changefreq: 'monthly', priority: '0.4' },
     { url: `${BASE_URL}/ar/contact`, changefreq: 'monthly', priority: '0.4' },

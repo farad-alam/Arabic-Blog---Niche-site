@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import type { Metadata } from 'next'
-import { Cairo, Tajawal, Outfit } from 'next/font/google'
 import { notFound } from 'next/navigation'
 import { type Locale, locales } from '@/lib/i18n'
 import { baseMetadata } from '@/lib/seo'
+import { fontArabicHeading, fontArabicBody, fontLatin } from '@/lib/fonts'
 import { getSiteName, getTwitterHandle } from '@/lib/site'
 import { getImageUrl } from '@/sanity/image'
 import { getSiteSettings } from '@/sanity/queries'
@@ -11,28 +11,6 @@ import NavbarWrapper from '@/components/layout/NavbarWrapper'
 import FooterWrapper from '@/components/layout/FooterWrapper'
 import AnalyticsScripts from '@/components/analytics/AnalyticsScripts'
 import '@/styles/globals.css'
-
-// ── Arabic fonts ──────────────────────────────────────────────────────────────
-const cairo = Cairo({
-  subsets: ['arabic', 'latin'],
-  variable: '--font-arabic-heading',
-  weight: ['600', '700', '800'],
-  display: 'swap',
-})
-
-const tajawal = Tajawal({
-  subsets: ['arabic'],
-  variable: '--font-arabic-body',
-  weight: ['400', '500', '700'],
-  display: 'swap',
-})
-
-// ── Latin font ────────────────────────────────────────────────────────────────
-const outfit = Outfit({
-  subsets: ['latin'],
-  variable: '--font-latin',
-  display: 'swap',
-})
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
@@ -131,7 +109,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       dir={isRtl ? 'rtl' : 'ltr'}
-      className={`${cairo.variable} ${tajawal.variable} ${outfit.variable}`}
+      className={`${fontArabicHeading.variable} ${fontArabicBody.variable} ${fontLatin.variable}`}
     >
       <head>
         {/* ── Verification meta tags (from Sanity) ─────────────────────── */}

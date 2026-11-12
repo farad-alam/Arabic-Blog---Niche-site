@@ -79,6 +79,16 @@ export const categorySchema = defineType({
       description: 'Single emoji to represent this category. e.g. 🏠 🍳 💻',
     }),
     defineField({
+      name: 'indexable',
+      title: 'Let Google index this category page',
+      type: 'boolean',
+      initialValue: false,
+      description:
+        'OFF (default) = the category page is a navigation page only (noindex). ' +
+        'Turn ON once the category has a good intro text (description above) and 5+ articles, ' +
+        'so it can rank for the category keyword. Indexable categories are added to the sitemap with hreflang.',
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',

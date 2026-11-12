@@ -41,6 +41,8 @@ export type SanityCategory = {
   descriptionEn?: string
   parent?: { titleAr: string; titleEn: string; slugAr: { current: string }; slugEn: { current: string } }
   icon?: string
+  /** Studio toggle: when true the category page is indexable + in the sitemap */
+  indexable?: boolean
   order?: number
   postCount?: number
 }
@@ -152,6 +154,26 @@ export async function getPostsByLocale(locale: Locale, limit = 50): Promise<Sani
       ${POST_CARD_FRAGMENT}
     }`,
     { locale, limit },
+    { next: { tags: ['posts'] } }
+  )
+}
+
+/** One page of the public article archive, plus the total so the UI can paginate. */
+export async function getPostsPage(
+  locale: Locale,
+  page: number,
+  pageSize: number,
+): Promise<{ posts: SanityPostCard[]; total: number }> {
+  const start = (page - 1) * pageSize
+  const end = start + pageSize
+  return client.fetch(
+    `{
+      "posts": *[_type == "post" && language == $locale && noIndex != true] | order(publishedAt desc) [$start...$end] {
+        ${POST_CARD_FRAGMENT}
+      },
+      "total": count(*[_type == "post" && language == $locale && noIndex != true])
+    }`,
+    { locale, start, end },
     { next: { tags: ['posts'] } }
   )
 }
@@ -279,6 +301,7 @@ export const getCategoryBySlug = cache(
         descriptionAr,
         descriptionEn,
         icon,
+        indexable,
         "parent": parent->{ titleAr, titleEn, slugAr, slugEn }
       }`,
       { slug },
@@ -311,6 +334,18 @@ export async function getAllCategorySlugs(): Promise<
     { slugAr: { current: string }; slugEn: { current: string } }[]
   >(
     `*[_type == "category"]{ slugAr, slugEn }`,
+    {},
+    { next: { tags: ['categories'] } }
+  )
+  return results.map((r) => ({ slugAr: r.slugAr.current, slugEn: r.slugEn.current }))
+}
+
+/** Categories the editor switched to "indexable" in Studio — used by the sitemap. */
+export async function getIndexableCategorySlugs(): Promise<{ slugAr: string; slugEn: string }[]> {
+  const results = await client.fetch<
+    { slugAr: { current: string }; slugEn: { current: string } }[]
+  >(
+    `*[_type == "category" && indexable == true]{ slugAr, slugEn }`,
     {},
     { next: { tags: ['categories'] } }
   )
@@ -504,6 +539,7 @@ export type SanitySiteSettings = {
   faqHeadingAr?: string
   faqHeadingEn?: string
   // Trust strip
+  homepageSections?: string[]
   trustLineAr?: string
   trustLineEn?: string
   // Footer
@@ -587,6 +623,7 @@ export const getSiteSettings = cache(
         faqBadgeEn,
         faqHeadingAr,
         faqHeadingEn,
+        homepageSections,
         trustLineAr,
         trustLineEn,
         footerAboutAr,

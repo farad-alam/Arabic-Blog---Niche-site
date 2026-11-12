@@ -111,6 +111,8 @@ export default function Navbar({ locale, categories, siteName, logoUrl, logoAlt 
                 <img
                   src={logoUrl}
                   alt={logoAlt || siteName}
+                  width={40}
+                  height={40}
                   className="w-full h-full object-contain rounded-full"
                   loading="eager"
                   decoding="async"
