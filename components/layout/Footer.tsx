@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone, MessageCircle } from 'lucide-react'
 import { type Locale, t } from '@/lib/i18n'
 import { getFooterCopy, getSiteName, getSocialUrl, getTwitterHandle } from '@/lib/site'
 import type { SanityCategory, SanitySiteSettings } from '@/sanity/queries'
+import { getSanityCdnUrl } from '@/sanity/image'
 
 interface FooterProps {
   locale: Locale
@@ -86,8 +87,10 @@ export default function Footer({ locale, categories, settings }: FooterProps) {
                 <div className="w-11 h-11 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 drop-shadow-md">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={settings.logo.asset.url}
+                    src={getSanityCdnUrl(settings.logo.asset.url, 44)}
                     alt={settings.logo.alt || siteName}
+                    width={44}
+                    height={44}
                     className="w-full h-full object-contain rounded-full"
                     loading="lazy"
                     decoding="async"

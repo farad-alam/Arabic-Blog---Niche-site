@@ -66,3 +66,45 @@ export function getImageUrl(
 
   return undefined
 }
+
+/**
+ * Resize/convert an image that is already a plain Sanity CDN URL (e.g. the
+ * `asset->{ url }` we fetch for the site logo). Without this the browser
+ * downloads the full-size original (a logo shown at 40px can weigh 500KB+).
+ *
+ * - Non-Sanity URLs and SVGs are returned unchanged (SVG is already tiny and
+ *   must not be rasterised).
+ * - Pass the CSS size you display at; we request 2x for retina screens.
+ */
+export function getSanityCdnUrl(url: string | undefined | null, displayPx: number): string | undefined {
+  if (!url) return undefined
+  if (!url.includes('cdn.sanity.io') || /\.svg(\?|$)/i.test(url)) return url
+  const u = new URL(url)
+  const px = Math.round(displayPx * 2)
+  u.searchParams.set('w', String(px))
+  u.searchParams.set('h', String(px))
+  u.searchParams.set('fit', 'max')
+  u.searchParams.set('fm', 'webp')
+  return u.toString()
+}
+
+/**
+ * Read the intrinsic width/height from a Sanity image reference
+ * ("image-<hash>-1600x1067-jpg"). Lets us put width/height on <img> so the
+ * browser reserves space before the image loads (no layout shift).
+ * When the image is resized to `maxWidth`, the height is scaled to match.
+ */
+export function getSanityImageSize(
+  ref: string | undefined,
+  maxWidth?: number,
+): { width: number; height: number } | undefined {
+  const m = ref?.match(/^image-[^-]+-(\d+)x(\d+)-\w+$/)
+  if (!m) return undefined
+  let width = Number(m[1])
+  let height = Number(m[2])
+  if (maxWidth && width > maxWidth) {
+    height = Math.round((height * maxWidth) / width)
+    width = maxWidth
+  }
+  return { width, height }
+}

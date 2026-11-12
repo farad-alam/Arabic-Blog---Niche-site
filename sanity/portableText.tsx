@@ -1,6 +1,6 @@
 import React from 'react'
 import { PortableText as SanityPortableText, type PortableTextComponents } from 'next-sanity'
-import { urlFor } from './image'
+import { urlFor, getSanityImageSize } from './image'
 import { getSiteSettings, type SanityBlock } from './queries'
 import { resolveAffiliateUrl, addAffiliateTag, isAmazonAffiliateTarget } from '@/lib/affiliates'
 import { ProductComparisonTable } from '@/components/blog/ProductComparisonTable'
@@ -142,6 +142,8 @@ function makeComponents(tag?: string | null): PortableTextComponents {
     // ── Inline image ──────────────────────────────────────────────────────────
     image: ({ value }) => {
       if (!value?.asset) return null
+      // Intrinsic size (from the asset ref) so the browser reserves space → no layout shift
+      const size = getSanityImageSize(value.asset?._ref, 900)
       return (
         <figure className="my-7 md:my-8 -mx-4 sm:mx-0 max-w-[100vw] sm:max-w-full">
           <div className="relative w-full sm:rounded-xl sm:border sm:border-surface-border bg-surface-card sm:p-4 overflow-hidden">
@@ -149,6 +151,8 @@ function makeComponents(tag?: string | null): PortableTextComponents {
             <img
               src={urlFor(value).width(900).format('webp').url()}
               alt={value.alt ?? ''}
+              width={size?.width}
+              height={size?.height}
               className="w-full h-auto max-h-[70vh] sm:max-h-[500px] object-contain sm:rounded-lg"
               loading="lazy"
               decoding="async"

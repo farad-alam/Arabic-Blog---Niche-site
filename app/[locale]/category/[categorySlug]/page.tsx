@@ -28,16 +28,29 @@ export async function generateMetadata({
   const title = locale === 'ar' ? category.titleAr : category.titleEn
   const description = locale === 'ar' ? category.descriptionAr : category.descriptionEn
 
-  // Category pages are deliberately kept OUT of Google's index (they are navigation
-  // for visitors; the articles are what should rank). "follow" lets link value still
-  // flow through to the articles. They are not in the sitemap, and they carry no
-  // hreflang, because hreflang must not point at noindex pages.
+  // By default category pages are kept OUT of Google's index (navigation for
+  // visitors; the articles are what should rank). "follow" lets link value still
+  // flow through. Noindex pages are not in the sitemap and carry no hreflang.
+  // When the editor ticks "Let Google index this category page" in Studio, the page
+  // becomes indexable, joins the sitemap and gets hreflang to its other-language twin.
+  if (!category.indexable) {
+    return {
+      title,
+      description,
+      robots: { index: false, follow: true },
+      alternates: { canonical: `/${locale}/category/${categorySlug}` },
+    }
+  }
   return {
     title,
     description,
-    robots: { index: false, follow: true },
     alternates: {
       canonical: `/${locale}/category/${categorySlug}`,
+      languages: {
+        ar: `/ar/category/${category.slugAr.current}`,
+        en: `/en/category/${category.slugEn.current}`,
+        'x-default': `/ar/category/${category.slugAr.current}`,
+      },
     },
   }
 }

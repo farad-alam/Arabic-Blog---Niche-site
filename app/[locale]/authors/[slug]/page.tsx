@@ -30,6 +30,14 @@ export async function generateMetadata({
   return {
     title: name,
     description: locale === 'ar' ? author.shortBioAr : author.shortBio,
+    alternates: {
+      canonical: `/${locale}/authors/${slug}`,
+      languages: {
+        ar: `/ar/authors/${slug}`,
+        en: `/en/authors/${slug}`,
+        'x-default': `/ar/authors/${slug}`,
+      },
+    },
   }
 }
 

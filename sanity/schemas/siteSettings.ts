@@ -154,6 +154,29 @@ export const siteSettingsSchema = defineType({
     }),
     defineField({ name: 'trustLineEn', title: 'Trust Strip — Testing Line (English)', type: 'string', group: 'homepage' }),
 
+    // ── Homepage layout (structure control per site) ───────────────────────
+    defineField({
+      name: 'homepageSections',
+      title: 'Homepage Sections (order & visibility)',
+      type: 'array',
+      group: 'homepage',
+      of: [{ type: 'string' }],
+      options: {
+        layout: 'tags',
+        list: [
+          { title: 'Latest articles', value: 'latest' },
+          { title: 'Category shelves', value: 'categories' },
+          { title: 'Top picks ribbon', value: 'picks' },
+          { title: 'FAQ', value: 'faq' },
+          { title: 'Trust strip', value: 'trust' },
+        ],
+      },
+      description:
+        'Choose which sections appear under the hero, in the order you add them (drag to reorder). ' +
+        'Leave EMPTY to show all sections in the default order: latest → categories → picks → FAQ → trust. ' +
+        'The hero always stays on top.',
+    }),
+
     // ── Footer ────────────────────────────────────────────────────────────────
     defineField({
       name: 'footerAboutAr',

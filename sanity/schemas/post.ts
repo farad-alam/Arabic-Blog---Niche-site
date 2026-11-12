@@ -96,7 +96,7 @@ export const postSchema = defineType({
           name: 'externalUrl',
           title: 'External Image URL',
           type: 'url',
-          description: 'Use for bulk publishing — paste a Unsplash/Pexels URL here instead of uploading.',
+          description: 'Use for bulk publishing — paste a Unsplash/Pexels URL here instead of uploading. Note: this image is also your social-share (og:image) picture and depends on that third-party site staying online. For your best articles, upload the image instead.',
         }),
         defineField({
           name: 'alt',

@@ -1,3 +1,4 @@
+import { Fragment, type ReactNode } from 'react'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { type Locale, locales } from '@/lib/i18n'
@@ -10,7 +11,7 @@ import {
   getSiteSettings,
 } from '@/sanity/queries'
 import { getSiteName, getSocialUrl, getTwitterHandle } from '@/lib/site'
-import { getImageUrl } from '@/sanity/image'
+import { getSanityCdnUrl } from '@/sanity/image'
 import { websiteSchema, organizationSchema } from '@/lib/schema'
 import Hero from '@/components/home/Hero'
 import FeaturedPosts from '@/components/home/FeaturedPosts'
@@ -40,6 +41,9 @@ export async function generateMetadata({
     },
   }
 }
+
+type HomeSectionKey = 'latest' | 'categories' | 'picks' | 'faq' | 'trust'
+const DEFAULT_SECTION_ORDER: HomeSectionKey[] = ['latest', 'categories', 'picks', 'faq', 'trust']
 
 const BADGE_CLASSES: Record<string, string> = {
   amber: 'bg-amber-400 text-stone-950',
@@ -100,9 +104,43 @@ export default async function HomePage({
   const websiteLd = websiteSchema({ name: siteName, language: l })
   const organizationLd = organizationSchema({
     name: siteName,
-    logoUrl: getImageUrl(settings?.logo, { width: 512, height: 512 }),
+    logoUrl: getSanityCdnUrl(settings?.logo?.asset?.url, 256),
     sameAs,
   })
+
+  // Each homepage block, keyed by the value used in Site Settings → Homepage Sections.
+  const sections: Record<HomeSectionKey, ReactNode> = {
+    // Fresh & trending editorial feed (crawler + index bait)
+    latest: latestPosts.length > 0 ? <FeaturedPosts locale={l} posts={latestPosts} /> : null,
+    // Category silo shelves
+    categories: <CategoryShelves locale={l} categories={categoriesWithPosts} />,
+    // Top buyer's picks ribbon (commercial intent + affiliate CTR)
+    picks: (
+      <TopPicksRibbon
+        locale={l}
+        picks={resolvedPicks}
+        badge={isAr ? settings?.picksBadgeAr : settings?.picksBadgeEn}
+        heading={isAr ? settings?.picksHeadingAr : settings?.picksHeadingEn}
+        subheading={isAr ? settings?.picksSubheadingAr : settings?.picksSubheadingEn}
+        cta={isAr ? settings?.picksCtaAr : settings?.picksCtaEn}
+      />
+    ),
+    // Topical authority FAQ
+    faq: (
+      <HomeFaq
+        locale={l}
+        faqs={faqs}
+        badge={isAr ? settings?.faqBadgeAr : settings?.faqBadgeEn}
+        heading={isAr ? settings?.faqHeadingAr : settings?.faqHeadingEn}
+      />
+    ),
+    // E-E-A-T trust signals
+    trust: <TrustStrip locale={l} testingLine={isAr ? settings?.trustLineAr : settings?.trustLineEn} />,
+  }
+  const configured = (settings?.homepageSections ?? []).filter(
+    (k): k is HomeSectionKey => k in sections,
+  )
+  const sectionOrder = configured.length > 0 ? [...new Set(configured)] : DEFAULT_SECTION_ORDER
 
   return (
     <>
@@ -118,34 +156,11 @@ export default async function HomePage({
         {/* 1. Compact Authority Hero (Target H1 + Quick Category Pills + Search) */}
         <Hero locale={l} settings={settings} categories={categories} />
 
-        {/* 2. Fresh & Trending Editorial Feed (Immediate Crawler & Index Bait) */}
-        {latestPosts.length > 0 && (
-          <FeaturedPosts locale={l} posts={latestPosts} />
-        )}
-
-        {/* 3. Category Silo Shelves (Category-Wise Article Blocks) */}
-        <CategoryShelves locale={l} categories={categoriesWithPosts} />
-
-        {/* 4. Quick Top 3 Buyer's Picks Ribbon (High Commercial Intent & Affiliate CTR) */}
-        <TopPicksRibbon
-          locale={l}
-          picks={resolvedPicks}
-          badge={isAr ? settings?.picksBadgeAr : settings?.picksBadgeEn}
-          heading={isAr ? settings?.picksHeadingAr : settings?.picksHeadingEn}
-          subheading={isAr ? settings?.picksSubheadingAr : settings?.picksSubheadingEn}
-          cta={isAr ? settings?.picksCtaAr : settings?.picksCtaEn}
-        />
-
-        {/* 5. Topical Semantic Authority FAQ (LSI Keywords & Search Answer Depth) */}
-        <HomeFaq
-          locale={l}
-          faqs={faqs}
-          badge={isAr ? settings?.faqBadgeAr : settings?.faqBadgeEn}
-          heading={isAr ? settings?.faqHeadingAr : settings?.faqHeadingEn}
-        />
-
-        {/* 6. Editorial E-E-A-T Trust Signals */}
-        <TrustStrip locale={l} testingLine={isAr ? settings?.trustLineAr : settings?.trustLineEn} />
+        {/* Sections below the hero — order & visibility come from Studio →
+            Site Settings → Homepage Sections (empty = all, default order). */}
+        {sectionOrder.map((key) => (
+          <Fragment key={key}>{sections[key]}</Fragment>
+        ))}
       </main>
     </>
   )

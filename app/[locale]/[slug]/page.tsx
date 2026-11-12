@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { type Locale, locales, formatDate, t } from '@/lib/i18n'
 import { getPost, getRecentPostSlugs, getSiteSettings, type SanityBlock } from '@/sanity/queries'
-import { urlFor, getImageUrl } from '@/sanity/image'
+import { urlFor, getImageUrl, getSanityCdnUrl } from '@/sanity/image'
 import { getSiteName, getTwitterHandle } from '@/lib/site'
 import { PortableText } from '@/sanity/portableText'
 import { articleSchema, breadcrumbSchema, faqSchema, BASE_URL } from '@/lib/schema'
@@ -175,7 +175,7 @@ export default async function PostPage({
     imageUrl: getImageUrl(post.mainImage, { width: 1200, height: 630, crop: true }),
     wordCount: post.wordCount,
     siteName,
-    logoUrl: settings?.logo?.asset?.url,
+    logoUrl: getSanityCdnUrl(settings?.logo?.asset?.url, 256),
     author: post.author ? {
       firstName: post.author.firstName,
       lastName: post.author.lastName,
